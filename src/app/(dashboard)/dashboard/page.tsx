@@ -290,6 +290,18 @@ export default function DashboardPage() {
         </div>
       )}
 
+      {/* GSC connected but no search data yet */}
+      {!gscLoading && !gscError && !gscEmpty && summary && summary.clicks === 0 && summary.impressions === 0 && (
+        <div className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-6 text-center">
+          <p className="text-sm font-medium text-blue-800 mb-1" style={{ fontFamily: 'var(--font-sans)' }}>
+            GSC is connected for {clientName}
+          </p>
+          <p className="text-xs text-blue-600" style={{ fontFamily: 'var(--font-sans)' }}>
+            No search data in the last 28 days. Data will appear as Google indexes this site.
+          </p>
+        </div>
+      )}
+
       {/* Stat cards */}
       {summary && !gscLoading && (
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-4">
