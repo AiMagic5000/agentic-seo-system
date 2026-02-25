@@ -9,30 +9,30 @@ import {
   ChevronDown,
   ChevronUp,
   TrendingUp,
-  TrendingDown,
-  Minus,
   Sparkles,
   Calendar,
-  Clock,
   Bot,
   CheckCircle2,
   AlertTriangle,
   Lightbulb,
   Activity,
   Eye,
-  MousePointerClick,
   Loader2,
+  Globe,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { cn, formatNumber, getChangeIndicator } from '@/lib/utils'
+import { Card, CardContent } from '@/components/ui/card'
+import { EmptyState } from '@/components/ui/empty-state'
+import { SkeletonCard } from '@/components/ui/skeleton'
+import { useClient } from '@/contexts/client-context'
+import { cn, formatNumber } from '@/lib/utils'
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
-type DateRange = '7d' | '28d' | '3m' | '6m'
-type ReportType = 'Weekly' | 'Monthly' | 'Custom'
+type DateRange   = '7d' | '28d' | '3m' | '6m'
+type ReportType  = 'Weekly' | 'Monthly' | 'Custom'
 type ReportStatus = 'Ready' | 'Generating' | 'Scheduled'
 
 interface AgentActivity {
@@ -69,7 +69,7 @@ interface MockReport {
 }
 
 // ---------------------------------------------------------------------------
-// Mock data – 5 realistic AI-style reports
+// Mock data
 // ---------------------------------------------------------------------------
 const MOCK_REPORTS: MockReport[] = [
   {
@@ -79,68 +79,34 @@ const MOCK_REPORTS: MockReport[] = [
     aiModel: 'Claude 3.5 Sonnet',
     type: 'Weekly',
     status: 'Ready',
-    summaryPreview:
-      'Organic clicks climbed 18.4% week-over-week driven by a surge in long-tail informational queries around business formation and credit topics. Three target keywords broke into the top 10 for the first time. One technical issue flagged on the mobile checkout flow may be suppressing conversion-stage traffic.',
-    metrics: {
-      clicks: 4821,
-      clicksChange: 18.4,
-      impressions: 142300,
-      impressionsChange: 11.2,
-      positionChange: -1.3,
-      avgPosition: 8.7,
-    },
+    summaryPreview: 'Organic clicks climbed 18.4% week-over-week driven by a surge in long-tail informational queries around business formation and credit topics. Three target keywords broke into the top 10 for the first time. One technical issue flagged on the mobile checkout flow may be suppressing conversion-stage traffic.',
+    metrics: { clicks: 4821, clicksChange: 18.4, impressions: 142300, impressionsChange: 11.2, positionChange: -1.3, avgPosition: 8.7 },
     detail: {
-      executiveSummary:
-        'The week of February 17-24 produced the strongest organic performance of Q1 2026. Clicks reached 4,821 — a gain of 18.4% compared to the prior week — while average position improved from 10.0 to 8.7. The keyword-scout agent identified 34 new long-tail opportunities, 8 of which have already been promoted to tracked status. A technical audit surfaced one mobile-rendering issue affecting the checkout flow that warrants immediate attention.',
+      executiveSummary: 'The week of February 17-24 produced the strongest organic performance of Q1 2026. Clicks reached 4,821 — a gain of 18.4% compared to the prior week — while average position improved from 10.0 to 8.7. The keyword-scout agent identified 34 new long-tail opportunities, 8 of which have already been promoted to tracked status.',
       wins: [
         '"how to build business credit fast" moved from position 14 to position 7, generating 312 new clicks.',
-        'Impressions for the [business formation] cluster grew 28% after a content refresh last Monday.',
-        'Three pages crossed the 100-click/week threshold for the first time: /net-30-accounts, /duns-number, and /ein-guide.',
-        'CTR on the featured snippet for "what is a DUNS number" improved to 8.3% after adding a concise answer box.',
-        'Competitor Watcher flagged that FinancedByUs.com lost top-3 positions on 6 shared keywords — an opening to capture that traffic.',
+        'Impressions for the business formation cluster grew 28% after a content refresh last Monday.',
+        'Three pages crossed the 100-click/week threshold for the first time.',
+        'CTR on the featured snippet for "what is a DUNS number" improved to 8.3%.',
+        'Competitor Watcher flagged that FinancedByUs.com lost top-3 positions on 6 shared keywords.',
       ],
       concerns: [
-        'Mobile LCP on /checkout degraded from 2.1s to 4.4s following the Shopify theme update on Feb 19. This may be suppressing transactional traffic.',
+        'Mobile LCP on /checkout degraded from 2.1s to 4.4s following the Shopify theme update on Feb 19.',
         '"business credit cards for startups" slipped from position 5 to position 9 after a competitor published a 4,200-word comparison guide.',
-        'Click-through rate on /sba-loans dropped 1.8 percentage points, suggesting the meta description needs to be refreshed.',
+        'Click-through rate on /sba-loans dropped 1.8 percentage points.',
         'Crawl depth issue: 14 pages beyond 3 clicks from the homepage are receiving zero impressions.',
       ],
       recommendations: [
-        'Immediately roll back the Shopify theme change or isolate the LCP regression — every day at 4.4s costs an estimated 12% mobile conversion rate.',
-        'Publish a 3,500+ word comparison guide for "business credit cards for startups" to compete with the newly surfaced competitor content.',
-        'Update meta descriptions on /sba-loans and /invoice-factoring using the CTR-optimized templates generated by the content-optimizer agent.',
-        'Add internal links from the homepage and /start section to the 14 deep pages to resolve crawl depth issues.',
-        'Run an Answer The Public batch on "net 30 vendors" and "vendor credit" to capture demand from the newly identified long-tail cluster.',
+        'Immediately roll back the Shopify theme change or isolate the LCP regression.',
+        'Publish a 3,500+ word comparison guide for "business credit cards for startups".',
+        'Update meta descriptions on /sba-loans and /invoice-factoring using CTR-optimized templates.',
+        'Add internal links from the homepage to the 14 deep pages to resolve crawl depth issues.',
       ],
       agentActivity: [
-        {
-          agentName: 'Keyword Scout',
-          agentId: 'keyword-scout',
-          color: '#1a73e8',
-          action: 'Ran GSC query mining + ATP batch',
-          findings: '34 new opportunities discovered, 8 promoted to tracked',
-        },
-        {
-          agentName: 'Rank Tracker',
-          agentId: 'rank-tracker',
-          color: '#1e8e3e',
-          action: 'Daily position snapshots for 287 keywords',
-          findings: '3 keywords entered top 10, 2 keywords dropped 5+ positions',
-        },
-        {
-          agentName: 'Technical Auditor',
-          agentId: 'technical-auditor',
-          color: '#f9ab00',
-          action: 'Full site crawl completed',
-          findings: '1 critical issue (mobile LCP), 4 warnings, 11 informational',
-        },
-        {
-          agentName: 'Competitor Watcher',
-          agentId: 'competitor-watcher',
-          color: '#d93025',
-          action: 'Monitored 5 competitors across 287 keywords',
-          findings: 'Competitor FinancedByUs.com lost 6 top-3 positions — opportunity identified',
-        },
+        { agentName: 'Keyword Scout',    agentId: 'keyword-scout',      color: '#3B82F6', action: 'Ran GSC query mining + ATP batch',           findings: '34 new opportunities discovered, 8 promoted to tracked' },
+        { agentName: 'Rank Tracker',     agentId: 'rank-tracker',       color: '#10B981', action: 'Daily position snapshots for 287 keywords',  findings: '3 keywords entered top 10, 2 keywords dropped 5+ positions' },
+        { agentName: 'Technical Auditor',agentId: 'technical-auditor',  color: '#F59E0B', action: 'Full site crawl completed',                  findings: '1 critical issue (mobile LCP), 4 warnings, 11 informational' },
+        { agentName: 'Competitor Watcher',agentId:'competitor-watcher', color: '#EF4444', action: 'Monitored 5 competitors across 287 keywords', findings: 'Competitor FinancedByUs.com lost 6 top-3 positions' },
       ],
     },
   },
@@ -151,58 +117,29 @@ const MOCK_REPORTS: MockReport[] = [
     aiModel: 'Claude 3.5 Sonnet',
     type: 'Weekly',
     status: 'Ready',
-    summaryPreview:
-      'A content refresh campaign on 8 core landing pages delivered measurable position gains across commercial-intent keywords. The content-optimizer agent generated 12 new briefs. Schema markup additions on 3 pages triggered featured snippet appearances for the first time.',
-    metrics: {
-      clicks: 4073,
-      clicksChange: 7.1,
-      impressions: 127900,
-      impressionsChange: 5.8,
-      positionChange: -0.8,
-      avgPosition: 9.5,
-    },
+    summaryPreview: 'A content refresh campaign on 8 core landing pages delivered measurable position gains across commercial-intent keywords. Schema markup additions on 3 pages triggered featured snippet appearances for the first time.',
+    metrics: { clicks: 4073, clicksChange: 7.1, impressions: 127900, impressionsChange: 5.8, positionChange: -0.8, avgPosition: 9.5 },
     detail: {
-      executiveSummary:
-        'Week of February 10-17 showed steady incremental gains on the back of a deliberate content refresh campaign. Eight core pages were updated with expanded FAQ sections and improved internal linking, resulting in an average position improvement of 0.8 across the tracked keyword set. Featured snippets appeared for "how to get a DUNS number" and "net 30 vendor list" for the first time, accounting for 241 combined clicks.',
+      executiveSummary: 'Week of February 10-17 showed steady incremental gains. Eight core pages were updated with expanded FAQ sections and improved internal linking, resulting in an average position improvement of 0.8.',
       wins: [
         'FAQ schema additions on 3 pages triggered featured snippet appearances, generating 241 incremental clicks.',
         '"How to get business credit" improved from position 11 to position 8 after content expansion.',
-        'Content-optimizer generated 12 new briefs covering the SIC/NAICS code and business formation clusters.',
         'The /equipment-financing page crossed 200 weekly clicks for the first time.',
         'Zero critical technical issues flagged for the second consecutive week.',
       ],
       concerns: [
-        'Average position for the [business banking] cluster remains above 15 despite two content refreshes.',
-        'Six pages have duplicate H1 tags introduced during the theme migration that were not caught in the last audit.',
-        'Impressions for branded queries dropped 4.2%, which may indicate a shift in SERP layout for branded terms.',
+        'Average position for the business banking cluster remains above 15 despite two content refreshes.',
+        'Six pages have duplicate H1 tags introduced during the theme migration.',
+        'Impressions for branded queries dropped 4.2%.',
       ],
       recommendations: [
         'Audit and resolve the 6 duplicate H1 tags before they compound into indexing issues.',
-        'Build topical authority in the [business banking] cluster with 2-3 supporting articles before refreshing the pillar page.',
-        'Investigate the branded impressions drop with a GSC query segmentation to determine if it is a layout change or a ranking signal.',
+        'Build topical authority in the business banking cluster with 2-3 supporting articles.',
+        'Investigate the branded impressions drop with a GSC query segmentation.',
       ],
       agentActivity: [
-        {
-          agentName: 'Content Optimizer',
-          agentId: 'content-optimizer',
-          color: '#9334e6',
-          action: 'Analyzed 8 refreshed pages + generated 12 new briefs',
-          findings: 'Average content score improved from 61 to 74 across refreshed pages',
-        },
-        {
-          agentName: 'Rank Tracker',
-          agentId: 'rank-tracker',
-          color: '#1e8e3e',
-          action: 'Daily snapshots for 287 keywords',
-          findings: '1 keyword entered top 10, featured snippets triggered on 2 pages',
-        },
-        {
-          agentName: 'Technical Auditor',
-          agentId: 'technical-auditor',
-          color: '#f9ab00',
-          action: 'Weekly crawl completed',
-          findings: '0 critical issues, 6 duplicate H1 warnings surfaced',
-        },
+        { agentName: 'Content Optimizer', agentId: 'content-optimizer', color: '#8B5CF6', action: 'Analyzed 8 refreshed pages + generated 12 new briefs', findings: 'Average content score improved from 61 to 74' },
+        { agentName: 'Rank Tracker',      agentId: 'rank-tracker',      color: '#10B981', action: 'Daily snapshots for 287 keywords',                    findings: '1 keyword entered top 10, featured snippets on 2 pages' },
       ],
     },
   },
@@ -213,222 +150,31 @@ const MOCK_REPORTS: MockReport[] = [
     aiModel: 'Claude 3.5 Sonnet',
     type: 'Monthly',
     status: 'Ready',
-    summaryPreview:
-      'January 2026 marked the strongest organic month on record with clicks up 31% year-over-year. The agentic system discovered 187 new keyword opportunities, published 6 AI-assisted briefs, and resolved 23 technical issues. Average position across all tracked terms improved from 12.4 to 9.8.',
-    metrics: {
-      clicks: 16840,
-      clicksChange: 31.0,
-      impressions: 498200,
-      impressionsChange: 24.7,
-      positionChange: -2.6,
-      avgPosition: 9.8,
-    },
+    summaryPreview: 'January 2026 marked the strongest organic month on record with clicks up 31% year-over-year. The agentic system discovered 187 new keyword opportunities, published 6 AI-assisted briefs, and resolved 23 technical issues.',
+    metrics: { clicks: 16840, clicksChange: 31.0, impressions: 498200, impressionsChange: 24.7, positionChange: -2.6, avgPosition: 9.8 },
     detail: {
-      executiveSummary:
-        'January 2026 was a record-breaking month for organic performance. Total clicks reached 16,840 — a 31% year-over-year improvement — while the average tracked keyword position improved 2.6 places from 12.4 to 9.8. The keyword-scout agent discovered 187 new opportunities during the month. The technical auditor completed 4 crawls and cleared 23 issues that had been depressing rankings in the business formation cluster.',
+      executiveSummary: 'January 2026 was a record-breaking month. Total clicks reached 16,840 — a 31% year-over-year improvement — while average tracked keyword position improved 2.6 places from 12.4 to 9.8.',
       wins: [
         'Record monthly clicks (16,840) — a 31% YoY improvement and 12% MoM improvement.',
         'Average position for top 50 keywords improved from 12.4 to 9.8 over the month.',
         '187 new keyword opportunities identified via the automated ATP and GSC pipeline.',
         '23 technical issues resolved including 4 canonical mismatches and 11 broken internal links.',
-        '"business credit score" entered the top 5 for the first time, generating 1,240 clicks in January alone.',
-        'The /tradelines cluster grew from 2,100 to 3,900 monthly clicks — an 86% increase.',
+        '"business credit score" entered the top 5 for the first time.',
       ],
       concerns: [
-        'Page speed scores declined slightly on mobile (avg 71 to 68) following plugin updates in mid-January.',
-        'Three high-priority content briefs remain unpublished, leaving keyword opportunities uncaptured.',
-        'Backlink acquisition rate slowed — only 3 new referring domains in January vs. 11 in December.',
-        'The [SBA loans] cluster showed a 9% click decline despite stable rankings, suggesting declining search demand.',
+        'Page speed scores declined slightly on mobile following plugin updates in mid-January.',
+        'Three high-priority content briefs remain unpublished.',
+        'Backlink acquisition rate slowed — only 3 new referring domains in January.',
       ],
       recommendations: [
-        'Prioritize the 3 unpublished high-priority briefs (business credit monitoring, Experian business, Equifax business) to capture position before competitors.',
-        'Launch a link-building campaign targeting business finance resource pages — the backlink gap is widening vs. top competitors.',
+        'Prioritize the 3 unpublished high-priority briefs to capture position before competitors.',
+        'Launch a link-building campaign targeting business finance resource pages.',
         'Run a mobile performance audit focused on plugin-introduced render-blocking resources.',
-        'Pivot [SBA loans] content angle toward current news (rate changes, 2026 program updates) to revive declining demand.',
       ],
       agentActivity: [
-        {
-          agentName: 'Keyword Scout',
-          agentId: 'keyword-scout',
-          color: '#1a73e8',
-          action: 'Ran 31 daily GSC queries + 8 ATP batches',
-          findings: '187 new opportunities found, 42 promoted to tracked status',
-        },
-        {
-          agentName: 'Rank Tracker',
-          agentId: 'rank-tracker',
-          color: '#1e8e3e',
-          action: '31 daily snapshots for 287 keywords',
-          findings: '11 keywords entered top 10 during January, avg position improved 2.6 places',
-        },
-        {
-          agentName: 'Content Optimizer',
-          agentId: 'content-optimizer',
-          color: '#9334e6',
-          action: 'Analyzed all published pages weekly, generated 6 briefs',
-          findings: 'Average content score across site improved from 58 to 67',
-        },
-        {
-          agentName: 'Technical Auditor',
-          agentId: 'technical-auditor',
-          color: '#f9ab00',
-          action: 'Completed 4 full crawls',
-          findings: '23 issues resolved, mobile score declined slightly post-plugin updates',
-        },
-        {
-          agentName: 'Competitor Watcher',
-          agentId: 'competitor-watcher',
-          color: '#d93025',
-          action: 'Daily competitor monitoring for 5 domains',
-          findings: 'Two competitor domains published new long-form guides in the [business credit] cluster',
-        },
-      ],
-    },
-  },
-  {
-    id: 'rpt-004',
-    title: 'Weekly Performance Report - Feb 3-10, 2026',
-    generatedAt: '2026-02-10T10:15:00Z',
-    aiModel: 'Claude 3.5 Sonnet',
-    type: 'Weekly',
-    status: 'Ready',
-    summaryPreview:
-      'A modest week with flat performance on most core keywords, offset by a breakout in the equipment financing cluster. Two competitor alerts fired — one domain entered the top 3 for a high-value keyword. The report-generator queued 4 new content briefs from demand signals in GSC.',
-    metrics: {
-      clicks: 3802,
-      clicksChange: -2.3,
-      impressions: 120800,
-      impressionsChange: 1.4,
-      positionChange: 0.2,
-      avgPosition: 10.3,
-    },
-    detail: {
-      executiveSummary:
-        'The week of February 3-10 was relatively flat, with clicks declining a modest 2.3% week-over-week. The core keyword set held position, but two competitor alerts fired — CreditBuildersAlliance.com claimed the top-3 position for "business credit builder" and "vendor credit accounts." The equipment financing cluster showed strong breakout momentum, which the content-optimizer agent has already responded to with 3 new briefs.',
-      wins: [
-        'The /equipment-financing cluster grew 34% week-over-week, reaching 487 clicks.',
-        '"Invoice factoring for small business" entered the top 10 for the first time at position 9.',
-        'GSC demand signals triggered 4 new content brief requests via the automated pipeline.',
-        'Zero critical technical issues for the third consecutive week.',
-      ],
-      concerns: [
-        'CreditBuildersAlliance.com entered top 3 for "business credit builder" — a high-commercial-intent term generating 800+ searches/month.',
-        'Clicks declined 2.3% despite stable impressions, suggesting declining CTR across several pages.',
-        '"How to get a business loan" dropped from position 8 to position 12 after a new competitor guide went live.',
-      ],
-      recommendations: [
-        'Publish a comprehensive "business credit builder" guide (4,000+ words) within the next 7 days to challenge the new top-3 entrant.',
-        'A/B test new meta descriptions on the top 10 traffic-driving pages to address the CTR decline.',
-        'Accelerate the /business-loans content refresh with updated 2026 statistics and lender comparisons.',
-      ],
-      agentActivity: [
-        {
-          agentName: 'Competitor Watcher',
-          agentId: 'competitor-watcher',
-          color: '#d93025',
-          action: 'Daily monitoring across 5 competitor domains',
-          findings: '2 competitor alerts fired — top-3 intrusion on high-value keywords',
-        },
-        {
-          agentName: 'Content Optimizer',
-          agentId: 'content-optimizer',
-          color: '#9334e6',
-          action: 'Demand signal analysis + brief generation',
-          findings: '4 new briefs queued from GSC query clustering',
-        },
-        {
-          agentName: 'Rank Tracker',
-          agentId: 'rank-tracker',
-          color: '#1e8e3e',
-          action: 'Daily position snapshots',
-          findings: '1 keyword entered top 10, 1 keyword dropped 4 positions',
-        },
-      ],
-    },
-  },
-  {
-    id: 'rpt-005',
-    title: 'Q4 2025 Quarterly Summary Report',
-    generatedAt: '2026-01-07T09:00:00Z',
-    aiModel: 'Claude 3.5 Sonnet',
-    type: 'Custom',
-    status: 'Ready',
-    summaryPreview:
-      'Q4 2025 delivered a 47% year-over-year increase in organic clicks, driven by content and technical SEO improvements. The agentic system tracked 287 keywords, resolved 61 technical issues, and generated 18 content briefs. The quarter closed with average position improving from 14.2 to 11.8 across the full tracked set.',
-    metrics: {
-      clicks: 44200,
-      clicksChange: 47.0,
-      impressions: 1312000,
-      impressionsChange: 38.4,
-      positionChange: -2.4,
-      avgPosition: 11.8,
-    },
-    detail: {
-      executiveSummary:
-        'Q4 2025 (October through December) was a transformational quarter. Total clicks reached 44,200 — a 47% improvement over Q4 2024. Average tracked keyword position moved from 14.2 to 11.8. The agentic system operated continuously for 13 weeks, identifying 412 keyword opportunities, generating 18 content briefs, resolving 61 technical issues, and monitoring 5 competitors in real time. The business formation cluster emerged as the highest-growth segment with a 78% click increase over the quarter.',
-      wins: [
-        '47% YoY click growth — strongest quarterly performance in company history.',
-        '412 keyword opportunities identified by the keyword-scout agent over the quarter.',
-        '61 technical issues resolved, including critical crawl budget inefficiencies that had suppressed 40+ pages.',
-        'The business formation cluster grew 78% in Q4, now accounting for 31% of all organic traffic.',
-        '"Business credit score" entered the top 5 for the first time in December.',
-        'Featured snippets claimed on 7 high-value informational queries in Q4.',
-      ],
-      concerns: [
-        'Site authority metrics remain below top competitors — domain authority gap is 22 points vs. the market leader.',
-        'Content publication velocity was slower than planned — 18 briefs published vs. a target of 30.',
-        'The [merchant cash advance] cluster remains below position 15 despite two content refreshes — may need a different angle.',
-        'Backlink acquisition was minimal in Q4 — only 17 new referring domains vs. a target of 50.',
-      ],
-      recommendations: [
-        'Set a Q1 2026 content velocity target of 10 articles/month to close the publication gap.',
-        'Launch a structured link-building outreach program in January targeting finance and small business resource pages.',
-        'Reconsider the [merchant cash advance] content strategy — competitor analysis suggests video and comparison tool formats perform better.',
-        'Consider a PR campaign around the record Q4 results to generate brand mentions and editorial links.',
-      ],
-      agentActivity: [
-        {
-          agentName: 'Keyword Scout',
-          agentId: 'keyword-scout',
-          color: '#1a73e8',
-          action: '91 daily GSC runs + 24 ATP batches over 13 weeks',
-          findings: '412 opportunities found, 98 promoted to tracked status',
-        },
-        {
-          agentName: 'Rank Tracker',
-          agentId: 'rank-tracker',
-          color: '#1e8e3e',
-          action: '91 daily snapshots for full keyword set',
-          findings: 'Average position improved from 14.2 to 11.8; 28 keywords entered top 10',
-        },
-        {
-          agentName: 'Content Optimizer',
-          agentId: 'content-optimizer',
-          color: '#9334e6',
-          action: 'Weekly page analysis + 18 briefs generated',
-          findings: 'Site-wide content score improved from 52 to 71',
-        },
-        {
-          agentName: 'Technical Auditor',
-          agentId: 'technical-auditor',
-          color: '#f9ab00',
-          action: '13 weekly crawls completed',
-          findings: '61 issues resolved including critical crawl budget inefficiencies',
-        },
-        {
-          agentName: 'Competitor Watcher',
-          agentId: 'competitor-watcher',
-          color: '#d93025',
-          action: 'Continuous competitor monitoring for 5 domains',
-          findings: '14 competitor alerts fired; 3 content gaps identified and acted upon',
-        },
-        {
-          agentName: 'Report Generator',
-          agentId: 'report-generator',
-          color: '#f9ab00',
-          action: '13 weekly reports + 3 monthly reports generated',
-          findings: 'All reports delivered on schedule; this quarterly summary auto-compiled from aggregate data',
-        },
+        { agentName: 'Keyword Scout',    agentId: 'keyword-scout',     color: '#3B82F6', action: 'Ran 31 daily GSC queries + 8 ATP batches', findings: '187 new opportunities found, 42 promoted to tracked' },
+        { agentName: 'Rank Tracker',     agentId: 'rank-tracker',      color: '#10B981', action: '31 daily snapshots for 287 keywords',      findings: '11 keywords entered top 10 in January' },
+        { agentName: 'Technical Auditor',agentId: 'technical-auditor', color: '#F59E0B', action: 'Completed 4 full crawls',                  findings: '23 issues resolved' },
       ],
     },
   },
@@ -437,90 +183,64 @@ const MOCK_REPORTS: MockReport[] = [
 // ---------------------------------------------------------------------------
 // Sub-components
 // ---------------------------------------------------------------------------
-
-function MetricChange({
-  value,
-  change,
-  label,
-  invertColor = false,
-}: {
-  value: string | number
-  change: number
-  label: string
-  invertColor?: boolean
-}) {
-  // invertColor=true means a positive change is BAD (e.g. avg position going up = worse)
+function MetricChange({ value, change, label, invertColor = false }: { value: string | number; change: number; label: string; invertColor?: boolean }) {
   const isPositive = invertColor ? change < 0 : change > 0
-  const isNeutral = change === 0
-
-  const color = isNeutral
-    ? 'text-[#80868b]'
-    : isPositive
-      ? 'text-[#1e8e3e]'
-      : 'text-[#d93025]'
-
-  const arrow = isNeutral ? '—' : isPositive ? '↑' : '↓'
+  const isNeutral  = change === 0
+  const colorClass = isNeutral ? 'text-slate-400' : isPositive ? 'text-emerald-600' : 'text-red-500'
+  const arrow      = isNeutral ? '--' : isPositive ? '↑' : '↓'
 
   return (
     <div className="flex flex-col gap-0.5">
-      <p className="text-xs text-[#80868b]">{label}</p>
-      <p className="text-sm font-semibold tabular-nums text-[#202124]">{value}</p>
-      <p className={cn('text-xs font-medium', color)}>
+      <p className="text-[11px] text-slate-400" style={{ fontFamily: 'var(--font-sans)' }}>{label}</p>
+      <p className="text-sm font-semibold text-slate-900" style={{ fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>{value}</p>
+      <p className={cn('text-xs font-medium', colorClass)} style={{ fontFamily: 'var(--font-sans)' }}>
         {arrow} {Math.abs(change).toFixed(1)}%
       </p>
     </div>
   )
 }
 
-function StatusBadge({ status }: { status: ReportStatus }) {
-  if (status === 'Ready') return <Badge variant="success">Ready</Badge>
-  if (status === 'Generating')
-    return (
-      <Badge variant="warning">
-        <Loader2 size={10} className="animate-spin" /> Generating
-      </Badge>
-    )
+function ReportStatusBadge({ status }: { status: ReportStatus }) {
+  if (status === 'Ready')      return <Badge variant="success">Ready</Badge>
+  if (status === 'Generating') return <Badge variant="warning"><Loader2 size={9} className="animate-spin" />Generating</Badge>
   return <Badge variant="default">Scheduled</Badge>
 }
 
-function TypeBadge({ type }: { type: ReportType }) {
+function ReportTypeBadge({ type }: { type: ReportType }) {
   if (type === 'Monthly') return <Badge variant="gold">Monthly</Badge>
-  if (type === 'Custom') return <Badge variant="info">Custom</Badge>
+  if (type === 'Custom')  return <Badge variant="info">Custom</Badge>
   return <Badge variant="outline">Weekly</Badge>
 }
 
 function AgentActivityRow({ agent }: { agent: AgentActivity }) {
   return (
-    <div className="flex items-start gap-3 rounded-lg border border-[#dadce0] bg-[#f8f9fa] p-3">
+    <div className="flex items-start gap-2 rounded-lg border border-slate-100 bg-slate-50 p-2.5">
       <div
-        className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full"
-        style={{
-          backgroundColor: `${agent.color}22`,
-          border: `1px solid ${agent.color}44`,
-        }}
+        className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
+        style={{ backgroundColor: `${agent.color}1a`, border: `1px solid ${agent.color}33` }}
       >
-        <Bot size={13} style={{ color: agent.color }} />
+        <Bot size={11} style={{ color: agent.color }} />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-xs font-semibold text-[#202124]">{agent.agentName}</p>
-        <p className="text-xs text-[#80868b]">{agent.action}</p>
-        <p className="mt-1 text-xs text-[#5f6368]">{agent.findings}</p>
+        <p className="text-xs font-semibold text-slate-800" style={{ fontFamily: 'var(--font-sans)' }}>{agent.agentName}</p>
+        <p className="text-xs text-slate-500" style={{ fontFamily: 'var(--font-sans)' }}>{agent.action}</p>
+        <p className="mt-0.5 text-xs text-slate-600" style={{ fontFamily: 'var(--font-sans)' }}>{agent.findings}</p>
       </div>
-      <CheckCircle2 size={14} className="mt-0.5 flex-shrink-0 text-[#1e8e3e]" />
+      <CheckCircle2 size={12} className="mt-0.5 shrink-0 text-emerald-500" />
     </div>
   )
 }
 
 function ReportDetail({ report }: { report: MockReport }) {
   return (
-    <div className="space-y-5 border-t border-[#dadce0] pt-5">
+    <div className="space-y-4 border-t border-slate-100 pt-4">
       {/* Executive Summary */}
       <div>
         <div className="mb-2 flex items-center gap-2">
-          <FileText size={14} className="text-[#1a73e8]" />
-          <h4 className="text-sm font-semibold text-[#202124]">Executive Summary</h4>
+          <FileText size={13} className="text-blue-600" />
+          <h4 className="text-xs font-semibold text-slate-900" style={{ fontFamily: 'var(--font-sans)' }}>Executive Summary</h4>
         </div>
-        <p className="text-sm leading-relaxed text-[#5f6368]">
+        <p className="text-xs leading-relaxed text-slate-600" style={{ fontFamily: 'var(--font-sans)' }}>
           {report.detail.executiveSummary}
         </p>
       </div>
@@ -529,13 +249,13 @@ function ReportDetail({ report }: { report: MockReport }) {
         {/* Key Wins */}
         <div>
           <div className="mb-2 flex items-center gap-2">
-            <TrendingUp size={14} className="text-[#1e8e3e]" />
-            <h4 className="text-sm font-semibold text-[#202124]">Key Wins</h4>
+            <TrendingUp size={13} className="text-emerald-500" />
+            <h4 className="text-xs font-semibold text-slate-900" style={{ fontFamily: 'var(--font-sans)' }}>Key Wins</h4>
           </div>
-          <ul className="space-y-1.5">
+          <ul className="space-y-1">
             {report.detail.wins.map((win, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs text-[#5f6368]">
-                <span className="mt-0.5 flex-shrink-0 text-[#1e8e3e]">+</span>
+              <li key={i} className="flex items-start gap-2 text-xs text-slate-600" style={{ fontFamily: 'var(--font-sans)' }}>
+                <span className="mt-0.5 shrink-0 font-bold text-emerald-500">+</span>
                 <span>{win}</span>
               </li>
             ))}
@@ -545,13 +265,13 @@ function ReportDetail({ report }: { report: MockReport }) {
         {/* Areas of Concern */}
         <div>
           <div className="mb-2 flex items-center gap-2">
-            <AlertTriangle size={14} className="text-[#f9ab00]" />
-            <h4 className="text-sm font-semibold text-[#202124]">Areas of Concern</h4>
+            <AlertTriangle size={13} className="text-amber-500" />
+            <h4 className="text-xs font-semibold text-slate-900" style={{ fontFamily: 'var(--font-sans)' }}>Areas of Concern</h4>
           </div>
-          <ul className="space-y-1.5">
+          <ul className="space-y-1">
             {report.detail.concerns.map((concern, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs text-[#5f6368]">
-                <span className="mt-0.5 flex-shrink-0 text-[#f9ab00]">!</span>
+              <li key={i} className="flex items-start gap-2 text-xs text-slate-600" style={{ fontFamily: 'var(--font-sans)' }}>
+                <span className="mt-0.5 shrink-0 font-bold text-amber-500">!</span>
                 <span>{concern}</span>
               </li>
             ))}
@@ -562,13 +282,13 @@ function ReportDetail({ report }: { report: MockReport }) {
       {/* Recommendations */}
       <div>
         <div className="mb-2 flex items-center gap-2">
-          <Lightbulb size={14} className="text-[#f9ab00]" />
-          <h4 className="text-sm font-semibold text-[#202124]">AI Recommendations</h4>
+          <Lightbulb size={13} className="text-amber-500" />
+          <h4 className="text-xs font-semibold text-slate-900" style={{ fontFamily: 'var(--font-sans)' }}>AI Recommendations</h4>
         </div>
-        <ol className="space-y-1.5">
+        <ol className="space-y-1">
           {report.detail.recommendations.map((rec, i) => (
-            <li key={i} className="flex items-start gap-2 text-xs text-[#5f6368]">
-              <span className="flex-shrink-0 font-semibold text-[#f9ab00]">{i + 1}.</span>
+            <li key={i} className="flex items-start gap-2 text-xs text-slate-600" style={{ fontFamily: 'var(--font-sans)' }}>
+              <span className="shrink-0 font-semibold text-amber-500">{i + 1}.</span>
               <span>{rec}</span>
             </li>
           ))}
@@ -577,9 +297,9 @@ function ReportDetail({ report }: { report: MockReport }) {
 
       {/* Agent Activity */}
       <div>
-        <div className="mb-3 flex items-center gap-2">
-          <Activity size={14} className="text-[#9334e6]" />
-          <h4 className="text-sm font-semibold text-[#202124]">Agent Activity Summary</h4>
+        <div className="mb-2 flex items-center gap-2">
+          <Activity size={13} className="text-violet-500" />
+          <h4 className="text-xs font-semibold text-slate-900" style={{ fontFamily: 'var(--font-sans)' }}>Agent Activity</h4>
         </div>
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
           {report.detail.agentActivity.map((agent) => (
@@ -595,47 +315,41 @@ function ReportCard({ report }: { report: MockReport }) {
   const [expanded, setExpanded] = React.useState(false)
 
   const generatedDate = new Date(report.generatedAt).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
+    month: 'short', day: 'numeric', year: 'numeric',
   })
 
   return (
     <Card className="overflow-hidden transition-all duration-200">
       <CardContent className="p-0">
-        <div className="p-5">
-          {/* Top row: title + badges */}
+        <div className="p-4">
+          {/* Top row */}
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
-              <h3 className="text-sm font-semibold text-[#202124]">{report.title}</h3>
-              <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[#80868b]">
-                <span className="flex items-center gap-1">
-                  <Calendar size={11} />
-                  Generated {generatedDate}
-                </span>
-                <span className="text-[#dadce0]">·</span>
-                <span className="flex items-center gap-1">
-                  <Sparkles size={11} className="text-[#f9ab00]" />
-                  {report.aiModel}
-                </span>
+              <h3 className="text-sm font-semibold text-slate-900" style={{ fontFamily: 'var(--font-sans)' }}>
+                {report.title}
+              </h3>
+              <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-400" style={{ fontFamily: 'var(--font-sans)' }}>
+                <span className="flex items-center gap-1"><Calendar size={10} />Generated {generatedDate}</span>
+                <span className="text-slate-200">·</span>
+                <span className="flex items-center gap-1"><Sparkles size={10} className="text-amber-400" />{report.aiModel}</span>
               </div>
             </div>
-            <div className="flex flex-shrink-0 items-center gap-2">
-              <TypeBadge type={report.type} />
-              <StatusBadge status={report.status} />
+            <div className="flex shrink-0 items-center gap-1.5">
+              <ReportTypeBadge type={report.type} />
+              <ReportStatusBadge status={report.status} />
             </div>
           </div>
 
-          {/* Summary preview */}
-          <p className="mt-3 text-sm leading-relaxed text-[#5f6368]">
+          {/* Preview */}
+          <p className="mt-3 text-xs leading-relaxed text-slate-600" style={{ fontFamily: 'var(--font-sans)' }}>
             {report.summaryPreview}
           </p>
 
-          {/* Key metrics row */}
-          <div className="mt-4 flex flex-wrap gap-5 border-t border-[#dadce0] pt-4">
+          {/* Metrics row */}
+          <div className="mt-3 flex flex-wrap gap-5 border-t border-slate-100 pt-3">
             <MetricChange
               label="Clicks"
-              value={report.metrics.clicks.toLocaleString()}
+              value={formatNumber(report.metrics.clicks)}
               change={report.metrics.clicksChange}
             />
             <MetricChange
@@ -651,8 +365,8 @@ function ReportCard({ report }: { report: MockReport }) {
             />
           </div>
 
-          {/* Actions row */}
-          <div className="mt-4 flex flex-wrap items-center gap-2">
+          {/* Actions */}
+          <div className="mt-3 flex flex-wrap items-center gap-1.5">
             <Button
               variant="outline"
               size="sm"
@@ -660,31 +374,22 @@ function ReportCard({ report }: { report: MockReport }) {
               className="gap-1.5"
             >
               {expanded ? (
-                <>
-                  <ChevronUp size={13} />
-                  Collapse Report
-                </>
+                <><ChevronUp size={12} />Collapse</>
               ) : (
-                <>
-                  <Eye size={13} />
-                  View Full Report
-                </>
+                <><Eye size={12} />View Full Report</>
               )}
             </Button>
             <Button variant="ghost" size="sm" className="gap-1.5">
-              <Download size={13} />
-              Download PDF
+              <Download size={12} />PDF
             </Button>
             <Button variant="ghost" size="sm" className="gap-1.5">
-              <Share2 size={13} />
-              Share
+              <Share2 size={12} />Share
             </Button>
           </div>
         </div>
 
-        {/* Expandable detail */}
         {expanded && (
-          <div className="px-5 pb-5">
+          <div className="px-4 pb-4">
             <ReportDetail report={report} />
           </div>
         )}
@@ -703,25 +408,20 @@ const DATE_RANGES: { label: string; value: DateRange }[] = [
   { label: '6m', value: '6m' },
 ]
 
-function DateRangeSelector({
-  value,
-  onChange,
-}: {
-  value: DateRange
-  onChange: (v: DateRange) => void
-}) {
+function DateRangeSelector({ value, onChange }: { value: DateRange; onChange: (v: DateRange) => void }) {
   return (
-    <div className="flex rounded-lg border border-[#dadce0] bg-[#f8f9fa] p-0.5">
+    <div className="flex rounded-lg border border-slate-200 bg-slate-50 p-0.5">
       {DATE_RANGES.map((range) => (
         <button
           key={range.value}
           onClick={() => onChange(range.value)}
           className={cn(
-            'rounded-md px-3 py-1.5 text-xs font-medium transition-all duration-150',
+            'rounded px-3 py-1 text-xs font-medium transition-all duration-150 cursor-pointer',
             value === range.value
-              ? 'bg-[#dadce0] text-[#202124]'
-              : 'text-[#80868b] hover:text-[#5f6368]'
+              ? 'bg-white text-slate-900 shadow-sm border border-slate-200'
+              : 'text-slate-500 hover:text-slate-700'
           )}
+          style={{ fontFamily: 'var(--font-sans)' }}
         >
           {range.label}
         </button>
@@ -734,33 +434,63 @@ function DateRangeSelector({
 // Page
 // ---------------------------------------------------------------------------
 export default function ReportsPage() {
+  const { isLoading: clientLoading, hasNoBusiness } = useClient()
   const [dateRange, setDateRange] = React.useState<DateRange>('28d')
 
+  if (hasNoBusiness) {
+    return (
+      <div className="flex items-center justify-center min-h-[calc(100vh-56px)] p-5">
+        <EmptyState
+          icon={<Globe className="h-6 w-6" />}
+          title="No website connected"
+          description="Add your first website to start receiving AI-generated performance reports."
+          size="lg"
+        />
+      </div>
+    )
+  }
+
   return (
-    <div className="space-y-6 p-6">
-      {/* Page header */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
+    <div className="space-y-4 p-5">
+      {/* Header */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-bold text-[#202124]">Reports</h1>
-          <p className="mt-0.5 text-sm text-[#80868b]">
+          <h1
+            className="text-base font-semibold text-slate-900"
+            style={{ fontFamily: 'var(--font-sans)' }}
+          >
+            Reports
+          </h1>
+          <p
+            className="mt-0.5 text-xs text-slate-500"
+            style={{ fontFamily: 'var(--font-sans)' }}
+          >
             AI-generated performance reports across all tracked clients
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <DateRangeSelector value={dateRange} onChange={setDateRange} />
-          <Button variant="gold" size="sm" className="gap-2">
-            <BarChart3 size={14} />
+          <Button variant="amber" size="sm" className="gap-1.5">
+            <BarChart3 size={13} />
             Generate Report
           </Button>
         </div>
       </div>
 
       {/* Report cards */}
-      <div className="space-y-4">
-        {MOCK_REPORTS.map((report) => (
-          <ReportCard key={report.id} report={report} />
-        ))}
-      </div>
+      {clientLoading ? (
+        <div className="space-y-3">
+          <SkeletonCard className="h-36" />
+          <SkeletonCard className="h-36" />
+          <SkeletonCard className="h-36" />
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {MOCK_REPORTS.map((report) => (
+            <ReportCard key={report.id} report={report} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
