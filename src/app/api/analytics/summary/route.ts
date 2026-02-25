@@ -123,8 +123,14 @@ export async function GET(request: NextRequest) {
           avgDuration: Math.round(avgDuration),
         },
         daily: {
-          pageviews: pageviews.pageviews,
-          sessions: pageviews.sessions,
+          pageviews: (pageviews.pageviews ?? []).map((e: { x?: string; y?: number; date?: string; value?: number }) => ({
+            date: e.x ?? e.date ?? '',
+            value: e.y ?? e.value ?? 0,
+          })),
+          sessions: (pageviews.sessions ?? []).map((e: { x?: string; y?: number; date?: string; value?: number }) => ({
+            date: e.x ?? e.date ?? '',
+            value: e.y ?? e.value ?? 0,
+          })),
         },
         topReferrers: referrers,
         topPages: pages,

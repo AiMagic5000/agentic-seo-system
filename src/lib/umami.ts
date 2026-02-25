@@ -64,8 +64,8 @@ export interface UmamiStats {
 }
 
 export interface UmamiPageviewEntry {
-  date: string
-  value: number
+  x: string
+  y: number
 }
 
 export interface UmamiPageviews {
