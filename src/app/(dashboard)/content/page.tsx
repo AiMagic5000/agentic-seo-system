@@ -235,7 +235,34 @@ export default function ContentPage() {
       const res  = await fetch(`/api/audit/results?clientId=${clientId}`)
       const json = await res.json()
       if (json.success && json.data) {
-        setData(json.data)
+        const d = json.data
+        const summary = d.summary ?? {}
+        const totalIssues = summary.totalIssues ?? 0
+        const auditData: AuditData = {
+          score: d.score ?? 0,
+          lastScanAt: d.lastScanDate ?? '',
+          stats: {
+            critical: summary.critical ?? 0,
+            high: summary.high ?? 0,
+            medium: summary.medium ?? 0,
+            low: summary.low ?? 0,
+            info: summary.info ?? 0,
+            totalChecks: totalIssues + (summary.fixedIssues ?? 0) + 18,
+            passedChecks: 18 - totalIssues + (summary.fixedIssues ?? 0),
+          },
+          issues: (d.issues ?? []).map((i: Record<string, unknown>) => ({
+            id: i.id,
+            severity: i.severity,
+            category: i.category,
+            title: i.title,
+            description: i.description,
+            recommendation: i.recommendation,
+            url: i.url,
+            is_fixed: i.isFixed ?? i.is_fixed ?? false,
+            created_at: i.createdAt ?? i.created_at ?? '',
+          })),
+        }
+        setData(auditData)
       } else {
         setError(json.error || 'Failed to fetch audit data.')
       }
