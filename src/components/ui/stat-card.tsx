@@ -1,99 +1,140 @@
+'use client'
+
 import * as React from 'react'
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
+// ---------------------------------------------------------------------------
+// StatCard — compact data-dense stat display (design system)
+// ---------------------------------------------------------------------------
+
+export interface StatCardProps {
   title: string
   value: string | number
   change?: number
-  icon: React.ReactNode
-  trend?: 'up' | 'down' | 'neutral'
+  changeLabel?: string
+  icon?: React.ReactNode
+  iconColor?: string
+  iconBg?: string
   subtitle?: string
+  loading?: boolean
+  className?: string
+  onClick?: () => void
 }
 
-function resolveTrend(
-  trend: StatCardProps['trend'],
-  change?: number
-): 'up' | 'down' | 'neutral' {
-  if (trend) return trend
-  if (change === undefined || change === 0) return 'neutral'
-  return change > 0 ? 'up' : 'down'
+function StatCardSkeleton({ className }: { className?: string }) {
+  return (
+    <div
+      className={cn(
+        'bg-white border border-slate-200 rounded-lg p-3 shadow-sm',
+        className
+      )}
+    >
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <div className="h-2.5 w-20 rounded-full bg-slate-200 animate-pulse" />
+        <div className="h-6 w-6 rounded-full bg-slate-200 animate-pulse" />
+      </div>
+      <div className="h-7 w-24 rounded-lg bg-slate-200 animate-pulse mb-2" />
+      <div className="h-4 w-16 rounded-full bg-slate-100 animate-pulse" />
+    </div>
+  )
 }
 
-const trendConfig = {
-  up: {
-    icon: TrendingUp,
-    textColor: 'text-[#1e8e3e]',
-    bgColor: 'bg-[#e6f4ea]',
-    label: (v: number) => `+${v.toFixed(1)}%`,
-  },
-  down: {
-    icon: TrendingDown,
-    textColor: 'text-[#d93025]',
-    bgColor: 'bg-[#fce8e6]',
-    label: (v: number) => `${v.toFixed(1)}%`,
-  },
-  neutral: {
-    icon: Minus,
-    textColor: 'text-[#80868b]',
-    bgColor: 'bg-[#f1f3f4]',
-    label: (_v: number) => '0.0%',
-  },
+function ChangeIndicator({ change }: { change: number }) {
+  if (change === 0) {
+    return (
+      <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-slate-400">
+        <Minus size={10} />
+        0%
+      </span>
+    )
+  }
+  const isPositive = change > 0
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center gap-0.5 text-[10px] font-semibold px-1.5 py-0.5 rounded-full',
+        isPositive
+          ? 'bg-emerald-50 text-emerald-700'
+          : 'bg-red-50 text-red-700'
+      )}
+    >
+      {isPositive ? <TrendingUp size={10} /> : <TrendingDown size={10} />}
+      {isPositive ? '+' : ''}
+      {change.toFixed(1)}%
+    </span>
+  )
 }
 
 const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
   (
-    { title, value, change, icon, trend, subtitle, className, ...props },
+    {
+      title,
+      value,
+      change,
+      changeLabel,
+      icon,
+      iconColor = '#3B82F6',
+      iconBg = '#EFF6FF',
+      subtitle,
+      loading = false,
+      className,
+      onClick,
+    },
     ref
   ) => {
-    const direction = resolveTrend(trend, change)
-    const config = trendConfig[direction]
-    const TrendIcon = config.icon
-    const showChange = change !== undefined
+    if (loading) {
+      return <StatCardSkeleton className={className} />
+    }
 
     return (
       <div
         ref={ref}
         className={cn(
-          'rounded-lg border border-[#dadce0] bg-white p-5 shadow-[0_1px_2px_rgba(60,64,67,0.1)] transition-shadow hover:shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)]',
+          'bg-white border border-slate-200 rounded-lg p-3 shadow-sm',
+          'hover:shadow-md transition-shadow duration-200',
+          onClick && 'cursor-pointer',
           className
         )}
-        {...props}
+        onClick={onClick}
       >
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0 flex-1">
-            <p className="text-xs font-medium text-[#5f6368] uppercase tracking-wider">
-              {title}
-            </p>
+        {/* Top row: title + icon */}
+        <div className="flex items-center justify-between gap-2 mb-2">
+          <p
+            className="text-[11px] font-semibold uppercase tracking-wider text-slate-400"
+            style={{ fontFamily: 'var(--font-sans)' }}
+          >
+            {title}
+          </p>
+          {icon && (
+            <div
+              className="flex items-center justify-center w-6 h-6 rounded-full flex-shrink-0"
+              style={{ backgroundColor: iconBg, color: iconColor }}
+            >
+              {icon}
+            </div>
+          )}
+        </div>
 
-            <p className="mt-2 text-2xl font-semibold tabular-nums text-[#202124] leading-none">
-              {value}
-            </p>
+        {/* Value */}
+        <p
+          className="text-2xl font-bold text-slate-900 tabular-nums leading-none mb-2"
+          style={{ fontFamily: 'var(--font-mono)' }}
+        >
+          {value}
+        </p>
 
-            {subtitle && (
-              <p className="mt-1 text-xs text-[#80868b]">{subtitle}</p>
-            )}
-
-            {showChange && (
-              <div className="mt-3 flex items-center gap-1.5">
-                <span
-                  className={cn(
-                    'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium',
-                    config.bgColor,
-                    config.textColor
-                  )}
-                >
-                  <TrendIcon size={11} strokeWidth={2.5} />
-                  {config.label(Math.abs(change))}
-                </span>
-                <span className="text-xs text-[#80868b]">vs prior period</span>
-              </div>
-            )}
-          </div>
-
-          <div className="flex-shrink-0 rounded-full bg-[#e8f0fe] p-2.5 text-[#1a73e8]">
-            {icon}
-          </div>
+        {/* Bottom row: change + label */}
+        <div className="flex items-center gap-2">
+          {change !== undefined && <ChangeIndicator change={change} />}
+          {(changeLabel || subtitle) && (
+            <span
+              className="text-[10px] text-slate-400"
+              style={{ fontFamily: 'var(--font-sans)' }}
+            >
+              {changeLabel ?? subtitle}
+            </span>
+          )}
         </div>
       </div>
     )

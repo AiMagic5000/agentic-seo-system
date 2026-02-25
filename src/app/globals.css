@@ -1,54 +1,57 @@
+/* ── Google Fonts ──────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap');
+
+/* ── Tailwind v4 ───────────────────────────────────────────── */
 @import "tailwindcss";
 
-/* ─── Google Search Console Inspired Design System ─────────── */
+/* ── Design System Variables ───────────────────────────────── */
 :root {
-  /* Backgrounds - clean white/light */
-  --bg-base:      #ffffff;
-  --bg-surface:   #f8f9fa;
-  --bg-elevated:  #ffffff;
-  --bg-hover:     #f1f3f4;
-  --bg-active:    #e8eaed;
-  --bg-sidebar:   #ffffff;
+  /* Brand */
+  --color-primary:    #1E40AF;
+  --color-secondary:  #3B82F6;
+  --color-accent:     #F59E0B;
 
-  /* Borders */
-  --border-default: #dadce0;
-  --border-light:   #e8eaed;
-  --border-hover:   #bdc1c6;
+  /* Backgrounds */
+  --color-bg:         #F8FAFC;
+  --color-surface:    #FFFFFF;
 
-  /* Text - Google's text hierarchy */
-  --text-primary:   #202124;
-  --text-secondary: #5f6368;
-  --text-muted:     #80868b;
-  --text-link:      #1a73e8;
+  /* Text */
+  --color-text:       #1E3A8A;
+  --color-text-muted: #64748B;
 
-  /* GSC Accent Colors */
-  --gsc-blue:    #1a73e8;
-  --gsc-blue-hover: #1557b0;
-  --gsc-blue-light: #d2e3fc;
-  --gsc-blue-bg: #e8f0fe;
-  --gsc-green:   #1e8e3e;
-  --gsc-green-light: #e6f4ea;
-  --gsc-yellow:  #f9ab00;
-  --gsc-yellow-light: #fef7e0;
-  --gsc-red:     #d93025;
-  --gsc-red-light: #fce8e6;
-  --gsc-purple:  #9334e6;
-  --gsc-purple-light: #f3e8fd;
-  --gsc-teal:    #12b5cb;
-  --gsc-orange:  #e8710a;
+  /* Status */
+  --color-success:    #10B981;
+  --color-warning:    #F59E0B;
+  --color-error:      #EF4444;
 
-  /* Shadows - Google Material subtle */
-  --shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
-  --shadow-md: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
-  --shadow-lg: 0 1px 3px 0 rgba(60,64,67,0.3), 0 8px 16px 4px rgba(60,64,67,0.15);
-  --shadow-card: 0 1px 2px rgba(60,64,67,0.1);
+  /* UI */
+  --color-border:     #E2E8F0;
+  --color-muted:      #F1F5F9;
+
+  /* Fonts */
+  --font-sans: 'Fira Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'Fira Code', 'Fira Mono', 'Courier New', monospace;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(30, 64, 175, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(30, 64, 175, 0.08), 0 2px 4px -1px rgba(30, 64, 175, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(30, 64, 175, 0.08), 0 4px 6px -2px rgba(30, 64, 175, 0.04);
 }
 
-/* ─── Base Typography ─────────────────────────────────────── */
+/* ── Base ──────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background-color: var(--bg-surface);
-  color: var(--text-primary);
-  font-family: var(--font-google-sans, 'Google Sans'), var(--font-inter, 'Inter'), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 14px;
   font-weight: 400;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -56,15 +59,15 @@ body {
   min-height: 100dvh;
 }
 
-/* ─── Custom Scrollbar (light theme) ──────────────────────── */
+/* ── Scrollbar ─────────────────────────────────────────────── */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #dadce0 transparent;
+  scrollbar-color: #CBD5E1 transparent;
 }
 
 *::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 *::-webkit-scrollbar-track {
@@ -72,38 +75,23 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #dadce0;
+  background-color: #CBD5E1;
   border-radius: 999px;
-  border: 2px solid transparent;
-  background-clip: content-box;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background-color: #bdc1c6;
+  background-color: #94A3B8;
 }
 
-/* ─── Text Selection ──────────────────────────────────────── */
+/* ── Text Selection ────────────────────────────────────────── */
 ::selection {
-  background-color: rgba(26, 115, 232, 0.2);
-  color: #202124;
+  background-color: #DBEAFE;
+  color: #1E3A8A;
 }
 
-/* ─── Smooth Transitions ──────────────────────────────────── */
-a,
-button,
-[role="button"],
-input,
-select,
-textarea,
-label[for] {
-  transition-property: color, background-color, border-color, opacity, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
-  transition-duration: 200ms;
-}
-
-/* ─── Focus Ring (Google blue) ────────────────────────────── */
+/* ── Focus Ring ────────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid #1a73e8;
+  outline: 2px solid #3B82F6;
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -112,76 +100,62 @@ label[for] {
   outline: none;
 }
 
-/* ─── Utility: Tabular Numbers ────────────────────────────── */
-.font-tabular {
+/* ── Transitions ───────────────────────────────────────────── */
+a,
+button,
+[role="button"],
+input,
+select,
+textarea {
+  transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  transition-duration: 150ms;
+}
+
+/* ── Skeleton Animation ────────────────────────────────────── */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.skeleton {
+  background-color: #E2E8F0;
+  border-radius: 4px;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+/* ── Stat Change Utilities ─────────────────────────────────── */
+.stat-up {
+  color: #10B981;
+  background-color: #D1FAE5;
+}
+
+.stat-down {
+  color: #EF4444;
+  background-color: #FEE2E2;
+}
+
+/* ── Tabular Numbers ───────────────────────────────────────── */
+.tabular-nums {
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum';
+  font-family: var(--font-mono);
 }
 
-/* ─── Google-style Card ───────────────────────────────────── */
-.gsc-card {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-default);
+/* ── Data-Dense Card ───────────────────────────────────────── */
+.data-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
-  box-shadow: var(--shadow-card);
-}
-
-.gsc-card:hover {
+  padding: 12px;
   box-shadow: var(--shadow-sm);
 }
 
-/* ─── Google-style Stat Pill ──────────────────────────────── */
-.gsc-stat-up {
-  color: var(--gsc-green);
-  background: var(--gsc-green-light);
+.data-card:hover {
+  box-shadow: var(--shadow-md);
 }
 
-.gsc-stat-down {
-  color: var(--gsc-red);
-  background: var(--gsc-red-light);
-}
-
-/* ─── Google-style Active Tab ─────────────────────────────── */
-.gsc-tab-active {
-  color: var(--gsc-blue);
-  border-bottom: 3px solid var(--gsc-blue);
-  font-weight: 500;
-}
-
-/* ─── Google-style Button ─────────────────────────────────── */
-.gsc-btn-primary {
-  background: var(--gsc-blue);
-  color: #ffffff;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 24px;
-  font-weight: 500;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.gsc-btn-primary:hover {
-  background: var(--gsc-blue-hover);
-  box-shadow: var(--shadow-sm);
-}
-
-.gsc-btn-outline {
-  background: transparent;
-  color: var(--gsc-blue);
-  border: 1px solid var(--border-default);
-  border-radius: 4px;
-  padding: 7px 23px;
-  font-weight: 500;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.gsc-btn-outline:hover {
-  background: var(--gsc-blue-bg);
-  border-color: var(--gsc-blue-light);
-}
-
-/* ─── Data table row hover ────────────────────────────────── */
-.gsc-row-hover:hover {
-  background-color: #f8f9fa;
+/* ── Table Row Hover ───────────────────────────────────────── */
+.table-row-hover:hover {
+  background-color: #F8FAFC;
 }

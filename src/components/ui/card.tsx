@@ -1,6 +1,10 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 
+// ---------------------------------------------------------------------------
+// Card — compact data-dense container (12px padding, design system colors)
+// ---------------------------------------------------------------------------
+
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -8,7 +12,8 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      'rounded-lg border border-[#dadce0] bg-white shadow-[0_1px_2px_rgba(60,64,67,0.1)]',
+      'bg-white border border-slate-200 rounded-lg shadow-sm',
+      'hover:shadow-md transition-shadow duration-200',
       className
     )}
     {...props}
@@ -22,7 +27,7 @@ const CardHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex flex-col gap-1.5 p-5', className)}
+    className={cn('flex flex-col space-y-0.5 p-3 pb-2', className)}
     {...props}
   />
 ))
@@ -35,9 +40,10 @@ const CardTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      'text-sm font-medium leading-none text-[#202124]',
+      'text-sm font-semibold text-slate-900 leading-none tracking-tight',
       className
     )}
+    style={{ fontFamily: 'var(--font-sans)' }}
     {...props}
   />
 ))
@@ -49,7 +55,8 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn('text-xs text-[#5f6368]', className)}
+    className={cn('text-xs text-slate-500 leading-relaxed', className)}
+    style={{ fontFamily: 'var(--font-sans)' }}
     {...props}
   />
 ))
@@ -61,7 +68,7 @@ const CardContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('p-5 pt-0', className)}
+    className={cn('p-3 pt-0', className)}
     {...props}
   />
 ))
@@ -73,13 +80,10 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(
-      'flex items-center border-t border-[#e8eaed] px-5 py-3',
-      className
-    )}
+    className={cn('flex items-center p-3 pt-0', className)}
     {...props}
   />
 ))
 CardFooter.displayName = 'CardFooter'
 
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }

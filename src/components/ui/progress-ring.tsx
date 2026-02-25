@@ -1,6 +1,10 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 
+// ---------------------------------------------------------------------------
+// ProgressRing — circular progress indicator (design system colors)
+// ---------------------------------------------------------------------------
+
 export interface ProgressRingProps extends React.SVGAttributes<SVGSVGElement> {
   value: number
   size?: number
@@ -18,8 +22,8 @@ const ProgressRing = React.forwardRef<SVGSVGElement, ProgressRingProps>(
       value,
       size = 64,
       strokeWidth = 5,
-      color = '#1a73e8',
-      trackColor = '#e8eaed',
+      color = '#3B82F6',
+      trackColor = '#E2E8F0',
       label,
       labelClassName,
       showLabel = true,
@@ -59,6 +63,7 @@ const ProgressRing = React.forwardRef<SVGSVGElement, ProgressRingProps>(
             </linearGradient>
           </defs>
 
+          {/* Track */}
           <circle
             cx={center}
             cy={center}
@@ -68,6 +73,7 @@ const ProgressRing = React.forwardRef<SVGSVGElement, ProgressRingProps>(
             strokeWidth={strokeWidth}
           />
 
+          {/* Progress */}
           <circle
             cx={center}
             cy={center}
@@ -85,9 +91,10 @@ const ProgressRing = React.forwardRef<SVGSVGElement, ProgressRingProps>(
         {showLabel && (
           <span
             className={cn(
-              'absolute text-xs font-semibold tabular-nums text-[#202124]',
+              'absolute text-xs font-semibold tabular-nums text-slate-900',
               labelClassName
             )}
+            style={{ fontFamily: 'var(--font-mono)' }}
           >
             {label ?? `${clamped}%`}
           </span>

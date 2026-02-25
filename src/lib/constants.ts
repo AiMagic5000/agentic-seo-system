@@ -1,5 +1,43 @@
 // ---------------------------------------------------------------------------
-// App-wide constants for the Agentic SEO System.
+// App-wide constants — SMB Agentic SEO Design System
+// ---------------------------------------------------------------------------
+
+export const APP_NAME = 'SMB Agentic SEO'
+export const APP_DESCRIPTION =
+  'AI-powered SEO automation platform by Start My Business for tracking, optimizing, and scaling organic growth.'
+export const APP_VERSION = '1.0.0'
+
+// ---------------------------------------------------------------------------
+// Design System Colors
+// ---------------------------------------------------------------------------
+
+export const COLORS = {
+  primary:    '#1E40AF',
+  secondary:  '#3B82F6',
+  accent:     '#F59E0B',
+  bg:         '#F8FAFC',
+  surface:    '#FFFFFF',
+  text:       '#1E3A8A',
+  textMuted:  '#64748B',
+  success:    '#10B981',
+  warning:    '#F59E0B',
+  error:      '#EF4444',
+  border:     '#E2E8F0',
+  muted:      '#F1F5F9',
+} as const
+
+// Client avatar color palette (cycles through for new clients)
+export const CLIENT_COLORS = [
+  '#3B82F6',
+  '#10B981',
+  '#8B5CF6',
+  '#EF4444',
+  '#F59E0B',
+  '#F97316',
+] as const
+
+// ---------------------------------------------------------------------------
+// Navigation
 // ---------------------------------------------------------------------------
 
 export interface NavItem {
@@ -9,51 +47,15 @@ export interface NavItem {
   icon: string
 }
 
-/**
- * Primary navigation items used by the sidebar.
- * Icons map to lucide-react component names.
- */
 export const NAV_ITEMS: NavItem[] = [
-  {
-    label: "Dashboard",
-    href: "/",
-    icon: "LayoutDashboard",
-  },
-  {
-    label: "Keywords",
-    href: "/keywords",
-    icon: "Search",
-  },
-  {
-    label: "Content",
-    href: "/content",
-    icon: "FileText",
-  },
-  {
-    label: "Audit",
-    href: "/audit",
-    icon: "Shield",
-  },
-  {
-    label: "Competitors",
-    href: "/competitors",
-    icon: "Eye",
-  },
-  {
-    label: "Agents",
-    href: "/agents",
-    icon: "Bot",
-  },
-  {
-    label: "Reports",
-    href: "/reports",
-    icon: "BarChart3",
-  },
-  {
-    label: "Settings",
-    href: "/settings",
-    icon: "Settings",
-  },
+  { label: 'Dashboard',   href: '/dashboard',   icon: 'LayoutDashboard' },
+  { label: 'Keywords',    href: '/keywords',    icon: 'Search' },
+  { label: 'Content',     href: '/content',     icon: 'FileText' },
+  { label: 'Audit',       href: '/audit',       icon: 'Shield' },
+  { label: 'Competitors', href: '/competitors', icon: 'Eye' },
+  { label: 'Agents',      href: '/agents',      icon: 'Bot' },
+  { label: 'Reports',     href: '/reports',     icon: 'BarChart3' },
+  { label: 'Settings',    href: '/settings',    icon: 'Settings' },
 ]
 
 // ---------------------------------------------------------------------------
@@ -61,25 +63,25 @@ export const NAV_ITEMS: NavItem[] = [
 // ---------------------------------------------------------------------------
 
 export const DATE_RANGE_PRESETS = [
-  { label: "Last 7 days", value: "7d", days: 7 },
-  { label: "Last 28 days", value: "28d", days: 28 },
-  { label: "Last 3 months", value: "3m", days: 90 },
-  { label: "Last 6 months", value: "6m", days: 180 },
-  { label: "Last 12 months", value: "12m", days: 365 },
+  { label: 'Last 7 days',    value: '7d',  days: 7 },
+  { label: 'Last 28 days',   value: '28d', days: 28 },
+  { label: 'Last 3 months',  value: '3m',  days: 90 },
+  { label: 'Last 6 months',  value: '6m',  days: 180 },
+  { label: 'Last 12 months', value: '12m', days: 365 },
 ] as const
 
-export type DateRangePreset = (typeof DATE_RANGE_PRESETS)[number]["value"]
+export type DateRangePreset = (typeof DATE_RANGE_PRESETS)[number]['value']
 
 // ---------------------------------------------------------------------------
 // Platform options (matches SEOClient.platform)
 // ---------------------------------------------------------------------------
 
 export const PLATFORM_OPTIONS = [
-  { label: "WordPress", value: "wordpress" },
-  { label: "Webflow", value: "webflow" },
-  { label: "Shopify", value: "shopify" },
-  { label: "Custom", value: "custom" },
-  { label: "Other", value: "other" },
+  { label: 'WordPress', value: 'wordpress' },
+  { label: 'Webflow',   value: 'webflow' },
+  { label: 'Shopify',   value: 'shopify' },
+  { label: 'Custom',    value: 'custom' },
+  { label: 'Other',     value: 'other' },
 ] as const
 
 // ---------------------------------------------------------------------------
@@ -87,10 +89,26 @@ export const PLATFORM_OPTIONS = [
 // ---------------------------------------------------------------------------
 
 export const DATA_SOURCE_OPTIONS = [
-  { label: "Google Search Console", value: "gsc" },
-  { label: "Google Analytics 4", value: "ga4" },
-  { label: "Answer The Public", value: "atp" },
-  { label: "Manual Keywords", value: "manual" },
+  { label: 'Google Search Console', value: 'gsc' },
+  { label: 'Google Analytics 4',    value: 'ga4' },
+  { label: 'Answer The Public',     value: 'atp' },
+  { label: 'Manual Keywords',       value: 'manual' },
+] as const
+
+// ---------------------------------------------------------------------------
+// Industry options
+// ---------------------------------------------------------------------------
+
+export const INDUSTRY_OPTIONS = [
+  { label: 'Business Services',  value: 'business-services' },
+  { label: 'E-Commerce',         value: 'ecommerce' },
+  { label: 'Finance / Credit',   value: 'finance' },
+  { label: 'Real Estate',        value: 'real-estate' },
+  { label: 'Legal',              value: 'legal' },
+  { label: 'Health / Wellness',  value: 'health' },
+  { label: 'Technology / SaaS',  value: 'tech' },
+  { label: 'Education',          value: 'education' },
+  { label: 'Other',              value: 'other' },
 ] as const
 
 // ---------------------------------------------------------------------------
@@ -98,10 +116,10 @@ export const DATA_SOURCE_OPTIONS = [
 // ---------------------------------------------------------------------------
 
 export const INTENT_LABELS = {
-  informational: { label: "Informational", color: "text-blue-500" },
-  navigational: { label: "Navigational", color: "text-gray-500" },
-  transactional: { label: "Transactional", color: "text-green-500" },
-  commercial: { label: "Commercial", color: "text-purple-500" },
+  informational: { label: 'Informational', color: '#3B82F6',  bg: '#EFF6FF' },
+  navigational:  { label: 'Navigational',  color: '#64748B',  bg: '#F1F5F9' },
+  transactional: { label: 'Transactional', color: '#10B981',  bg: '#ECFDF5' },
+  commercial:    { label: 'Commercial',    color: '#8B5CF6',  bg: '#F5F3FF' },
 } as const
 
 // ---------------------------------------------------------------------------
@@ -116,24 +134,15 @@ export const HEALTH_SCORE_THRESHOLDS = {
 } as const
 
 export function getHealthScoreLabel(score: number): string {
-  if (score >= HEALTH_SCORE_THRESHOLDS.excellent) return "Excellent"
-  if (score >= HEALTH_SCORE_THRESHOLDS.good) return "Good"
-  if (score >= HEALTH_SCORE_THRESHOLDS.fair) return "Fair"
-  return "Poor"
+  if (score >= HEALTH_SCORE_THRESHOLDS.excellent) return 'Excellent'
+  if (score >= HEALTH_SCORE_THRESHOLDS.good) return 'Good'
+  if (score >= HEALTH_SCORE_THRESHOLDS.fair) return 'Fair'
+  return 'Poor'
 }
 
 export function getHealthScoreColor(score: number): string {
-  if (score >= HEALTH_SCORE_THRESHOLDS.excellent) return "text-[#1e8e3e]"
-  if (score >= HEALTH_SCORE_THRESHOLDS.good) return "text-[#1a73e8]"
-  if (score >= HEALTH_SCORE_THRESHOLDS.fair) return "text-[#f9ab00]"
-  return "text-[#d93025]"
+  if (score >= HEALTH_SCORE_THRESHOLDS.excellent) return '#10B981'
+  if (score >= HEALTH_SCORE_THRESHOLDS.good) return '#3B82F6'
+  if (score >= HEALTH_SCORE_THRESHOLDS.fair) return '#F59E0B'
+  return '#EF4444'
 }
-
-// ---------------------------------------------------------------------------
-// App metadata
-// ---------------------------------------------------------------------------
-
-export const APP_NAME = "SMB Agentic SEO"
-export const APP_DESCRIPTION =
-  "AI-powered SEO automation platform by Start My Business for tracking, optimizing, and scaling organic growth."
-export const APP_VERSION = "1.0.0"

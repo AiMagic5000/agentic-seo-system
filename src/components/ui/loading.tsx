@@ -1,18 +1,18 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 
-// ===========================================================================
+// ---------------------------------------------------------------------------
+// Loading primitives — design system skeleton components
+// ---------------------------------------------------------------------------
+
 // Spinner
-// ===========================================================================
 export interface SpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Diameter of the spinner in pixels (default 24) */
   size?: number
-  /** Stroke color (default #2563eb) */
   color?: string
 }
 
 const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
-  ({ size = 24, color = '#2563eb', className, ...props }, ref) => (
+  ({ size = 24, color = '#3B82F6', className, ...props }, ref) => (
     <div
       ref={ref}
       role="status"
@@ -25,10 +25,8 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
         height={size}
         viewBox="0 0 24 24"
         fill="none"
-        xmlns="http://www.w3.org/2000/svg"
         className="animate-spin"
       >
-        {/* Track */}
         <circle
           cx="12"
           cy="12"
@@ -37,7 +35,6 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
           strokeOpacity={0.2}
           strokeWidth="2.5"
         />
-        {/* Arc */}
         <path
           d="M12 3a9 9 0 0 1 9 9"
           stroke={color}
@@ -51,27 +48,19 @@ const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
 )
 Spinner.displayName = 'Spinner'
 
-// ===========================================================================
-// SkeletonText - single line or multi-line text placeholder
-// ===========================================================================
+// SkeletonText
 export interface SkeletonTextProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Number of lines to render (default 1) */
   lines?: number
-  /** Width of the last line relative to the others (default '60%') */
   lastLineWidth?: string
 }
 
 const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonTextProps>(
   ({ lines = 1, lastLineWidth = '60%', className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn('flex flex-col gap-2', className)}
-      {...props}
-    >
+    <div ref={ref} className={cn('flex flex-col gap-2', className)} {...props}>
       {Array.from({ length: lines }).map((_, i) => (
         <div
           key={i}
-          className="h-3 animate-pulse rounded-full bg-[#1e293b]"
+          className="h-3 animate-pulse rounded-full bg-slate-200"
           style={{
             width: i === lines - 1 && lines > 1 ? lastLineWidth : '100%',
           }}
@@ -82,9 +71,7 @@ const SkeletonText = React.forwardRef<HTMLDivElement, SkeletonTextProps>(
 )
 SkeletonText.displayName = 'SkeletonText'
 
-// ===========================================================================
-// SkeletonCard - placeholder for a stat/info card
-// ===========================================================================
+// SkeletonCard
 export interface SkeletonCardProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const SkeletonCard = React.forwardRef<HTMLDivElement, SkeletonCardProps>(
@@ -92,36 +79,27 @@ const SkeletonCard = React.forwardRef<HTMLDivElement, SkeletonCardProps>(
     <div
       ref={ref}
       className={cn(
-        'rounded-xl border border-[#1e293b] bg-[#111827] p-5',
+        'rounded-lg border border-slate-200 bg-white p-3 shadow-sm',
         className
       )}
       {...props}
     >
-      {/* Top row: label + icon placeholder */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 space-y-2">
-          {/* Label */}
-          <div className="h-2.5 w-24 animate-pulse rounded-full bg-[#1e293b]" />
-          {/* Value */}
-          <div className="h-8 w-28 animate-pulse rounded-lg bg-[#1e293b]" />
-          {/* Change pill */}
-          <div className="h-5 w-20 animate-pulse rounded-full bg-[#1e293b]" />
+          <div className="h-2.5 w-20 animate-pulse rounded-full bg-slate-200" />
+          <div className="h-7 w-24 animate-pulse rounded-lg bg-slate-200" />
+          <div className="h-4 w-16 animate-pulse rounded-full bg-slate-100" />
         </div>
-        {/* Icon box */}
-        <div className="h-10 w-10 animate-pulse rounded-lg bg-[#1e293b]" />
+        <div className="h-8 w-8 animate-pulse rounded-full bg-slate-200" />
       </div>
     </div>
   )
 )
 SkeletonCard.displayName = 'SkeletonCard'
 
-// ===========================================================================
-// SkeletonTable - placeholder for a data table
-// ===========================================================================
+// SkeletonTable
 export interface SkeletonTableProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Number of rows to render (default 5) */
   rows?: number
-  /** Number of columns to render (default 4) */
   columns?: number
 }
 
@@ -130,33 +108,32 @@ const SkeletonTable = React.forwardRef<HTMLDivElement, SkeletonTableProps>(
     <div
       ref={ref}
       className={cn(
-        'overflow-hidden rounded-xl border border-[#1e293b]',
+        'overflow-hidden rounded-lg border border-slate-200',
         className
       )}
       {...props}
     >
       {/* Header row */}
-      <div className="flex gap-4 border-b border-[#1e293b] bg-[#0d1520] px-4 py-3">
+      <div className="flex gap-4 border-b border-slate-200 bg-slate-50 px-3 py-2.5">
         {Array.from({ length: columns }).map((_, i) => (
           <div
             key={i}
-            className="h-2.5 animate-pulse rounded-full bg-[#1e293b]"
-            style={{ width: `${12 + (i % 3) * 6}%` }}
+            className="h-2.5 animate-pulse rounded-full bg-slate-200"
+            style={{ width: `${10 + (i % 3) * 8}%` }}
           />
         ))}
       </div>
-
       {/* Data rows */}
-      <div className="divide-y divide-[#1e293b] bg-[#111827]">
+      <div className="divide-y divide-slate-100 bg-white">
         {Array.from({ length: rows }).map((_, rowIdx) => (
-          <div key={rowIdx} className="flex gap-4 px-4 py-3.5">
+          <div key={rowIdx} className="flex gap-4 px-3 py-2.5 h-9 items-center">
             {Array.from({ length: columns }).map((_, colIdx) => (
               <div
                 key={colIdx}
-                className="h-3 animate-pulse rounded-full bg-[#1e293b]"
+                className="h-3 animate-pulse rounded-full bg-slate-200"
                 style={{
-                  width: `${16 + ((rowIdx + colIdx) % 4) * 8}%`,
-                  animationDelay: `${(rowIdx * columns + colIdx) * 50}ms`,
+                  width: `${15 + ((rowIdx + colIdx) % 4) * 10}%`,
+                  animationDelay: `${(rowIdx * columns + colIdx) * 40}ms`,
                 }}
               />
             ))}
@@ -168,9 +145,7 @@ const SkeletonTable = React.forwardRef<HTMLDivElement, SkeletonTableProps>(
 )
 SkeletonTable.displayName = 'SkeletonTable'
 
-// ===========================================================================
-// LoadingOverlay - full-area centered spinner with optional label
-// ===========================================================================
+// LoadingOverlay
 export interface LoadingOverlayProps extends React.HTMLAttributes<HTMLDivElement> {
   label?: string
 }
@@ -185,9 +160,11 @@ const LoadingOverlay = React.forwardRef<HTMLDivElement, LoadingOverlayProps>(
       )}
       {...props}
     >
-      <Spinner size={32} />
+      <Spinner size={28} color="#3B82F6" />
       {label && (
-        <p className="text-sm text-[#64748b]">{label}</p>
+        <p className="text-sm text-slate-500" style={{ fontFamily: 'var(--font-sans)' }}>
+          {label}
+        </p>
       )}
     </div>
   )
