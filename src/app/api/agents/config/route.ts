@@ -57,9 +57,20 @@ const DEFAULT_AGENTS: AgentConfigEntry[] = [
 ]
 
 // ---------------------------------------------------------------------------
+// Agent type → display name mapping
+// ---------------------------------------------------------------------------
+const AGENT_NAMES: Record<string, string> = {
+  'keyword-scout': 'Keyword Scout',
+  'rank-tracker': 'Rank Tracker',
+  'audit-runner': 'Audit Runner',
+  'content-optimizer': 'Content Optimizer',
+  'competitor-monitor': 'Competitor Monitor',
+}
+
+// ---------------------------------------------------------------------------
 // GET /api/agents/config?clientId=xxx
 //
-// Returns the agent configuration for a given client.
+// Returns the agent configuration and recent runs for a given client.
 // If no configuration exists yet, returns the defaults.
 // ---------------------------------------------------------------------------
 
@@ -115,6 +126,19 @@ export async function GET(request: NextRequest) {
       ? ((storedConfig as { agents: AgentConfigEntry[] }).agents)
       : DEFAULT_AGENTS
 
+    // Fetch recent agent runs for this client (last 20)
+    const { data: runs } = await supabaseAdmin
+      .from('agent_runs')
+      .select('id, agent_type, status, started_at, completed_at, duration_ms, results, triggered_by')
+      .eq('client_id', clientId)
+      .order('started_at', { ascending: false })
+      .limit(20)
+
+    const recentRuns = (runs ?? []).map((run) => ({
+      ...run,
+      agent_name: AGENT_NAMES[run.agent_type] ?? run.agent_type,
+    }))
+
     return NextResponse.json({
       success: true,
       data: {
@@ -123,6 +147,7 @@ export async function GET(request: NextRequest) {
         businessName: client.business_name,
         isDefault: !hasConfig,
         agents,
+        recentRuns,
       },
     })
   } catch (error) {
