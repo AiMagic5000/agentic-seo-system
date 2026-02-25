@@ -118,7 +118,7 @@ export async function GET(request: NextRequest) {
       .eq('status', 'completed')
       .order('completed_at', { ascending: false })
       .limit(1)
-      .single()
+      .maybeSingle()
 
     const scanResults = latestScan?.results as Record<string, unknown> | null
     const overallScore =
