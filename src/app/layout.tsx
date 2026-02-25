@@ -24,6 +24,10 @@ export const metadata: Metadata = {
   },
   description:
     'AI-powered SEO intelligence platform for growing businesses. Autonomous agents monitor, analyze, and optimize your search presence 24/7.',
+  icons: {
+    icon: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
   keywords: [
     'SEO',
     'AI SEO',
