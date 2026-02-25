@@ -166,30 +166,30 @@ function AgentCard({ agent, state, onRun }: AgentCardProps) {
           <div className="flex items-center gap-3">
             <AgentIcon name={agent.icon} color={agent.color} />
             <div>
-              <p className="text-sm font-semibold text-[#f1f5f9]">{agent.name}</p>
-              <p className="mt-0.5 text-xs text-[#64748b]">{agent.schedule}</p>
+              <p className="text-sm font-semibold text-[#202124]">{agent.name}</p>
+              <p className="mt-0.5 text-xs text-[#80868b]">{agent.schedule}</p>
             </div>
           </div>
           <StatusBadge status={state.status} />
         </div>
 
         {/* Description */}
-        <p className="mt-3 text-sm leading-relaxed text-[#94a3b8]">
+        <p className="mt-3 text-sm leading-relaxed text-[#5f6368]">
           {agent.description}
         </p>
       </CardHeader>
 
       <CardContent className="flex flex-1 flex-col gap-4 pt-0">
         {/* Last run */}
-        <div className="flex items-center gap-2 text-xs text-[#64748b]">
+        <div className="flex items-center gap-2 text-xs text-[#80868b]">
           <Clock size={12} />
           <span>
             Last run:{' '}
-            <span className="text-[#94a3b8]">
+            <span className="text-[#5f6368]">
               {state.lastRun ? timeAgo(state.lastRun) : 'Never'}
             </span>
           </span>
-          <span className="ml-auto text-[#475569]">
+          <span className="ml-auto text-[#5f6368]">
             {state.runCount} total runs
           </span>
         </div>
@@ -202,14 +202,14 @@ function AgentCard({ agent, state, onRun }: AgentCardProps) {
             return (
               <span
                 key={cap}
-                className="rounded-md border border-[#1e293b] bg-[#0d1520] px-2 py-0.5 text-[10px] text-[#64748b]"
+                className="rounded-md border border-[#dadce0] bg-[#f8f9fa] px-2 py-0.5 text-[10px] text-[#80868b]"
               >
                 {label}
               </span>
             )
           })}
           {agent.capabilities.length > 3 && (
-            <span className="rounded-md border border-[#1e293b] bg-[#0d1520] px-2 py-0.5 text-[10px] text-[#475569]">
+            <span className="rounded-md border border-[#dadce0] bg-[#f8f9fa] px-2 py-0.5 text-[10px] text-[#5f6368]">
               +{agent.capabilities.length - 3} more
             </span>
           )}
@@ -219,7 +219,7 @@ function AgentCard({ agent, state, onRun }: AgentCardProps) {
         <div className="flex-1" />
 
         {/* Action buttons */}
-        <div className="flex gap-2 border-t border-[#1e293b] pt-4">
+        <div className="flex gap-2 border-t border-[#dadce0] pt-4">
           <Button
             size="sm"
             variant="default"
@@ -276,7 +276,7 @@ function buildActivityLog(): ActivityEntry[] {
       agentId: 'keyword-scout',
       agentName: 'Keyword Scout',
       agentIcon: 'Search',
-      agentColor: '#3b82f6',
+      agentColor: '#1a73e8',
       status: 'completed',
       duration: '1m 23s',
       timestamp: new Date(now.getTime() - 1000 * 60 * 47),
@@ -287,7 +287,7 @@ function buildActivityLog(): ActivityEntry[] {
       agentId: 'rank-tracker',
       agentName: 'Rank Tracker',
       agentIcon: 'TrendingUp',
-      agentColor: '#10b981',
+      agentColor: '#1e8e3e',
       status: 'completed',
       duration: '2m 08s',
       timestamp: new Date(now.getTime() - 1000 * 60 * 112),
@@ -298,7 +298,7 @@ function buildActivityLog(): ActivityEntry[] {
       agentId: 'competitor-watcher',
       agentName: 'Competitor Watcher',
       agentIcon: 'Eye',
-      agentColor: '#ef4444',
+      agentColor: '#d93025',
       status: 'completed',
       duration: '3m 45s',
       timestamp: new Date(now.getTime() - 1000 * 60 * 23),
@@ -309,7 +309,7 @@ function buildActivityLog(): ActivityEntry[] {
       agentId: 'technical-auditor',
       agentName: 'Technical Auditor',
       agentIcon: 'Shield',
-      agentColor: '#f59e0b',
+      agentColor: '#f9ab00',
       status: 'failed',
       duration: '0m 12s',
       timestamp: new Date(now.getTime() - 1000 * 60 * 60 * 24),
@@ -320,7 +320,7 @@ function buildActivityLog(): ActivityEntry[] {
       agentId: 'content-optimizer',
       agentName: 'Content Optimizer',
       agentIcon: 'FileText',
-      agentColor: '#8b5cf6',
+      agentColor: '#9334e6',
       status: 'completed',
       duration: '4m 02s',
       timestamp: new Date(now.getTime() - 1000 * 60 * 60 * 72),
@@ -331,7 +331,7 @@ function buildActivityLog(): ActivityEntry[] {
       agentId: 'keyword-scout',
       agentName: 'Keyword Scout',
       agentIcon: 'Search',
-      agentColor: '#3b82f6',
+      agentColor: '#1a73e8',
       status: 'completed',
       duration: '1m 31s',
       timestamp: new Date(now.getTime() - 1000 * 60 * 60 * 24 - 1000 * 60 * 47),
@@ -342,7 +342,7 @@ function buildActivityLog(): ActivityEntry[] {
       agentId: 'rank-tracker',
       agentName: 'Rank Tracker',
       agentIcon: 'TrendingUp',
-      agentColor: '#10b981',
+      agentColor: '#1e8e3e',
       status: 'completed',
       duration: '1m 55s',
       timestamp: new Date(now.getTime() - 1000 * 60 * 60 * 25),
@@ -353,7 +353,7 @@ function buildActivityLog(): ActivityEntry[] {
       agentId: 'report-generator',
       agentName: 'Report Generator',
       agentIcon: 'BarChart3',
-      agentColor: '#D4A84B',
+      agentColor: '#f9ab00',
       status: 'completed',
       duration: '5m 14s',
       timestamp: new Date(now.getTime() - 1000 * 60 * 60 * 168),
@@ -364,7 +364,7 @@ function buildActivityLog(): ActivityEntry[] {
       agentId: 'competitor-watcher',
       agentName: 'Competitor Watcher',
       agentIcon: 'Eye',
-      agentColor: '#ef4444',
+      agentColor: '#d93025',
       status: 'failed',
       duration: '0m 08s',
       timestamp: new Date(now.getTime() - 1000 * 60 * 60 * 26),
@@ -375,7 +375,7 @@ function buildActivityLog(): ActivityEntry[] {
       agentId: 'technical-auditor',
       agentName: 'Technical Auditor',
       agentIcon: 'Shield',
-      agentColor: '#f59e0b',
+      agentColor: '#f9ab00',
       status: 'completed',
       duration: '8m 33s',
       timestamp: new Date(now.getTime() - 1000 * 60 * 60 * 48),
@@ -399,7 +399,7 @@ function OverallStatusDot({ states }: { states: Record<string, AgentState> }) {
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-blue-500" />
         </span>
-        <span className="text-xs font-medium text-blue-400">
+        <span className="text-xs font-medium text-[#1a73e8]">
           {running} agent{running > 1 ? 's' : ''} running
         </span>
       </div>
@@ -484,10 +484,10 @@ export default function AgentsPage() {
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <Bot size={22} className="text-[#D4A84B]" />
-            <h1 className="text-2xl font-bold text-[#f1f5f9]">Agent Console</h1>
+            <Bot size={22} className="text-[#f9ab00]" />
+            <h1 className="text-2xl font-bold text-[#202124]">Agent Console</h1>
           </div>
-          <p className="mt-1 text-sm text-[#64748b]">
+          <p className="mt-1 text-sm text-[#80868b]">
             Autonomous agents that continuously monitor, analyze, and optimize your SEO.
           </p>
         </div>
@@ -529,22 +529,22 @@ export default function AgentsPage() {
       {/* ── Recent Agent Activity ────────────────────────────────────── */}
       <div className="mt-10">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-base font-semibold text-[#f1f5f9]">
+          <h2 className="text-base font-semibold text-[#202124]">
             Recent Agent Activity
           </h2>
-          <Button variant="ghost" size="sm" className="gap-1 text-xs text-[#64748b]">
+          <Button variant="ghost" size="sm" className="gap-1 text-xs text-[#80868b]">
             View all logs
             <ChevronRight size={13} />
           </Button>
         </div>
 
-        <div className="rounded-xl border border-[#1e293b] bg-[#111827] divide-y divide-[#1e293b]">
+        <div className="rounded-xl border border-[#dadce0] bg-[#ffffff] divide-y divide-[#dadce0]">
           {activityLog.map((entry, idx) => {
             const Icon = ICON_MAP[entry.agentIcon] ?? Bot
             return (
               <div
                 key={entry.id}
-                className="flex items-start gap-4 px-5 py-4 hover:bg-[#0d1520] transition-colors"
+                className="flex items-start gap-4 px-5 py-4 hover:bg-[#f8f9fa] transition-colors"
               >
                 {/* Timeline line */}
                 <div className="relative flex flex-col items-center">
@@ -558,14 +558,14 @@ export default function AgentsPage() {
                     <Icon size={14} style={{ color: entry.agentColor }} />
                   </div>
                   {idx < activityLog.length - 1 && (
-                    <div className="mt-1 h-full w-px bg-[#1e293b]" />
+                    <div className="mt-1 h-full w-px bg-[#dadce0]" />
                   )}
                 </div>
 
                 {/* Content */}
                 <div className="flex min-w-0 flex-1 flex-col gap-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm font-medium text-[#e2e8f0]">
+                    <span className="text-sm font-medium text-[#202124]">
                       {entry.agentName}
                     </span>
                     {entry.status === 'completed' ? (
@@ -583,15 +583,15 @@ export default function AgentsPage() {
                         Running
                       </Badge>
                     )}
-                    <span className="text-[11px] text-[#475569]">
+                    <span className="text-[11px] text-[#5f6368]">
                       {entry.duration}
                     </span>
                   </div>
-                  <p className="text-xs text-[#64748b]">{entry.summary}</p>
+                  <p className="text-xs text-[#80868b]">{entry.summary}</p>
                 </div>
 
                 {/* Timestamp */}
-                <span className="shrink-0 text-[11px] text-[#475569]">
+                <span className="shrink-0 text-[11px] text-[#5f6368]">
                   {timeAgo(entry.timestamp)}
                 </span>
               </div>

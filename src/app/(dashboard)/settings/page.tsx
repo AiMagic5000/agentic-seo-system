@@ -62,7 +62,7 @@ const PLATFORM_LABELS: Record<string, string> = {
 // ---------------------------------------------------------------------------
 function Label({ children, htmlFor }: { children: React.ReactNode; htmlFor?: string }) {
   return (
-    <label htmlFor={htmlFor} className="block text-xs font-medium uppercase tracking-wider text-[#64748b]">
+    <label htmlFor={htmlFor} className="block text-xs font-medium uppercase tracking-wider text-[#80868b]">
       {children}
     </label>
   )
@@ -91,9 +91,9 @@ function TextInput({
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       className={cn(
-        'w-full rounded-lg border border-[#1e293b] bg-[#0f172a] px-3 py-2 text-sm text-[#f1f5f9]',
-        'placeholder:text-[#334155] outline-none transition-all duration-150',
-        'focus:border-[#2563eb] focus:ring-2 focus:ring-[#2563eb]/20',
+        'w-full rounded-lg border border-[#dadce0] bg-[#ffffff] px-3 py-2 text-sm text-[#202124]',
+        'placeholder:text-[#bdc1c6] outline-none transition-all duration-150',
+        'focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20',
         className
       )}
     />
@@ -116,7 +116,7 @@ function SelectInput({
       id={id}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-lg border border-[#1e293b] bg-[#0f172a] px-3 py-2 text-sm text-[#f1f5f9] outline-none transition-all duration-150 focus:border-[#2563eb] focus:ring-2 focus:ring-[#2563eb]/20"
+      className="w-full rounded-lg border border-[#dadce0] bg-[#ffffff] px-3 py-2 text-sm text-[#202124] outline-none transition-all duration-150 focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20"
     >
       {options.map((opt) => (
         <option key={opt.value} value={opt.value}>
@@ -141,15 +141,15 @@ function Toggle({
   return (
     <div className="flex items-start justify-between gap-4">
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-medium text-[#f1f5f9]">{label}</p>
-        {description && <p className="mt-0.5 text-xs text-[#64748b]">{description}</p>}
+        <p className="text-sm font-medium text-[#202124]">{label}</p>
+        {description && <p className="mt-0.5 text-xs text-[#80868b]">{description}</p>}
       </div>
       <button
         type="button"
         onClick={() => onChange(!checked)}
         className={cn(
           'flex-shrink-0 transition-colors duration-200',
-          checked ? 'text-[#2563eb]' : 'text-[#334155]'
+          checked ? 'text-[#1a73e8]' : 'text-[#bdc1c6]'
         )}
         aria-pressed={checked}
       >
@@ -198,15 +198,15 @@ function MaskedApiField({
             onChange={(e) => setEditValue(e.target.value)}
             readOnly={!editing}
             className={cn(
-              'w-full rounded-lg border border-[#1e293b] bg-[#0f172a] px-3 py-2 pr-10 text-sm font-mono text-[#f1f5f9]',
+              'w-full rounded-lg border border-[#dadce0] bg-[#ffffff] px-3 py-2 pr-10 text-sm font-mono text-[#202124]',
               'outline-none transition-all duration-150',
-              editing && 'focus:border-[#2563eb] focus:ring-2 focus:ring-[#2563eb]/20'
+              editing && 'focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20'
             )}
           />
           <button
             type="button"
             onClick={() => setVisible(!visible)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748b] hover:text-[#94a3b8]"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#80868b] hover:text-[#5f6368]"
           >
             {visible ? <EyeOff size={14} /> : <Eye size={14} />}
           </button>
@@ -253,7 +253,7 @@ function ClientsTab() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-[#64748b]">
+        <p className="text-sm text-[#80868b]">
           {clients.length} client{clients.length !== 1 ? 's' : ''} configured
         </p>
         <Button variant="gold" size="sm" className="gap-2">
@@ -276,7 +276,7 @@ function ClientsTab() {
               key={client.id}
               className={cn(
                 'transition-all duration-150',
-                isSelected && 'border-[#2563eb]/40'
+                isSelected && 'border-[#1a73e8]/40'
               )}
             >
               <CardContent className="p-4">
@@ -284,7 +284,7 @@ function ClientsTab() {
                   {/* Avatar */}
                   <div
                     className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
-                    style={{ backgroundColor: client.color ?? '#2563eb' }}
+                    style={{ backgroundColor: client.color ?? '#1a73e8' }}
                   >
                     {client.name.slice(0, 2).toUpperCase()}
                   </div>
@@ -292,24 +292,24 @@ function ClientsTab() {
                   {/* Info */}
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <p className="text-sm font-semibold text-[#f1f5f9]">{client.name}</p>
+                      <p className="text-sm font-semibold text-[#202124]">{client.name}</p>
                       {isSelected && (
                         <Badge variant="default" className="text-xs">
                           Active
                         </Badge>
                       )}
                     </div>
-                    <p className="text-xs text-[#64748b]">{client.domain}</p>
-                    <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-[#64748b]">
+                    <p className="text-xs text-[#80868b]">{client.domain}</p>
+                    <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-[#80868b]">
                       <span>
                         Platform:{' '}
-                        <span className="text-[#94a3b8]">
+                        <span className="text-[#5f6368]">
                           {PLATFORM_LABELS[ext.platform] ?? ext.platform}
                         </span>
                       </span>
                       <span>
                         GSC:{' '}
-                        <span className="text-[#94a3b8]">{ext.gscProperty}</span>
+                        <span className="text-[#5f6368]">{ext.gscProperty}</span>
                       </span>
                     </div>
                   </div>
@@ -321,7 +321,7 @@ function ClientsTab() {
                       onClick={() => {}}
                       className={cn(
                         'transition-colors duration-200',
-                        ext.isActive ? 'text-[#2563eb]' : 'text-[#334155]'
+                        ext.isActive ? 'text-[#1a73e8]' : 'text-[#bdc1c6]'
                       )}
                     >
                       {ext.isActive ? <ToggleRight size={26} /> : <ToggleLeft size={26} />}
@@ -382,12 +382,12 @@ interface OnboardingState {
 }
 
 const AGENT_OPTIONS = [
-  { id: 'keyword-scout', label: 'Keyword Scout', icon: Search, color: '#3b82f6' },
-  { id: 'rank-tracker', label: 'Rank Tracker', icon: TrendingUp, color: '#10b981' },
-  { id: 'content-optimizer', label: 'Content Optimizer', icon: FileText, color: '#8b5cf6' },
-  { id: 'technical-auditor', label: 'Technical Auditor', icon: Shield, color: '#f59e0b' },
-  { id: 'competitor-watcher', label: 'Competitor Watcher', icon: Bot, color: '#ef4444' },
-  { id: 'report-generator', label: 'Report Generator', icon: BarChart3, color: '#D4A84B' },
+  { id: 'keyword-scout', label: 'Keyword Scout', icon: Search, color: '#1a73e8' },
+  { id: 'rank-tracker', label: 'Rank Tracker', icon: TrendingUp, color: '#1e8e3e' },
+  { id: 'content-optimizer', label: 'Content Optimizer', icon: FileText, color: '#9334e6' },
+  { id: 'technical-auditor', label: 'Technical Auditor', icon: Shield, color: '#f9ab00' },
+  { id: 'competitor-watcher', label: 'Competitor Watcher', icon: Bot, color: '#d93025' },
+  { id: 'report-generator', label: 'Report Generator', icon: BarChart3, color: '#f9ab00' },
 ]
 
 function StepIndicator({ step, total }: { step: number; total: number }) {
@@ -399,10 +399,10 @@ function StepIndicator({ step, total }: { step: number; total: number }) {
             className={cn(
               'flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold transition-all duration-200',
               i + 1 === step
-                ? 'bg-[#2563eb] text-white'
+                ? 'bg-[#1a73e8] text-white'
                 : i + 1 < step
-                  ? 'bg-[#10b981] text-white'
-                  : 'bg-[#1e293b] text-[#64748b]'
+                  ? 'bg-[#1e8e3e] text-white'
+                  : 'bg-[#dadce0] text-[#80868b]'
             )}
           >
             {i + 1 < step ? <CheckCircle2 size={14} /> : i + 1}
@@ -411,7 +411,7 @@ function StepIndicator({ step, total }: { step: number; total: number }) {
             <div
               className={cn(
                 'h-px flex-1 transition-all duration-200',
-                i + 1 < step ? 'bg-[#10b981]' : 'bg-[#1e293b]'
+                i + 1 < step ? 'bg-[#1e8e3e]' : 'bg-[#dadce0]'
               )}
             />
           )}
@@ -479,12 +479,12 @@ function OnboardingTab() {
   if (launched) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#10b981]/20">
-          <CheckCircle2 size={32} className="text-[#10b981]" />
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#1e8e3e]/20">
+          <CheckCircle2 size={32} className="text-[#1e8e3e]" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-[#f1f5f9]">Agentic SEO Launched!</h3>
-          <p className="mt-1 text-sm text-[#64748b]">
+          <h3 className="text-lg font-bold text-[#202124]">Agentic SEO Launched!</h3>
+          <p className="mt-1 text-sm text-[#80868b]">
             {state.businessName} is now being monitored. Agents will begin their first scan shortly.
           </p>
         </div>
@@ -507,7 +507,7 @@ function OnboardingTab() {
       {/* Step indicator */}
       <div>
         <StepIndicator step={state.step} total={4} />
-        <p className="mt-2 text-xs text-[#64748b]">
+        <p className="mt-2 text-xs text-[#80868b]">
           Step {state.step} of 4 — {STEP_LABELS[state.step - 1]}
         </p>
       </div>
@@ -516,8 +516,8 @@ function OnboardingTab() {
       {state.step === 1 && (
         <div className="space-y-4">
           <div>
-            <h3 className="text-base font-semibold text-[#f1f5f9]">Website Details</h3>
-            <p className="mt-0.5 text-sm text-[#64748b]">
+            <h3 className="text-base font-semibold text-[#202124]">Website Details</h3>
+            <p className="mt-0.5 text-sm text-[#80868b]">
               Tell us about the client you want to start tracking.
             </p>
           </div>
@@ -568,8 +568,8 @@ function OnboardingTab() {
       {state.step === 2 && (
         <div className="space-y-4">
           <div>
-            <h3 className="text-base font-semibold text-[#f1f5f9]">Data Sources</h3>
-            <p className="mt-0.5 text-sm text-[#64748b]">
+            <h3 className="text-base font-semibold text-[#202124]">Data Sources</h3>
+            <p className="mt-0.5 text-sm text-[#80868b]">
               Connect your data sources so agents have live signals to work from.
             </p>
           </div>
@@ -654,7 +654,7 @@ function OnboardingTab() {
                 onChange={(v) => set('dataRepoUrl', v)}
                 placeholder="Google Drive folder URL, CSV endpoint, or Notion URL"
               />
-              <p className="text-xs text-[#64748b]">
+              <p className="text-xs text-[#80868b]">
                 Link business documents, existing keyword lists, or CSVs for agents to reference.
               </p>
             </div>
@@ -666,8 +666,8 @@ function OnboardingTab() {
       {state.step === 3 && (
         <div className="space-y-5">
           <div>
-            <h3 className="text-base font-semibold text-[#f1f5f9]">AI Scan Configuration</h3>
-            <p className="mt-0.5 text-sm text-[#64748b]">
+            <h3 className="text-base font-semibold text-[#202124]">AI Scan Configuration</h3>
+            <p className="mt-0.5 text-sm text-[#80868b]">
               Configure which agents to run and how deep the initial scan goes.
             </p>
           </div>
@@ -690,12 +690,12 @@ function OnboardingTab() {
                   className={cn(
                     'rounded-lg border p-3 text-left transition-all duration-150',
                     state.scanDepth === opt.value
-                      ? 'border-[#2563eb] bg-[#1e293b]'
-                      : 'border-[#1e293b] bg-[#0f172a] hover:border-[#334155]'
+                      ? 'border-[#1a73e8] bg-[#dadce0]'
+                      : 'border-[#dadce0] bg-[#ffffff] hover:border-[#bdc1c6]'
                   )}
                 >
-                  <p className="text-sm font-semibold text-[#f1f5f9]">{opt.label}</p>
-                  <p className="text-xs text-[#64748b]">{opt.desc}</p>
+                  <p className="text-sm font-semibold text-[#202124]">{opt.label}</p>
+                  <p className="text-xs text-[#80868b]">{opt.desc}</p>
                 </button>
               ))}
             </div>
@@ -716,8 +716,8 @@ function OnboardingTab() {
                     className={cn(
                       'flex items-center gap-3 rounded-lg border p-3 text-left transition-all duration-150',
                       active
-                        ? 'border-[#2563eb]/40 bg-[#1e293b]'
-                        : 'border-[#1e293b] bg-[#0f172a] opacity-60 hover:opacity-80'
+                        ? 'border-[#1a73e8]/40 bg-[#dadce0]'
+                        : 'border-[#dadce0] bg-[#ffffff] opacity-60 hover:opacity-80'
                     )}
                   >
                     <div
@@ -730,14 +730,14 @@ function OnboardingTab() {
                       <Icon size={13} style={{ color: agent.color }} />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-semibold text-[#f1f5f9]">{agent.label}</p>
+                      <p className="text-xs font-semibold text-[#202124]">{agent.label}</p>
                     </div>
                     <div
                       className={cn(
                         'h-4 w-4 flex-shrink-0 rounded-full border transition-all duration-150',
                         active
-                          ? 'border-[#2563eb] bg-[#2563eb]'
-                          : 'border-[#334155] bg-transparent'
+                          ? 'border-[#1a73e8] bg-[#1a73e8]'
+                          : 'border-[#bdc1c6] bg-transparent'
                       )}
                     >
                       {active && (
@@ -768,12 +768,12 @@ function OnboardingTab() {
                   className={cn(
                     'rounded-lg border p-3 text-left transition-all duration-150',
                     state.agentSchedule === opt.value
-                      ? 'border-[#2563eb] bg-[#1e293b]'
-                      : 'border-[#1e293b] bg-[#0f172a] hover:border-[#334155]'
+                      ? 'border-[#1a73e8] bg-[#dadce0]'
+                      : 'border-[#dadce0] bg-[#ffffff] hover:border-[#bdc1c6]'
                   )}
                 >
-                  <p className="text-sm font-semibold text-[#f1f5f9]">{opt.label}</p>
-                  <p className="text-xs text-[#64748b]">{opt.desc}</p>
+                  <p className="text-sm font-semibold text-[#202124]">{opt.label}</p>
+                  <p className="text-xs text-[#80868b]">{opt.desc}</p>
                 </button>
               ))}
             </div>
@@ -802,8 +802,8 @@ function OnboardingTab() {
       {state.step === 4 && (
         <div className="space-y-5">
           <div>
-            <h3 className="text-base font-semibold text-[#f1f5f9]">Review & Launch</h3>
-            <p className="mt-0.5 text-sm text-[#64748b]">
+            <h3 className="text-base font-semibold text-[#202124]">Review & Launch</h3>
+            <p className="mt-0.5 text-sm text-[#80868b]">
               Confirm your setup before launching the Agentic SEO system.
             </p>
           </div>
@@ -813,43 +813,43 @@ function OnboardingTab() {
             <CardContent className="space-y-4 p-5">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <p className="text-xs text-[#64748b]">Business</p>
-                  <p className="text-sm font-semibold text-[#f1f5f9]">
+                  <p className="text-xs text-[#80868b]">Business</p>
+                  <p className="text-sm font-semibold text-[#202124]">
                     {state.businessName || '—'}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#64748b]">URL</p>
-                  <p className="text-sm font-semibold text-[#f1f5f9]">
+                  <p className="text-xs text-[#80868b]">URL</p>
+                  <p className="text-sm font-semibold text-[#202124]">
                     {state.websiteUrl || '—'}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#64748b]">Niche</p>
-                  <p className="text-sm font-semibold text-[#f1f5f9]">{state.niche || '—'}</p>
+                  <p className="text-xs text-[#80868b]">Niche</p>
+                  <p className="text-sm font-semibold text-[#202124]">{state.niche || '—'}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#64748b]">Platform</p>
-                  <p className="text-sm font-semibold text-[#f1f5f9]">
+                  <p className="text-xs text-[#80868b]">Platform</p>
+                  <p className="text-sm font-semibold text-[#202124]">
                     {PLATFORM_LABELS[state.platform]}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#64748b]">Scan Depth</p>
-                  <p className="text-sm font-semibold text-[#f1f5f9] capitalize">
+                  <p className="text-xs text-[#80868b]">Scan Depth</p>
+                  <p className="text-sm font-semibold text-[#202124] capitalize">
                     {state.scanDepth}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#64748b]">Schedule</p>
-                  <p className="text-sm font-semibold text-[#f1f5f9] capitalize">
+                  <p className="text-xs text-[#80868b]">Schedule</p>
+                  <p className="text-sm font-semibold text-[#202124] capitalize">
                     {state.agentSchedule}
                   </p>
                 </div>
               </div>
 
-              <div className="border-t border-[#1e293b] pt-3">
-                <p className="mb-2 text-xs text-[#64748b]">Active Agents</p>
+              <div className="border-t border-[#dadce0] pt-3">
+                <p className="mb-2 text-xs text-[#80868b]">Active Agents</p>
                 <div className="flex flex-wrap gap-2">
                   {AGENT_OPTIONS.filter((a) => state.enabledAgents.includes(a.id)).map((a) => (
                     <Badge key={a.id} variant="info">
@@ -857,14 +857,14 @@ function OnboardingTab() {
                     </Badge>
                   ))}
                   {state.enabledAgents.length === 0 && (
-                    <p className="text-xs text-[#64748b]">No agents selected</p>
+                    <p className="text-xs text-[#80868b]">No agents selected</p>
                   )}
                 </div>
               </div>
 
               {state.competitorTracking && (
-                <div className="border-t border-[#1e293b] pt-3">
-                  <p className="mb-2 text-xs text-[#64748b]">Competitor Domains</p>
+                <div className="border-t border-[#dadce0] pt-3">
+                  <p className="mb-2 text-xs text-[#80868b]">Competitor Domains</p>
                   <div className="flex flex-wrap gap-2">
                     {state.competitors
                       .filter(Boolean)
@@ -874,7 +874,7 @@ function OnboardingTab() {
                         </Badge>
                       ))}
                     {!state.competitors.some(Boolean) && (
-                      <p className="text-xs text-[#64748b]">None added</p>
+                      <p className="text-xs text-[#80868b]">None added</p>
                     )}
                   </div>
                 </div>
@@ -883,19 +883,19 @@ function OnboardingTab() {
           </Card>
 
           {/* What will happen */}
-          <div className="rounded-lg border border-[#D4A84B]/20 bg-[#3d2a00]/30 p-4">
+          <div className="rounded-lg border border-[#f9ab00]/20 bg-[#fef7e0]/30 p-4">
             <div className="flex items-start gap-3">
-              <Rocket size={16} className="mt-0.5 flex-shrink-0 text-[#D4A84B]" />
+              <Rocket size={16} className="mt-0.5 flex-shrink-0 text-[#f9ab00]" />
               <div>
-                <p className="text-sm font-semibold text-[#D4A84B]">What happens when you launch</p>
-                <ul className="mt-2 space-y-1 text-xs text-[#94a3b8]">
+                <p className="text-sm font-semibold text-[#f9ab00]">What happens when you launch</p>
+                <ul className="mt-2 space-y-1 text-xs text-[#5f6368]">
                   <li>
                     AI will scan{' '}
-                    <span className="font-medium text-[#f1f5f9]">
+                    <span className="font-medium text-[#202124]">
                       {state.websiteUrl || '[your URL]'}
                     </span>{' '}
                     using a{' '}
-                    <span className="font-medium text-[#f1f5f9]">{state.scanDepth}</span> crawl
+                    <span className="font-medium text-[#202124]">{state.scanDepth}</span> crawl
                   </li>
                   <li>Keyword Scout will discover initial keyword opportunities from GSC data</li>
                   <li>Rank Tracker will begin daily position monitoring for all found keywords</li>
@@ -940,7 +940,7 @@ function OnboardingTab() {
 
       {/* Navigation buttons */}
       {state.step < 4 && (
-        <div className="flex items-center justify-between border-t border-[#1e293b] pt-4">
+        <div className="flex items-center justify-between border-t border-[#dadce0] pt-4">
           <Button
             variant="ghost"
             size="sm"
@@ -965,7 +965,7 @@ function OnboardingTab() {
       )}
 
       {state.step === 4 && (
-        <div className="flex items-center justify-start border-t border-[#1e293b] pt-4">
+        <div className="flex items-center justify-start border-t border-[#dadce0] pt-4">
           <Button
             variant="ghost"
             size="sm"
@@ -988,8 +988,8 @@ function ApiKeysTab() {
   return (
     <div className="space-y-5">
       <div>
-        <h3 className="text-base font-semibold text-[#f1f5f9]">API Connections</h3>
-        <p className="mt-0.5 text-sm text-[#64748b]">
+        <h3 className="text-base font-semibold text-[#202124]">API Connections</h3>
+        <p className="mt-0.5 text-sm text-[#80868b]">
           Manage keys and connection status for all external services.
         </p>
       </div>
@@ -1002,7 +1002,7 @@ function ApiKeysTab() {
               value="RzfjgLYTOSk2Q40WOBjciy8Rcw7ME7zlBRGtXdzxBEFyF6Vj"
               connected={true}
             />
-            <p className="text-xs text-[#64748b]">
+            <p className="text-xs text-[#80868b]">
               Provides access to Google Ads, Search Console, Analytics, YouTube, and Sheets via
               unified OAuth proxy.
             </p>
@@ -1016,12 +1016,12 @@ function ApiKeysTab() {
               value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YjM5"
               connected={true}
             />
-            <div className="flex items-center gap-2 text-xs text-[#64748b]">
+            <div className="flex items-center gap-2 text-xs text-[#80868b]">
               <span>Endpoint:</span>
-              <span className="font-mono text-[#94a3b8]">http://10.28.28.97:5678</span>
+              <span className="font-mono text-[#5f6368]">http://10.28.28.97:5678</span>
               <a
                 href="#"
-                className="flex items-center gap-1 text-[#2563eb] hover:underline"
+                className="flex items-center gap-1 text-[#1a73e8] hover:underline"
                 onClick={(e) => e.preventDefault()}
               >
                 <ExternalLink size={10} />
@@ -1038,9 +1038,9 @@ function ApiKeysTab() {
               value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh"
               connected={true}
             />
-            <div className="flex items-center gap-2 text-xs text-[#64748b]">
+            <div className="flex items-center gap-2 text-xs text-[#80868b]">
               <span>Database:</span>
-              <span className="font-mono text-[#94a3b8]">10.28.28.97:5433</span>
+              <span className="font-mono text-[#5f6368]">10.28.28.97:5433</span>
             </div>
           </CardContent>
         </Card>
@@ -1052,9 +1052,9 @@ function ApiKeysTab() {
               value="sk-ant-api03-PLACEHOLDER-KEY-VALUE-HERE"
               connected={false}
             />
-            <div className="flex items-center gap-2 rounded-md border border-[#ef4444]/20 bg-[#450a0a]/30 p-2">
-              <AlertCircle size={12} className="flex-shrink-0 text-[#f87171]" />
-              <p className="text-xs text-[#f87171]">
+            <div className="flex items-center gap-2 rounded-md border border-[#d93025]/20 bg-[#fce8e6]/30 p-2">
+              <AlertCircle size={12} className="flex-shrink-0 text-[#d93025]" />
+              <p className="text-xs text-[#d93025]">
                 No API key configured. Add your Anthropic key to enable AI report generation.
               </p>
             </div>
@@ -1068,7 +1068,7 @@ function ApiKeysTab() {
               value="connected-via-maton-gateway-oauth"
               connected={true}
             />
-            <p className="text-xs text-[#64748b]">
+            <p className="text-xs text-[#80868b]">
               Connected via Maton API Gateway. No separate key needed.
             </p>
           </CardContent>
@@ -1093,8 +1093,8 @@ function NotificationsTab() {
   return (
     <div className="space-y-5">
       <div>
-        <h3 className="text-base font-semibold text-[#f1f5f9]">Notification Settings</h3>
-        <p className="mt-0.5 text-sm text-[#64748b]">
+        <h3 className="text-base font-semibold text-[#202124]">Notification Settings</h3>
+        <p className="mt-0.5 text-sm text-[#80868b]">
           Configure when and how you receive SEO alerts and reports.
         </p>
       </div>
@@ -1102,7 +1102,7 @@ function NotificationsTab() {
       {/* Channels */}
       <Card>
         <CardContent className="space-y-4 p-5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-[#64748b]">
+          <p className="text-xs font-semibold uppercase tracking-wider text-[#80868b]">
             Channels
           </p>
 
@@ -1122,7 +1122,7 @@ function NotificationsTab() {
               placeholder="https://hooks.slack.com/services/T00000000/B00000000/xxxx"
             />
             {slackUrl && (
-              <p className="text-xs text-[#10b981]">Slack notifications active</p>
+              <p className="text-xs text-[#1e8e3e]">Slack notifications active</p>
             )}
           </div>
         </CardContent>
@@ -1131,7 +1131,7 @@ function NotificationsTab() {
       {/* Alert thresholds */}
       <Card>
         <CardContent className="space-y-4 p-5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-[#64748b]">
+          <p className="text-xs font-semibold uppercase tracking-wider text-[#80868b]">
             Alert Thresholds
           </p>
 
@@ -1147,9 +1147,9 @@ function NotificationsTab() {
                   type="number"
                   className="w-20"
                 />
-                <span className="text-sm text-[#64748b]">positions or more</span>
+                <span className="text-sm text-[#80868b]">positions or more</span>
               </div>
-              <p className="text-xs text-[#64748b]">
+              <p className="text-xs text-[#80868b]">
                 Alert when any tracked keyword drops by this many positions.
               </p>
             </div>
@@ -1165,9 +1165,9 @@ function NotificationsTab() {
                   type="number"
                   className="w-20"
                 />
-                <span className="text-sm text-[#64748b]">% week-over-week</span>
+                <span className="text-sm text-[#80868b]">% week-over-week</span>
               </div>
-              <p className="text-xs text-[#64748b]">
+              <p className="text-xs text-[#80868b]">
                 Alert when organic clicks drop by this percentage in a 7-day window.
               </p>
             </div>
@@ -1178,7 +1178,7 @@ function NotificationsTab() {
       {/* Report & alert toggles */}
       <Card>
         <CardContent className="space-y-4 p-5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-[#64748b]">
+          <p className="text-xs font-semibold uppercase tracking-wider text-[#80868b]">
             Automated Reports & Alerts
           </p>
 
@@ -1222,14 +1222,14 @@ export default function SettingsPage() {
     <div className="space-y-6 p-6">
       {/* Header */}
       <div>
-        <h1 className="text-xl font-bold text-[#f1f5f9]">Settings</h1>
-        <p className="mt-0.5 text-sm text-[#64748b]">
+        <h1 className="text-xl font-bold text-[#202124]">Settings</h1>
+        <p className="mt-0.5 text-sm text-[#80868b]">
           Manage clients, onboard new sites, configure API connections, and set notifications.
         </p>
       </div>
 
       {/* Tab bar */}
-      <div className="flex overflow-x-auto border-b border-[#1e293b]">
+      <div className="flex overflow-x-auto border-b border-[#dadce0]">
         {TABS.map((tab) => {
           const Icon = tab.icon
           const active = activeTab === tab.id
@@ -1241,8 +1241,8 @@ export default function SettingsPage() {
               className={cn(
                 'flex flex-shrink-0 items-center gap-2 border-b-2 px-4 py-3 text-sm font-medium transition-all duration-150',
                 active
-                  ? 'border-[#2563eb] text-[#f1f5f9]'
-                  : 'border-transparent text-[#64748b] hover:text-[#94a3b8]'
+                  ? 'border-[#1a73e8] text-[#202124]'
+                  : 'border-transparent text-[#80868b] hover:text-[#5f6368]'
               )}
             >
               <Icon size={15} />

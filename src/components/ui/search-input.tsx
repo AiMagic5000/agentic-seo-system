@@ -4,9 +4,6 @@ import * as React from 'react'
 import { Search, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-// ---------------------------------------------------------------------------
-// Debounce hook (internal)
-// ---------------------------------------------------------------------------
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = React.useState<T>(value)
 
@@ -18,30 +15,17 @@ function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue
 }
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
 export interface SearchInputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
-  /** Fires with the debounced value after `debounceMs` milliseconds */
   onChange?: (value: string) => void
-  /** Immediate change handler (fires on every keystroke) */
   onImmediateChange?: (value: string) => void
-  /** Debounce delay in milliseconds (default 300) */
   debounceMs?: number
-  /** Show a clear (X) button when input has a value */
   clearable?: boolean
-  /** Controlled value */
   value?: string
-  /** Default / initial uncontrolled value */
   defaultValue?: string
-  /** Wrapper div class names */
   wrapperClassName?: string
 }
 
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
 const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
   (
     {
@@ -68,7 +52,6 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
     const currentValue = isControlled ? controlledValue : internalValue
     const debouncedValue = useDebounce(currentValue, debounceMs)
 
-    // Fire debounced onChange whenever the debounced value changes
     const onChangePrev = React.useRef<string>(currentValue)
     React.useEffect(() => {
       if (debouncedValue !== onChangePrev.current) {
@@ -94,10 +77,9 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
       <div
         className={cn('relative flex items-center', wrapperClassName)}
       >
-        {/* Search icon */}
         <Search
           size={15}
-          className="pointer-events-none absolute left-3 text-[#64748b]"
+          className="pointer-events-none absolute left-3 text-[#80868b]"
           aria-hidden="true"
         />
 
@@ -110,27 +92,19 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           onChange={handleChange}
           disabled={disabled}
           className={cn(
-            // Layout
             'w-full pl-9 pr-9 py-2 text-sm',
-            // Colors
-            'bg-[#0d1520] text-[#f1f5f9] placeholder:text-[#64748b]',
-            // Border
-            'rounded-lg border border-[#1e293b]',
+            'bg-white text-[#202124] placeholder:text-[#80868b]',
+            'rounded-lg border border-[#dadce0]',
             'transition-colors duration-150',
-            // Focus
-            'focus:border-[#2563eb] focus:outline-none focus:ring-1 focus:ring-[#2563eb]/50',
-            // Hover
-            'hover:border-[#334155]',
-            // Disabled
+            'focus:border-[#1a73e8] focus:outline-none focus:ring-1 focus:ring-[#1a73e8]/30',
+            'hover:border-[#bdc1c6]',
             'disabled:cursor-not-allowed disabled:opacity-50',
-            // Remove native search input clear button
             '[&::-webkit-search-cancel-button]:appearance-none',
             className
           )}
           {...props}
         />
 
-        {/* Clear button */}
         {clearable && currentValue && !disabled && (
           <button
             type="button"
@@ -138,9 +112,9 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
             aria-label="Clear search"
             className={cn(
               'absolute right-2.5 flex h-5 w-5 items-center justify-center',
-              'rounded text-[#64748b] transition-colors duration-100',
-              'hover:bg-[#1e293b] hover:text-[#f1f5f9]',
-              'focus:outline-none focus:ring-1 focus:ring-[#2563eb]'
+              'rounded text-[#80868b] transition-colors duration-100 cursor-pointer',
+              'hover:bg-[#f1f3f4] hover:text-[#202124]',
+              'focus:outline-none focus:ring-1 focus:ring-[#1a73e8]'
             )}
           >
             <X size={12} strokeWidth={2.5} />

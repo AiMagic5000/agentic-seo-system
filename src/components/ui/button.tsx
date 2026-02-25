@@ -4,48 +4,36 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
-// ---------------------------------------------------------------------------
-// Variant definitions
-// ---------------------------------------------------------------------------
 const buttonVariants = cva(
-  // Base styles applied to every variant
   [
-    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg',
-    'text-sm font-medium transition-all duration-150 ease-in-out',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563eb] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0f1a]',
+    'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md',
+    'text-sm font-medium transition-all duration-150 ease-in-out cursor-pointer',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1a73e8] focus-visible:ring-offset-2 focus-visible:ring-offset-white',
     'disabled:pointer-events-none disabled:opacity-40',
     'select-none',
   ],
   {
     variants: {
       variant: {
-        // Primary blue CTA
         default:
-          'bg-[#2563eb] text-white shadow-sm hover:bg-[#1d4ed8] active:bg-[#1e40af]',
-        // Muted secondary action
+          'bg-[#1a73e8] text-white shadow-sm hover:bg-[#1557b0] active:bg-[#174ea6]',
         secondary:
-          'bg-[#1e293b] text-[#f1f5f9] border border-[#334155] hover:bg-[#273344] active:bg-[#1e293b]',
-        // Destructive / danger
+          'bg-white text-[#202124] border border-[#dadce0] hover:bg-[#f8f9fa] active:bg-[#f1f3f4]',
         destructive:
-          'bg-[#ef4444] text-white shadow-sm hover:bg-[#dc2626] active:bg-[#b91c1c]',
-        // Outlined – transparent background
+          'bg-[#d93025] text-white shadow-sm hover:bg-[#c5221f] active:bg-[#a50e0e]',
         outline:
-          'border border-[#334155] bg-transparent text-[#f1f5f9] hover:bg-[#1e293b] active:bg-[#273344]',
-        // Ghost – no border, no bg
+          'border border-[#dadce0] bg-transparent text-[#1a73e8] hover:bg-[#e8f0fe] active:bg-[#d2e3fc]',
         ghost:
-          'bg-transparent text-[#94a3b8] hover:bg-[#1e293b] hover:text-[#f1f5f9] active:bg-[#273344]',
-        // Gold accent for premium / highlighted actions
+          'bg-transparent text-[#5f6368] hover:bg-[#f1f3f4] hover:text-[#202124] active:bg-[#e8eaed]',
         gold:
-          'bg-[#D4A84B] text-[#0a0f1a] font-semibold shadow-sm hover:bg-[#c49a40] active:bg-[#b38b38]',
-        // Link-style – no background, underlined
+          'bg-[#f9ab00] text-white font-semibold shadow-sm hover:bg-[#e69500] active:bg-[#cc8400]',
         link:
-          'bg-transparent text-[#2563eb] underline-offset-4 hover:underline p-0 h-auto',
+          'bg-transparent text-[#1a73e8] underline-offset-4 hover:underline p-0 h-auto',
       },
       size: {
         sm: 'h-8 px-3 text-xs rounded-md',
         default: 'h-9 px-4 py-2',
         lg: 'h-11 px-6 text-base',
-        // Square icon button
         icon: 'h-9 w-9 p-0',
       },
     },
@@ -56,13 +44,9 @@ const buttonVariants = cva(
   }
 )
 
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  /** Render as a different element (e.g. span for Radix Slot usage) */
   asChild?: boolean
 }
 

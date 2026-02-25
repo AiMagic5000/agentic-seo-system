@@ -8,14 +8,12 @@ import {
   useState,
 } from "react";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export interface SEOClient {
   id: string;
   name: string;
   domain: string;
   industry?: string;
-  color?: string; // avatar background
+  color?: string;
 }
 
 interface ClientContextValue {
@@ -25,42 +23,52 @@ interface ClientContextValue {
   isLoading: boolean;
 }
 
-// ─── Seed data ────────────────────────────────────────────────────────────────
-
 const DEFAULT_CLIENTS: SEOClient[] = [
   {
-    id: "client-1",
-    name: "Acme Corp",
-    domain: "acmecorp.com",
-    industry: "E-commerce",
-    color: "#2563eb",
+    id: "asset-recovery-biz",
+    name: "Asset Recovery Biz",
+    domain: "assetrecoverybusiness.com",
+    industry: "Asset Recovery",
+    color: "#d93025",
   },
   {
-    id: "client-2",
-    name: "Bright Media",
-    domain: "brightmedia.io",
-    industry: "Media",
-    color: "#D4A84B",
+    id: "usmr",
+    name: "USMR",
+    domain: "usmortgagerecovery.com",
+    industry: "Mortgage Recovery",
+    color: "#e8710a",
   },
   {
-    id: "client-3",
-    name: "Nova Health",
-    domain: "novahealth.co",
-    industry: "Healthcare",
-    color: "#10b981",
+    id: "smb",
+    name: "SMB",
+    domain: "startmybusiness.us",
+    industry: "Business Services",
+    color: "#1a73e8",
   },
   {
-    id: "client-4",
-    name: "Frontier Tech",
-    domain: "frontiertech.dev",
-    industry: "SaaS",
-    color: "#8b5cf6",
+    id: "usfl",
+    name: "USFL",
+    domain: "usforeclosureleads.com",
+    industry: "Lead Generation",
+    color: "#d93025",
+  },
+  {
+    id: "usfr",
+    name: "USFR",
+    domain: "usforeclosurerecovery.com",
+    industry: "Foreclosure Recovery",
+    color: "#9334e6",
+  },
+  {
+    id: "scorewise",
+    name: "Scorewise",
+    domain: "scorewise.app",
+    industry: "Credit Technology",
+    color: "#1e8e3e",
   },
 ];
 
-const STORAGE_KEY = "agentic-seo-current-client";
-
-// ─── Context ──────────────────────────────────────────────────────────────────
+const STORAGE_KEY = "smb-agentic-seo-current-client";
 
 const ClientContext = createContext<ClientContextValue | null>(null);
 
@@ -69,13 +77,11 @@ export function ClientProvider({ children }: { children: React.ReactNode }) {
   const [currentClient, setCurrentClientState] = useState<SEOClient | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Hydrate from localStorage on mount
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored) as SEOClient;
-        // Validate the stored client still exists in our list
         const found = DEFAULT_CLIENTS.find((c) => c.id === parsed.id);
         if (found) {
           setCurrentClientState(found);
@@ -97,7 +103,7 @@ export function ClientProvider({ children }: { children: React.ReactNode }) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(client));
     } catch {
-      // localStorage may be unavailable in some environments
+      // localStorage may be unavailable
     }
   }, []);
 
@@ -109,8 +115,6 @@ export function ClientProvider({ children }: { children: React.ReactNode }) {
     </ClientContext.Provider>
   );
 }
-
-// ─── Hook ─────────────────────────────────────────────────────────────────────
 
 export function useClient(): ClientContextValue {
   const ctx = useContext(ClientContext);

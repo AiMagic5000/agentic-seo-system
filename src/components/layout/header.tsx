@@ -2,14 +2,13 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
 import {
   Search,
   Bell,
   Zap,
   ChevronRight,
 } from "lucide-react";
-
-// ─── Route metadata ───────────────────────────────────────────────────────────
 
 interface RouteInfo {
   title: string;
@@ -22,31 +21,31 @@ function getRouteInfo(pathname: string): RouteInfo {
       title: "Dashboard",
       breadcrumb: ["Home", "Dashboard"],
     },
-    "/dashboard/keywords": {
+    "/keywords": {
       title: "Keywords",
       breadcrumb: ["Home", "Keywords"],
     },
-    "/dashboard/content": {
+    "/content": {
       title: "Content",
       breadcrumb: ["Home", "Content"],
     },
-    "/dashboard/audit": {
+    "/audit": {
       title: "Site Audit",
       breadcrumb: ["Home", "Audit"],
     },
-    "/dashboard/competitors": {
+    "/competitors": {
       title: "Competitors",
       breadcrumb: ["Home", "Competitors"],
     },
-    "/dashboard/agents": {
+    "/agents": {
       title: "AI Agents",
       breadcrumb: ["Home", "Agents"],
     },
-    "/dashboard/reports": {
+    "/reports": {
       title: "Reports",
       breadcrumb: ["Home", "Reports"],
     },
-    "/dashboard/settings": {
+    "/settings": {
       title: "Settings",
       breadcrumb: ["Home", "Settings"],
     },
@@ -60,16 +59,14 @@ function getRouteInfo(pathname: string): RouteInfo {
   );
 }
 
-// ─── Breadcrumb ───────────────────────────────────────────────────────────────
-
 function Breadcrumb({ parts }: { parts: string[] }) {
   return (
     <nav aria-label="Breadcrumb">
-      <ol className="flex items-center gap-1 text-xs text-slate-500">
+      <ol className="flex items-center gap-1 text-xs text-[#80868b]">
         {parts.map((part, i) => (
           <li key={i} className="flex items-center gap-1">
-            {i > 0 && <ChevronRight className="h-3 w-3 text-slate-700" />}
-            <span className={i === parts.length - 1 ? "text-slate-400" : ""}>
+            {i > 0 && <ChevronRight className="h-3 w-3 text-[#dadce0]" />}
+            <span className={i === parts.length - 1 ? "text-[#5f6368]" : ""}>
               {part}
             </span>
           </li>
@@ -79,14 +76,11 @@ function Breadcrumb({ parts }: { parts: string[] }) {
   );
 }
 
-// ─── Scan Now button ──────────────────────────────────────────────────────────
-
 function ScanButton() {
   const [scanning, setScanning] = useState(false);
 
   function handleScan() {
     setScanning(true);
-    // Simulate async scan kick-off
     setTimeout(() => setScanning(false), 2500);
   }
 
@@ -95,8 +89,7 @@ function ScanButton() {
       onClick={handleScan}
       disabled={scanning}
       aria-label="Trigger site scan"
-      className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-[#0a0f1a] transition-all hover:brightness-110 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
-      style={{ backgroundColor: "#D4A84B" }}
+      className="flex items-center gap-2 rounded-md bg-[#1a73e8] px-4 py-2 text-sm font-medium text-white transition-all hover:bg-[#1557b0] hover:shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
     >
       <Zap
         className={`h-3.5 w-3.5 ${scanning ? "animate-pulse" : ""}`}
@@ -107,8 +100,6 @@ function ScanButton() {
   );
 }
 
-// ─── Header ───────────────────────────────────────────────────────────────────
-
 const NOTIFICATION_COUNT = 4;
 
 export function Header() {
@@ -116,43 +107,48 @@ export function Header() {
   const { title, breadcrumb } = getRouteInfo(pathname);
 
   return (
-    <header className="flex h-16 shrink-0 items-center justify-between border-b border-[#1e293b] bg-[#0a0f1a] px-6">
-      {/* Left: title + breadcrumb */}
+    <header className="flex h-16 shrink-0 items-center justify-between border-b border-[#e8eaed] bg-white px-6">
       <div className="flex flex-col gap-0.5">
-        <h1 className="text-[15px] font-semibold leading-none text-slate-100">
+        <h1 className="text-[15px] font-semibold leading-none text-[#202124]">
           {title}
         </h1>
         <Breadcrumb parts={breadcrumb} />
       </div>
 
-      {/* Right: actions */}
       <div className="flex items-center gap-2">
-        {/* Search */}
         <button
           aria-label="Open search"
-          className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-white/6 hover:text-slate-200"
+          className="flex h-9 w-9 items-center justify-center rounded-full text-[#5f6368] transition-colors hover:bg-[#f1f3f4] cursor-pointer"
         >
-          <Search className="h-4 w-4" />
+          <Search className="h-[18px] w-[18px]" />
         </button>
 
-        {/* Notifications */}
         <button
           aria-label={`Notifications (${NOTIFICATION_COUNT} unread)`}
-          className="relative flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-white/6 hover:text-slate-200"
+          className="relative flex h-9 w-9 items-center justify-center rounded-full text-[#5f6368] transition-colors hover:bg-[#f1f3f4] cursor-pointer"
         >
-          <Bell className="h-4 w-4" />
+          <Bell className="h-[18px] w-[18px]" />
           {NOTIFICATION_COUNT > 0 && (
-            <span className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[9px] font-bold text-white leading-none">
+            <span className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#d93025] text-[9px] font-bold text-white leading-none">
               {NOTIFICATION_COUNT > 9 ? "9+" : NOTIFICATION_COUNT}
             </span>
           )}
         </button>
 
-        {/* Divider */}
-        <div className="mx-1 h-5 w-px bg-[#1e293b]" aria-hidden="true" />
+        <div className="mx-1 h-5 w-px bg-[#dadce0]" aria-hidden="true" />
 
-        {/* Scan */}
         <ScanButton />
+
+        <div className="mx-1 h-5 w-px bg-[#dadce0]" aria-hidden="true" />
+
+        <UserButton
+          afterSignOutUrl="/"
+          appearance={{
+            elements: {
+              avatarBox: "h-8 w-8",
+            },
+          }}
+        />
       </div>
     </header>
   );

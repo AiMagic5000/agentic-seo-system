@@ -275,25 +275,25 @@ const CATEGORY_SCORES = [
     label: 'Performance',
     score: 61,
     icon: <Zap className="h-4 w-4" />,
-    color: '#D4A84B',
+    color: '#f9ab00',
   },
   {
     label: 'Accessibility',
     score: 78,
     icon: <Shield className="h-4 w-4" />,
-    color: '#10b981',
+    color: '#1e8e3e',
   },
   {
     label: 'SEO',
     score: 72,
     icon: <Search className="h-4 w-4" />,
-    color: '#2563eb',
+    color: '#1a73e8',
   },
   {
     label: 'Best Practices',
     score: 85,
     icon: <CheckCircle2 className="h-4 w-4" />,
-    color: '#8b5cf6',
+    color: '#9334e6',
   },
 ]
 
@@ -305,9 +305,9 @@ const LAST_AUDIT_DATE = 'Feb 22, 2025 at 11:34 AM'
 // ---------------------------------------------------------------------------
 
 function getScoreColor(score: number): string {
-  if (score >= 80) return '#10b981'
-  if (score >= 60) return '#D4A84B'
-  return '#ef4444'
+  if (score >= 80) return '#1e8e3e'
+  if (score >= 60) return '#f9ab00'
+  return '#d93025'
 }
 
 function getScoreLabel(score: number): string {
@@ -332,7 +332,7 @@ function CategoryScoreCard({
   color: string
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-[#1e293b] bg-[#111827] p-4">
+    <div className="flex items-center gap-3 rounded-xl border border-[#dadce0] bg-[#ffffff] p-4">
       <div
         className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
         style={{ backgroundColor: `${color}20` }}
@@ -340,10 +340,10 @@ function CategoryScoreCard({
         <span style={{ color }}>{icon}</span>
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-xs text-[#64748b]">{label}</p>
+        <p className="text-xs text-[#80868b]">{label}</p>
         <p className="text-lg font-bold" style={{ color }}>
           {score}
-          <span className="text-xs font-normal text-[#64748b]">/100</span>
+          <span className="text-xs font-normal text-[#80868b]">/100</span>
         </p>
       </div>
       <ProgressRing
@@ -398,41 +398,41 @@ function IssueCard({
             </div>
 
             {/* Title */}
-            <h3 className="text-sm font-semibold text-[#f1f5f9] leading-snug">
+            <h3 className="text-sm font-semibold text-[#202124] leading-snug">
               {issue.title}
             </h3>
 
             {/* Description */}
-            <p className="mt-1.5 text-xs text-[#94a3b8] leading-relaxed">
+            <p className="mt-1.5 text-xs text-[#5f6368] leading-relaxed">
               {issue.description}
             </p>
 
             {/* Affected URL */}
-            <p className="mt-2 text-xs font-mono text-[#64748b]">
+            <p className="mt-2 text-xs font-mono text-[#80868b]">
               {truncateUrl(issue.affectedUrl, 60)}
             </p>
           </div>
         </div>
 
         {/* Fix suggestion collapsible */}
-        <div className="mt-3 border-t border-[#1e293b] pt-3">
+        <div className="mt-3 border-t border-[#dadce0] pt-3">
           <button
             onClick={() => setExpanded((v) => !v)}
             className="flex w-full items-center justify-between text-left"
           >
-            <span className="flex items-center gap-1.5 text-xs font-medium text-[#D4A84B]">
+            <span className="flex items-center gap-1.5 text-xs font-medium text-[#f9ab00]">
               <Wrench className="h-3.5 w-3.5" />
               Fix Suggestion
             </span>
             {expanded ? (
-              <ChevronUp className="h-3.5 w-3.5 text-[#64748b]" />
+              <ChevronUp className="h-3.5 w-3.5 text-[#80868b]" />
             ) : (
-              <ChevronDown className="h-3.5 w-3.5 text-[#64748b]" />
+              <ChevronDown className="h-3.5 w-3.5 text-[#80868b]" />
             )}
           </button>
 
           {expanded && (
-            <p className="mt-2 text-xs text-[#94a3b8] leading-relaxed rounded-lg bg-[#0d1520] border border-[#1e293b] p-3">
+            <p className="mt-2 text-xs text-[#5f6368] leading-relaxed rounded-lg bg-[#f8f9fa] border border-[#dadce0] p-3">
               {issue.fixSuggestion}
             </p>
           )}
@@ -447,7 +447,7 @@ function IssueCard({
               className="h-7 text-xs"
               onClick={() => onMarkFixed(issue.id)}
             >
-              <CheckCircle2 className="h-3.5 w-3.5 mr-1 text-[#4ade80]" />
+              <CheckCircle2 className="h-3.5 w-3.5 mr-1 text-[#1e8e3e]" />
               Mark Fixed
             </Button>
           </div>
@@ -524,8 +524,8 @@ export default function AuditPage() {
       {/* ── Header ── */}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#f1f5f9]">Site Audit</h1>
-          <p className="mt-1 flex items-center gap-1.5 text-sm text-[#64748b]">
+          <h1 className="text-2xl font-bold text-[#202124]">Site Audit</h1>
+          <p className="mt-1 flex items-center gap-1.5 text-sm text-[#80868b]">
             <Calendar className="h-3.5 w-3.5" />
             Last audit: {LAST_AUDIT_DATE}
           </p>
@@ -537,8 +537,8 @@ export default function AuditPage() {
       </div>
 
       {/* ── Score overview ── */}
-      <div className="mb-6 flex flex-col items-center gap-2 rounded-xl border border-[#1e293b] bg-[#111827] p-6">
-        <p className="text-xs font-medium uppercase tracking-widest text-[#64748b]">
+      <div className="mb-6 flex flex-col items-center gap-2 rounded-xl border border-[#dadce0] bg-[#ffffff] p-6">
+        <p className="text-xs font-medium uppercase tracking-widest text-[#80868b]">
           Overall Audit Score
         </p>
         <ProgressRing
@@ -548,10 +548,10 @@ export default function AuditPage() {
           color={getScoreColor(OVERALL_SCORE)}
           label={
             <span className="text-center leading-tight">
-              <span className="block text-2xl font-bold text-[#f1f5f9]">
+              <span className="block text-2xl font-bold text-[#202124]">
                 {OVERALL_SCORE}
               </span>
-              <span className="block text-[10px] font-medium text-[#64748b]">
+              <span className="block text-[10px] font-medium text-[#80868b]">
                 /100
               </span>
             </span>
@@ -567,26 +567,26 @@ export default function AuditPage() {
         {/* Open issue summary */}
         <div className="mt-2 flex flex-wrap items-center justify-center gap-3 text-xs">
           {issueCounts.critical > 0 && (
-            <span className="flex items-center gap-1 text-[#f87171]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#ef4444]" />
+            <span className="flex items-center gap-1 text-[#d93025]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#d93025]" />
               {issueCounts.critical} critical
             </span>
           )}
           {issueCounts.high > 0 && (
-            <span className="flex items-center gap-1 text-[#fbbf24]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#f59e0b]" />
+            <span className="flex items-center gap-1 text-[#e37400]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#f9ab00]" />
               {issueCounts.high} high
             </span>
           )}
           {issueCounts.medium > 0 && (
-            <span className="flex items-center gap-1 text-[#60a5fa]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#3b82f6]" />
+            <span className="flex items-center gap-1 text-[#1a73e8]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#1a73e8]" />
               {issueCounts.medium} medium
             </span>
           )}
           {issueCounts.low > 0 && (
-            <span className="flex items-center gap-1 text-[#94a3b8]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#64748b]" />
+            <span className="flex items-center gap-1 text-[#5f6368]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#80868b]" />
               {issueCounts.low} low
             </span>
           )}
@@ -603,9 +603,9 @@ export default function AuditPage() {
       {/* ── Issues section ── */}
       <div>
         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-base font-semibold text-[#f1f5f9]">
+          <h2 className="text-base font-semibold text-[#202124]">
             Issues
-            <span className="ml-2 rounded-full bg-[#1e293b] px-2 py-0.5 text-xs text-[#94a3b8]">
+            <span className="ml-2 rounded-full bg-[#dadce0] px-2 py-0.5 text-xs text-[#5f6368]">
               {filtered.filter((i) => !i.isFixed).length} open
             </span>
           </h2>
@@ -622,8 +622,8 @@ export default function AuditPage() {
                 className={cn(
                   'whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-medium transition-all duration-100',
                   severityFilter === f.value
-                    ? 'bg-[#2563eb] text-white'
-                    : 'bg-[#111827] text-[#94a3b8] border border-[#1e293b] hover:border-[#334155] hover:text-[#f1f5f9]'
+                    ? 'bg-[#1a73e8] text-white'
+                    : 'bg-[#ffffff] text-[#5f6368] border border-[#dadce0] hover:border-[#bdc1c6] hover:text-[#202124]'
                 )}
               >
                 {f.label}
@@ -640,8 +640,8 @@ export default function AuditPage() {
                 className={cn(
                   'whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-medium transition-all duration-100',
                   categoryFilter === f.value
-                    ? 'bg-[#1e293b] text-[#f1f5f9] border border-[#334155]'
-                    : 'bg-transparent text-[#64748b] border border-transparent hover:text-[#94a3b8]'
+                    ? 'bg-[#dadce0] text-[#202124] border border-[#bdc1c6]'
+                    : 'bg-transparent text-[#80868b] border border-transparent hover:text-[#5f6368]'
                 )}
               >
                 {f.label}

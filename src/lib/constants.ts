@@ -123,17 +123,17 @@ export function getHealthScoreLabel(score: number): string {
 }
 
 export function getHealthScoreColor(score: number): string {
-  if (score >= HEALTH_SCORE_THRESHOLDS.excellent) return "text-green-500"
-  if (score >= HEALTH_SCORE_THRESHOLDS.good) return "text-blue-500"
-  if (score >= HEALTH_SCORE_THRESHOLDS.fair) return "text-yellow-500"
-  return "text-red-500"
+  if (score >= HEALTH_SCORE_THRESHOLDS.excellent) return "text-[#1e8e3e]"
+  if (score >= HEALTH_SCORE_THRESHOLDS.good) return "text-[#1a73e8]"
+  if (score >= HEALTH_SCORE_THRESHOLDS.fair) return "text-[#f9ab00]"
+  return "text-[#d93025]"
 }
 
 // ---------------------------------------------------------------------------
 // App metadata
 // ---------------------------------------------------------------------------
 
-export const APP_NAME = "Agentic SEO System"
+export const APP_NAME = "SMB Agentic SEO"
 export const APP_DESCRIPTION =
-  "AI-powered SEO automation platform for tracking, optimizing, and scaling organic growth."
+  "AI-powered SEO automation platform by Start My Business for tracking, optimizing, and scaling organic growth."
 export const APP_VERSION = "1.0.0"

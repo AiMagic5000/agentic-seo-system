@@ -322,7 +322,7 @@ function threatVariant(level: MockCompetitor['threatLevel']) {
 
 function positionColor(pos: number): string {
   if (pos <= 3) return 'text-green-400'
-  if (pos <= 10) return 'text-blue-400'
+  if (pos <= 10) return 'text-[#1a73e8]'
   if (pos <= 20) return 'text-yellow-400'
   return 'text-red-400'
 }
@@ -351,19 +351,19 @@ function CompetitorCard({
       className={[
         'flex min-w-[220px] flex-col gap-3 rounded-xl border p-4 text-left transition-all',
         isSelected
-          ? 'border-[#2563eb] bg-[#0c1a3a] shadow-[0_0_0_1px_#2563eb40]'
-          : 'border-[#1e293b] bg-[#111827] hover:border-[#334155]',
+          ? 'border-[#1a73e8] bg-[#e8f0fe] shadow-[0_0_0_1px_#1a73e840]'
+          : 'border-[#dadce0] bg-[#ffffff] hover:border-[#bdc1c6]',
       ].join(' ')}
     >
       {/* Top: domain + threat */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#1e293b] bg-[#0d1520]">
-            <Globe size={14} className="text-[#64748b]" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#dadce0] bg-[#f8f9fa]">
+            <Globe size={14} className="text-[#80868b]" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-[#f1f5f9]">{competitor.name}</p>
-            <p className="text-[11px] text-[#475569]">{competitor.domain}</p>
+            <p className="text-sm font-semibold text-[#202124]">{competitor.name}</p>
+            <p className="text-[11px] text-[#5f6368]">{competitor.domain}</p>
           </div>
         </div>
         <Badge variant={threatVariant(competitor.threatLevel)} className="shrink-0 capitalize text-[10px]">
@@ -374,26 +374,26 @@ function CompetitorCard({
       {/* Stats row */}
       <div className="grid grid-cols-2 gap-2">
         <div>
-          <p className="text-[10px] text-[#475569]">Avg Position</p>
+          <p className="text-[10px] text-[#5f6368]">Avg Position</p>
           <p className={`text-sm font-bold tabular-nums ${positionColor(competitor.avgPosition)}`}>
             #{competitor.avgPosition}
           </p>
         </div>
         <div>
-          <p className="text-[10px] text-[#475569]">Keyword Overlap</p>
-          <p className="text-sm font-bold tabular-nums text-[#f1f5f9]">
+          <p className="text-[10px] text-[#5f6368]">Keyword Overlap</p>
+          <p className="text-sm font-bold tabular-nums text-[#202124]">
             {competitor.overlap}%
           </p>
         </div>
         <div>
-          <p className="text-[10px] text-[#475569]">DA</p>
-          <p className="text-sm font-bold tabular-nums text-[#94a3b8]">
+          <p className="text-[10px] text-[#5f6368]">DA</p>
+          <p className="text-sm font-bold tabular-nums text-[#5f6368]">
             {competitor.domainAuthority}
           </p>
         </div>
         <div>
-          <p className="text-[10px] text-[#475569]">Est. Traffic</p>
-          <p className="text-sm font-bold tabular-nums text-[#94a3b8]">
+          <p className="text-[10px] text-[#5f6368]">Est. Traffic</p>
+          <p className="text-sm font-bold tabular-nums text-[#5f6368]">
             {formatNumber(competitor.estimatedTraffic)}
           </p>
         </div>
@@ -401,10 +401,10 @@ function CompetitorCard({
 
       {/* Overlap bar */}
       <div>
-        <p className="mb-1.5 text-[10px] text-[#475569]">Keyword overlap with you</p>
-        <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#1e293b]">
+        <p className="mb-1.5 text-[10px] text-[#5f6368]">Keyword overlap with you</p>
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#dadce0]">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] transition-all"
+            className="h-full rounded-full bg-gradient-to-r from-[#1a73e8] to-[#1a73e8] transition-all"
             style={{ width: `${competitor.overlap}%` }}
           />
         </div>
@@ -448,8 +448,8 @@ const overlapColumns: Column<Record<string, unknown>>[] = [
     label: 'Keyword',
     render: (row) => (
       <div className="flex items-center gap-2">
-        <Search size={12} className="shrink-0 text-[#475569]" />
-        <span className="font-medium text-[#e2e8f0]">
+        <Search size={12} className="shrink-0 text-[#5f6368]" />
+        <span className="font-medium text-[#202124]">
           {String(row.keyword)}
         </span>
       </div>
@@ -509,7 +509,7 @@ const overlapColumns: Column<Record<string, unknown>>[] = [
     label: 'Volume',
     align: 'right',
     render: (row) => (
-      <span className="tabular-nums text-[#94a3b8]">
+      <span className="tabular-nums text-[#5f6368]">
         {formatNumber(row.searchVolume as number)}
       </span>
     ),
@@ -544,12 +544,12 @@ function TrendPlaceholder() {
           style={{
             height: `${(v / max) * 100}%`,
             background: i < 6
-              ? 'linear-gradient(to top, #1e3a5f, #2563eb)'
-              : 'linear-gradient(to top, #3d2a00, #D4A84B)',
+              ? 'linear-gradient(to top, #1e3a5f, #1a73e8)'
+              : 'linear-gradient(to top, #3d2a00, #f9ab00)',
           }}
         />
       ))}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#111827] via-transparent to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#ffffff] via-transparent to-transparent" />
     </div>
   )
 }
@@ -585,10 +585,10 @@ export default function CompetitorsPage() {
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <Eye size={22} className="text-[#D4A84B]" />
-            <h1 className="text-2xl font-bold text-[#f1f5f9]">Competitor Analysis</h1>
+            <Eye size={22} className="text-[#f9ab00]" />
+            <h1 className="text-2xl font-bold text-[#202124]">Competitor Analysis</h1>
           </div>
-          <p className="mt-1 text-sm text-[#64748b]">
+          <p className="mt-1 text-sm text-[#80868b]">
             Track competitors, identify keyword gaps, and find opportunities to outrank them.
           </p>
         </div>
@@ -613,25 +613,25 @@ export default function CompetitorsPage() {
       {/* ── Active competitor summary strip ─────────────────────────── */}
       {selectedCompetitor && (
         <div className="mb-6 flex flex-wrap gap-3">
-          <div className="flex items-center gap-2 rounded-lg border border-[#1e293b] bg-[#111827] px-4 py-2.5">
+          <div className="flex items-center gap-2 rounded-lg border border-[#dadce0] bg-[#ffffff] px-4 py-2.5">
             <div className="h-1.5 w-1.5 rounded-full bg-green-400" />
-            <span className="text-xs text-[#64748b]">Winning</span>
+            <span className="text-xs text-[#80868b]">Winning</span>
             <span className="text-sm font-bold text-green-400">{winCount}</span>
           </div>
-          <div className="flex items-center gap-2 rounded-lg border border-[#1e293b] bg-[#111827] px-4 py-2.5">
+          <div className="flex items-center gap-2 rounded-lg border border-[#dadce0] bg-[#ffffff] px-4 py-2.5">
             <div className="h-1.5 w-1.5 rounded-full bg-yellow-400" />
-            <span className="text-xs text-[#64748b]">Close</span>
+            <span className="text-xs text-[#80868b]">Close</span>
             <span className="text-sm font-bold text-yellow-400">{closeCount}</span>
           </div>
-          <div className="flex items-center gap-2 rounded-lg border border-[#1e293b] bg-[#111827] px-4 py-2.5">
+          <div className="flex items-center gap-2 rounded-lg border border-[#dadce0] bg-[#ffffff] px-4 py-2.5">
             <div className="h-1.5 w-1.5 rounded-full bg-red-400" />
-            <span className="text-xs text-[#64748b]">Losing</span>
+            <span className="text-xs text-[#80868b]">Losing</span>
             <span className="text-sm font-bold text-red-400">{losingCount}</span>
           </div>
-          <div className="ml-auto flex items-center gap-2 rounded-lg border border-[#1e293b] bg-[#111827] px-4 py-2.5">
-            <Globe size={13} className="text-[#475569]" />
-            <span className="text-xs text-[#64748b]">Comparing with</span>
-            <span className="text-sm font-semibold text-[#f1f5f9]">
+          <div className="ml-auto flex items-center gap-2 rounded-lg border border-[#dadce0] bg-[#ffffff] px-4 py-2.5">
+            <Globe size={13} className="text-[#5f6368]" />
+            <span className="text-xs text-[#80868b]">Comparing with</span>
+            <span className="text-sm font-semibold text-[#202124]">
               {selectedCompetitor.domain}
             </span>
           </div>
@@ -643,10 +643,10 @@ export default function CompetitorsPage() {
         {/* Left: keyword overlap table */}
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold text-[#f1f5f9]">
+            <h2 className="text-base font-semibold text-[#202124]">
               Keyword Overlap
             </h2>
-            <p className="text-xs text-[#475569]">
+            <p className="text-xs text-[#5f6368]">
               {filteredOverlap.length} shared keywords
             </p>
           </div>
@@ -661,7 +661,7 @@ export default function CompetitorsPage() {
           />
 
           {/* Legend */}
-          <div className="flex flex-wrap gap-4 text-[11px] text-[#475569]">
+          <div className="flex flex-wrap gap-4 text-[11px] text-[#5f6368]">
             <span className="flex items-center gap-1.5">
               <span className="inline-block h-2 w-2 rounded-full bg-green-400" />
               You rank higher (winning)
@@ -680,17 +680,17 @@ export default function CompetitorsPage() {
         {/* Right: content gaps panel */}
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold text-[#f1f5f9]">Content Gaps</h2>
-            <span className="text-xs text-[#475569]">
+            <h2 className="text-base font-semibold text-[#202124]">Content Gaps</h2>
+            <span className="text-xs text-[#5f6368]">
               {MOCK_CONTENT_GAPS.length} opportunities
             </span>
           </div>
 
-          <div className="flex flex-col divide-y divide-[#1e293b] rounded-xl border border-[#1e293b] bg-[#111827]">
+          <div className="flex flex-col divide-y divide-[#dadce0] rounded-xl border border-[#dadce0] bg-[#ffffff]">
             {MOCK_CONTENT_GAPS.map((item) => (
-              <div key={item.id} className="flex flex-col gap-2 p-4 hover:bg-[#0d1520] transition-colors">
+              <div key={item.id} className="flex flex-col gap-2 p-4 hover:bg-[#f8f9fa] transition-colors">
                 <div className="flex items-start justify-between gap-2">
-                  <p className="text-sm font-medium leading-snug text-[#e2e8f0]">
+                  <p className="text-sm font-medium leading-snug text-[#202124]">
                     {item.keyword}
                   </p>
                   {briefQueue.has(item.id) ? (
@@ -700,7 +700,7 @@ export default function CompetitorsPage() {
                   ) : (
                     <button
                       onClick={() => handleCreateBrief(item.id)}
-                      className="flex shrink-0 items-center gap-1 rounded-md border border-[#334155] bg-transparent px-2 py-1 text-[10px] font-medium text-[#94a3b8] transition-colors hover:border-[#2563eb] hover:bg-[#0c1a3a] hover:text-[#60a5fa]"
+                      className="flex shrink-0 items-center gap-1 rounded-md border border-[#bdc1c6] bg-transparent px-2 py-1 text-[10px] font-medium text-[#5f6368] transition-colors hover:border-[#1a73e8] hover:bg-[#e8f0fe] hover:text-[#1a73e8]"
                     >
                       <FileText size={10} />
                       Brief
@@ -708,7 +708,7 @@ export default function CompetitorsPage() {
                   )}
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3 text-[11px] text-[#64748b]">
+                <div className="flex flex-wrap items-center gap-3 text-[11px] text-[#80868b]">
                   <span className="flex items-center gap-1">
                     <Globe size={11} />
                     {item.competitorDomain}
@@ -734,7 +734,7 @@ export default function CompetitorsPage() {
             ))}
           </div>
 
-          <Button variant="ghost" size="sm" className="gap-1 self-start text-xs text-[#64748b]">
+          <Button variant="ghost" size="sm" className="gap-1 self-start text-xs text-[#80868b]">
             View all gaps
             <ChevronRight size={13} />
           </Button>
@@ -745,19 +745,19 @@ export default function CompetitorsPage() {
       <div className="mt-8">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <BarChart3 size={16} className="text-[#475569]" />
-            <h2 className="text-base font-semibold text-[#f1f5f9]">
+            <BarChart3 size={16} className="text-[#5f6368]" />
+            <h2 className="text-base font-semibold text-[#202124]">
               Competitor Trend
             </h2>
-            <span className="text-xs text-[#475569]">— last 12 weeks</span>
+            <span className="text-xs text-[#5f6368]">— last 12 weeks</span>
           </div>
           <div className="flex gap-4 text-[11px]">
             <span className="flex items-center gap-1.5">
-              <span className="inline-block h-2 w-2 rounded-full bg-[#2563eb]" />
+              <span className="inline-block h-2 w-2 rounded-full bg-[#1a73e8]" />
               You
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="inline-block h-2 w-2 rounded-full bg-[#D4A84B]" />
+              <span className="inline-block h-2 w-2 rounded-full bg-[#f9ab00]" />
               {selectedCompetitor?.name ?? 'Competitor'}
             </span>
           </div>
@@ -765,14 +765,14 @@ export default function CompetitorsPage() {
 
         <Card>
           <CardContent className="pt-6">
-            <div className="mb-2 flex justify-between text-[11px] text-[#475569]">
+            <div className="mb-2 flex justify-between text-[11px] text-[#5f6368]">
               <span>Avg. position (lower = better)</span>
               <span>
                 {selectedCompetitor?.domain}
               </span>
             </div>
             <TrendPlaceholder />
-            <div className="mt-2 flex justify-between text-[10px] text-[#334155]">
+            <div className="mt-2 flex justify-between text-[10px] text-[#bdc1c6]">
               {['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'W10', 'W11', 'W12'].map(
                 (w) => (
                   <span key={w}>{w}</span>

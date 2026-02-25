@@ -187,9 +187,9 @@ function getIntentBadgeVariant(
 }
 
 function getScoreColor(score: number): string {
-  if (score >= 80) return '#10b981'
-  if (score >= 60) return '#D4A84B'
-  return '#ef4444'
+  if (score >= 80) return '#1e8e3e'
+  if (score >= 60) return '#f9ab00'
+  return '#d93025'
 }
 
 // ---------------------------------------------------------------------------
@@ -208,7 +208,7 @@ function StatCard({
   accent: string
 }) {
   return (
-    <div className="rounded-xl border border-[#1e293b] bg-[#111827] p-4 flex items-center gap-3">
+    <div className="rounded-xl border border-[#dadce0] bg-[#ffffff] p-4 flex items-center gap-3">
       <div
         className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
         style={{ backgroundColor: `${accent}20` }}
@@ -216,8 +216,8 @@ function StatCard({
         <span style={{ color: accent }}>{icon}</span>
       </div>
       <div>
-        <p className="text-xl font-bold text-[#f1f5f9]">{value}</p>
-        <p className="text-xs text-[#64748b]">{label}</p>
+        <p className="text-xl font-bold text-[#202124]">{value}</p>
+        <p className="text-xs text-[#80868b]">{label}</p>
       </div>
     </div>
   )
@@ -240,19 +240,19 @@ function BriefCard({
   const isDraft = brief.status === 'draft'
 
   return (
-    <Card className="flex flex-col gap-0 overflow-hidden transition-all duration-150 hover:border-[#2563eb]/40">
+    <Card className="flex flex-col gap-0 overflow-hidden transition-all duration-150 hover:border-[#1a73e8]/40">
       <CardContent className="flex flex-col gap-4 p-5">
         {/* Top row: title + score ring */}
         <div className="flex items-start gap-3">
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-semibold text-[#f1f5f9] leading-snug line-clamp-2">
+            <h3 className="text-sm font-semibold text-[#202124] leading-snug line-clamp-2">
               {brief.title}
             </h3>
             <a
               href={brief.targetUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-1 inline-flex items-center gap-1 text-xs text-[#2563eb] hover:underline"
+              className="mt-1 inline-flex items-center gap-1 text-xs text-[#1a73e8] hover:underline"
             >
               <ExternalLink className="h-3 w-3 shrink-0" />
               <span className="truncate max-w-[260px]">
@@ -270,14 +270,14 @@ function BriefCard({
               labelClassName="text-[10px] font-bold"
               label={`${brief.contentScore}`}
             />
-            <span className="text-[10px] text-[#64748b]">score</span>
+            <span className="text-[10px] text-[#80868b]">score</span>
           </div>
         </div>
 
         {/* Meta row */}
         <div className="flex flex-wrap items-center gap-2">
           {/* Keyword + intent */}
-          <span className="text-xs text-[#94a3b8] font-mono truncate max-w-[180px]">
+          <span className="text-xs text-[#5f6368] font-mono truncate max-w-[180px]">
             {brief.targetKeyword}
           </span>
           <Badge variant={getIntentBadgeVariant(brief.intent)}>
@@ -289,8 +289,8 @@ function BriefCard({
         </div>
 
         {/* Footer row */}
-        <div className="flex items-center justify-between pt-1 border-t border-[#1e293b]">
-          <div className="flex items-center gap-3 text-xs text-[#64748b]">
+        <div className="flex items-center justify-between pt-1 border-t border-[#dadce0]">
+          <div className="flex items-center gap-3 text-xs text-[#80868b]">
             <span className="flex items-center gap-1">
               <FileText className="h-3.5 w-3.5" />
               {brief.wordCountTarget.toLocaleString()} words
@@ -306,7 +306,7 @@ function BriefCard({
             <Button
               variant="ghost"
               size="sm"
-              className="h-7 px-2 text-[#94a3b8] text-xs"
+              className="h-7 px-2 text-[#5f6368] text-xs"
             >
               <Eye className="h-3.5 w-3.5 mr-1" />
               View
@@ -316,7 +316,7 @@ function BriefCard({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-7 px-2 text-xs text-[#4ade80] hover:text-[#4ade80] hover:bg-[#052e16]"
+                  className="h-7 px-2 text-xs text-[#1e8e3e] hover:text-[#1e8e3e] hover:bg-[#e6f4ea]"
                   onClick={() => onApprove(brief.id)}
                 >
                   <ThumbsUp className="h-3.5 w-3.5 mr-1" />
@@ -325,7 +325,7 @@ function BriefCard({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-7 px-2 text-xs text-[#f87171] hover:text-[#f87171] hover:bg-[#450a0a]"
+                  className="h-7 px-2 text-xs text-[#d93025] hover:text-[#d93025] hover:bg-[#fce8e6]"
                   onClick={() => onReject(brief.id)}
                 >
                   <ThumbsDown className="h-3.5 w-3.5 mr-1" />
@@ -383,10 +383,10 @@ export default function ContentPage() {
       {/* ── Header ── */}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#f1f5f9]">
+          <h1 className="text-2xl font-bold text-[#202124]">
             Content Optimization
           </h1>
-          <p className="mt-1 text-sm text-[#64748b]">
+          <p className="mt-1 text-sm text-[#80868b]">
             Manage AI-generated content briefs and track implementation progress.
           </p>
         </div>
@@ -402,19 +402,19 @@ export default function ContentPage() {
           icon={<FileText className="h-4 w-4" />}
           label="Pending Briefs"
           value={counts.draft}
-          accent="#2563eb"
+          accent="#1a73e8"
         />
         <StatCard
           icon={<CheckCircle2 className="h-4 w-4" />}
           label="Approved"
           value={counts.approved}
-          accent="#10b981"
+          accent="#1e8e3e"
         />
         <StatCard
           icon={<Rocket className="h-4 w-4" />}
           label="Implemented"
           value={counts.implemented}
-          accent="#D4A84B"
+          accent="#f9ab00"
         />
       </div>
 
@@ -429,8 +429,8 @@ export default function ContentPage() {
               className={cn(
                 'whitespace-nowrap rounded-lg px-3.5 py-1.5 text-sm font-medium transition-all duration-100',
                 isActive
-                  ? 'bg-[#2563eb] text-white'
-                  : 'bg-[#111827] text-[#94a3b8] border border-[#1e293b] hover:border-[#334155] hover:text-[#f1f5f9]'
+                  ? 'bg-[#1a73e8] text-white'
+                  : 'bg-[#ffffff] text-[#5f6368] border border-[#dadce0] hover:border-[#bdc1c6] hover:text-[#202124]'
               )}
             >
               {tab.label}
@@ -440,7 +440,7 @@ export default function ContentPage() {
                     'ml-1.5 rounded-full px-1.5 py-0.5 text-[10px] font-semibold tabular-nums',
                     isActive
                       ? 'bg-white/20 text-white'
-                      : 'bg-[#1e293b] text-[#64748b]'
+                      : 'bg-[#dadce0] text-[#80868b]'
                   )}
                 >
                   {counts[tab.value as BriefStatus]}

@@ -1,35 +1,16 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
 export interface SparklineProps extends Omit<React.SVGAttributes<SVGSVGElement>, 'fill'> {
-  /** Array of numeric data points */
   data: number[]
-  /** SVG width in pixels (default 80) */
   width?: number
-  /** SVG height in pixels (default 24) */
   height?: number
-  /** Stroke color (default #2563eb) */
   color?: string
-  /** Stroke width in pixels (default 1.5) */
   strokeWidth?: number
-  /**
-   * Fill the area under the line with a semi-transparent gradient.
-   * Default: true
-   */
   fill?: boolean
-  /**
-   * If true, renders a dot at the last data point.
-   * Default: true
-   */
   showEndDot?: boolean
 }
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
 function normalize(
   data: number[],
   width: number,
@@ -37,7 +18,6 @@ function normalize(
   padding = 2
 ): string {
   if (data.length < 2) return ''
-
   const min = Math.min(...data)
   const max = Math.max(...data)
   const range = max - min || 1
@@ -62,7 +42,6 @@ function buildPath(points: string): string {
   for (let i = 1; i < pairs.length; i++) {
     const [x, y] = pairs[i]
     const [px, py] = pairs[i - 1]
-    // Cubic bezier for smooth curves
     const cpX = (px + x) / 2
     d += ` C ${cpX} ${py}, ${cpX} ${y}, ${x} ${y}`
   }
@@ -76,7 +55,6 @@ function buildAreaPath(
   padding = 2
 ): string {
   if (!linePath) return ''
-  // Close the path along the bottom edge
   const pairs = linePath
     .replace('M ', '')
     .split(' C ')
@@ -88,16 +66,13 @@ function buildAreaPath(
   return `${linePath} L ${width - padding} ${bottom} L ${fx} ${bottom} Z`
 }
 
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
 const Sparkline = React.forwardRef<SVGSVGElement, SparklineProps>(
   (
     {
       data,
       width = 80,
       height = 24,
-      color = '#2563eb',
+      color = '#1a73e8',
       strokeWidth = 1.5,
       fill = true,
       showEndDot = true,
@@ -113,7 +88,6 @@ const Sparkline = React.forwardRef<SVGSVGElement, SparklineProps>(
     const linePath = buildPath(pointsStr)
     const areaPath = buildAreaPath(linePath, width, height, padding)
 
-    // Last data point coords for the dot
     const pairs = pointsStr.split(' ').map((p) => p.split(',').map(Number))
     const lastPt = pairs[pairs.length - 1]
     const gradientId = React.useId()
@@ -139,17 +113,15 @@ const Sparkline = React.forwardRef<SVGSVGElement, SparklineProps>(
             y2="1"
             gradientUnits="objectBoundingBox"
           >
-            <stop offset="0%" stopColor={color} stopOpacity={0.25} />
+            <stop offset="0%" stopColor={color} stopOpacity={0.2} />
             <stop offset="100%" stopColor={color} stopOpacity={0} />
           </linearGradient>
         </defs>
 
-        {/* Filled area */}
         {fill && areaPath && (
           <path d={areaPath} fill={`url(#${gradientId})`} />
         )}
 
-        {/* Line */}
         {linePath && (
           <path
             d={linePath}
@@ -161,14 +133,13 @@ const Sparkline = React.forwardRef<SVGSVGElement, SparklineProps>(
           />
         )}
 
-        {/* End dot */}
         {showEndDot && lastPt && (
           <circle
             cx={lastPt[0]}
             cy={lastPt[1]}
             r={2.5}
             fill={color}
-            stroke="#111827"
+            stroke="white"
             strokeWidth={1.5}
           />
         )}

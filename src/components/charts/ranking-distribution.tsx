@@ -11,9 +11,6 @@ import {
   Cell,
 } from 'recharts'
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
 export interface RankingBucket {
   range: string
   count: number
@@ -30,9 +27,6 @@ interface TooltipPayloadItem {
   payload: RankingBucket
 }
 
-// ---------------------------------------------------------------------------
-// Custom tooltip
-// ---------------------------------------------------------------------------
 function CustomTooltip({
   active,
   payload,
@@ -45,14 +39,14 @@ function CustomTooltip({
   if (!active || !payload || payload.length === 0) return null
 
   return (
-    <div className="rounded-lg border border-[#1e293b] bg-[#0d1520] px-3 py-2 shadow-xl">
-      <p className="mb-1 text-xs font-medium text-[#64748b]">Position {label}</p>
+    <div className="rounded-lg border border-[#dadce0] bg-white px-3 py-2 shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)]">
+      <p className="mb-1 text-xs font-medium text-[#80868b]">Position {label}</p>
       <div className="flex items-center gap-2">
         <span
           className="h-2 w-2 rounded-full"
           style={{ backgroundColor: payload[0]?.payload?.color }}
         />
-        <span className="text-xs font-semibold text-[#f1f5f9]">
+        <span className="text-xs font-semibold text-[#202124]">
           {payload[0]?.value} keywords
         </span>
       </div>
@@ -60,9 +54,6 @@ function CustomTooltip({
   )
 }
 
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
 export function RankingDistribution({ data, height = 180 }: RankingDistributionProps) {
   return (
     <ResponsiveContainer width="100%" height={height}>
@@ -71,17 +62,17 @@ export function RankingDistribution({ data, height = 180 }: RankingDistributionP
         margin={{ top: 4, right: 4, left: -20, bottom: 0 }}
         barCategoryGap="30%"
       >
-        <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+        <CartesianGrid strokeDasharray="3 3" stroke="#e8eaed" vertical={false} />
 
         <XAxis
           dataKey="range"
-          tick={{ fill: '#64748b', fontSize: 11 }}
+          tick={{ fill: '#80868b', fontSize: 11 }}
           axisLine={false}
           tickLine={false}
         />
 
         <YAxis
-          tick={{ fill: '#64748b', fontSize: 11 }}
+          tick={{ fill: '#80868b', fontSize: 11 }}
           axisLine={false}
           tickLine={false}
           allowDecimals={false}
@@ -89,7 +80,7 @@ export function RankingDistribution({ data, height = 180 }: RankingDistributionP
 
         <Tooltip
           content={<CustomTooltip />}
-          cursor={{ fill: '#1e293b', opacity: 0.5 }}
+          cursor={{ fill: '#f1f3f4', opacity: 0.8 }}
         />
 
         <Bar dataKey="count" radius={[4, 4, 0, 0]}>

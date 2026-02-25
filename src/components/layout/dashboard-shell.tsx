@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Activity } from "lucide-react";
 import { Sidebar } from "./sidebar";
 import { Header } from "./header";
-
-// ─── Mobile drawer overlay ────────────────────────────────────────────────────
 
 function MobileDrawer({
   open,
@@ -16,16 +14,14 @@ function MobileDrawer({
 }) {
   return (
     <>
-      {/* Backdrop */}
       <div
         aria-hidden="true"
         onClick={onClose}
-        className={`fixed inset-0 z-40 bg-black/70 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
           open ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       />
 
-      {/* Drawer */}
       <div
         className={`fixed inset-y-0 left-0 z-50 flex transition-transform duration-300 ease-in-out lg:hidden ${
           open ? "translate-x-0" : "-translate-x-full"
@@ -36,11 +32,10 @@ function MobileDrawer({
       >
         <Sidebar />
 
-        {/* Close button */}
         <button
           onClick={onClose}
           aria-label="Close navigation"
-          className="absolute right-3 top-3.5 flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-white/8 hover:text-white"
+          className="absolute right-3 top-3.5 flex h-8 w-8 items-center justify-center rounded-full text-[#5f6368] hover:bg-[#f1f3f4] cursor-pointer"
         >
           <X className="h-4 w-4" />
         </button>
@@ -49,39 +44,39 @@ function MobileDrawer({
   );
 }
 
-// ─── Dashboard Shell ──────────────────────────────────────────────────────────
-
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#0a0f1a]">
-      {/* ── Sidebar (desktop) ───────────────────────────────── */}
+    <div className="flex h-screen overflow-hidden bg-[#f8f9fa]">
       <div className="hidden lg:flex">
         <Sidebar />
       </div>
 
-      {/* ── Mobile drawer ───────────────────────────────────── */}
       <MobileDrawer
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
       />
 
-      {/* ── Main content ────────────────────────────────────── */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        {/* Mobile top bar with hamburger */}
-        <div className="flex h-14 items-center gap-3 border-b border-[#1e293b] px-4 lg:hidden">
+        {/* Mobile top bar */}
+        <div className="flex h-14 items-center gap-3 border-b border-[#e8eaed] bg-white px-4 lg:hidden">
           <button
             onClick={() => setMobileOpen(true)}
             aria-label="Open navigation"
             aria-expanded={mobileOpen}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-white/6 hover:text-white"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-[#5f6368] hover:bg-[#f1f3f4] cursor-pointer"
           >
             <Menu className="h-5 w-5" />
           </button>
-          <span className="text-sm font-bold text-slate-100">
-            <span style={{ color: "#D4A84B" }}>Agentic</span>SEO
-          </span>
+          <div className="flex items-center gap-2">
+            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#1a73e8]">
+              <Activity className="h-3.5 w-3.5 text-white" strokeWidth={2.5} />
+            </div>
+            <span className="text-sm font-semibold text-[#202124]">
+              <span className="text-[#1a73e8]">SMB</span> AgenticSEO
+            </span>
+          </div>
         </div>
 
         {/* Desktop header */}

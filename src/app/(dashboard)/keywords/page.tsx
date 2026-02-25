@@ -106,7 +106,7 @@ const sourceConfig: Record<Source, string> = {
 function ChangeIndicator({ change }: { change: number }) {
   if (change > 0) {
     return (
-      <span className="flex items-center gap-0.5 text-xs font-medium text-[#10b981]">
+      <span className="flex items-center gap-0.5 text-xs font-medium text-[#1e8e3e]">
         <TrendingUp size={12} />
         +{change}
       </span>
@@ -114,14 +114,14 @@ function ChangeIndicator({ change }: { change: number }) {
   }
   if (change < 0) {
     return (
-      <span className="flex items-center gap-0.5 text-xs font-medium text-[#ef4444]">
+      <span className="flex items-center gap-0.5 text-xs font-medium text-[#d93025]">
         <TrendingDown size={12} />
         {change}
       </span>
     )
   }
   return (
-    <span className="flex items-center gap-0.5 text-xs font-medium text-[#64748b]">
+    <span className="flex items-center gap-0.5 text-xs font-medium text-[#80868b]">
       <Minus size={12} />
       0
     </span>
@@ -136,7 +136,7 @@ const columns: Column<KeywordRow>[] = [
     key: 'keyword',
     label: 'Keyword',
     render: (row) => (
-      <span className="max-w-[260px] truncate text-sm font-semibold text-[#f1f5f9]">
+      <span className="max-w-[260px] truncate text-sm font-semibold text-[#202124]">
         {row.keyword}
       </span>
     ),
@@ -159,7 +159,7 @@ const columns: Column<KeywordRow>[] = [
     label: 'Source',
     align: 'center',
     render: (row) => (
-      <span className="text-xs font-medium text-[#64748b]">
+      <span className="text-xs font-medium text-[#80868b]">
         {sourceConfig[row.source]}
       </span>
     ),
@@ -179,7 +179,7 @@ const columns: Column<KeywordRow>[] = [
           data={row.positionTrend}
           width={52}
           height={18}
-          color={row.position <= 3 ? '#10b981' : row.position <= 10 ? '#2563eb' : '#f59e0b'}
+          color={row.position <= 3 ? '#1e8e3e' : row.position <= 10 ? '#1a73e8' : '#f9ab00'}
         />
       </div>
     ),
@@ -195,7 +195,7 @@ const columns: Column<KeywordRow>[] = [
     label: 'Clicks',
     align: 'right',
     render: (row) => (
-      <span className="text-sm tabular-nums text-[#f1f5f9]">
+      <span className="text-sm tabular-nums text-[#202124]">
         {formatNumber(row.clicks)}
       </span>
     ),
@@ -205,7 +205,7 @@ const columns: Column<KeywordRow>[] = [
     label: 'Impressions',
     align: 'right',
     render: (row) => (
-      <span className="text-sm tabular-nums text-[#94a3b8]">
+      <span className="text-sm tabular-nums text-[#5f6368]">
         {formatNumber(row.impressions)}
       </span>
     ),
@@ -215,7 +215,7 @@ const columns: Column<KeywordRow>[] = [
     label: 'CTR',
     align: 'right',
     render: (row) => (
-      <span className="text-sm tabular-nums text-[#94a3b8]">
+      <span className="text-sm tabular-nums text-[#5f6368]">
         {formatPercent(row.ctr)}
       </span>
     ),
@@ -226,21 +226,21 @@ const columns: Column<KeywordRow>[] = [
     align: 'center',
     render: (row) => (
       <div className="flex items-center gap-2">
-        <div className="h-1.5 w-16 overflow-hidden rounded-full bg-[#1e293b]">
+        <div className="h-1.5 w-16 overflow-hidden rounded-full bg-[#dadce0]">
           <div
             className="h-full rounded-full"
             style={{
               width: `${row.priority}%`,
               backgroundColor:
                 row.priority >= 85
-                  ? '#10b981'
+                  ? '#1e8e3e'
                   : row.priority >= 65
-                  ? '#2563eb'
-                  : '#D4A84B',
+                  ? '#1a73e8'
+                  : '#f9ab00',
             }}
           />
         </div>
-        <span className="w-6 text-right text-xs tabular-nums text-[#64748b]">
+        <span className="w-6 text-right text-xs tabular-nums text-[#80868b]">
           {row.priority}
         </span>
       </div>
@@ -253,14 +253,14 @@ const columns: Column<KeywordRow>[] = [
     render: () => (
       <div className="flex items-center justify-center gap-1">
         <button
-          className="inline-flex items-center gap-1 rounded-md border border-[#1e293b] bg-[#0d1520] px-2 py-1 text-xs font-medium text-[#94a3b8] transition-colors hover:border-[#2563eb]/50 hover:text-[#2563eb]"
+          className="inline-flex items-center gap-1 rounded-md border border-[#dadce0] bg-[#f8f9fa] px-2 py-1 text-xs font-medium text-[#5f6368] transition-colors hover:border-[#1a73e8]/50 hover:text-[#1a73e8]"
           title="View SERP"
         >
           <ExternalLink size={11} />
           View
         </button>
         <button
-          className="inline-flex items-center gap-1 rounded-md border border-[#1e293b] bg-[#0d1520] px-2 py-1 text-xs font-medium text-[#94a3b8] transition-colors hover:border-[#D4A84B]/50 hover:text-[#D4A84B]"
+          className="inline-flex items-center gap-1 rounded-md border border-[#dadce0] bg-[#f8f9fa] px-2 py-1 text-xs font-medium text-[#5f6368] transition-colors hover:border-[#f9ab00]/50 hover:text-[#f9ab00]"
           title="Create content brief"
         >
           <FileText size={11} />
@@ -287,14 +287,14 @@ function Select({ value, onChange, options, className = '' }: SelectProps) {
       value={value}
       onChange={(e) => onChange(e.target.value)}
       className={[
-        'rounded-lg border border-[#1e293b] bg-[#0d1520] px-3 py-2 text-sm text-[#f1f5f9]',
-        'focus:border-[#2563eb] focus:outline-none focus:ring-1 focus:ring-[#2563eb]/50',
-        'transition-colors duration-150 hover:border-[#334155]',
+        'rounded-lg border border-[#dadce0] bg-[#f8f9fa] px-3 py-2 text-sm text-[#202124]',
+        'focus:border-[#1a73e8] focus:outline-none focus:ring-1 focus:ring-[#1a73e8]/50',
+        'transition-colors duration-150 hover:border-[#bdc1c6]',
         className,
       ].join(' ')}
     >
       {options.map((o) => (
-        <option key={o.value} value={o.value} className="bg-[#111827]">
+        <option key={o.value} value={o.value} className="bg-[#ffffff]">
           {o.label}
         </option>
       ))}
@@ -369,21 +369,21 @@ export default function KeywordsPage() {
       {/* ── Page header ── */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#f1f5f9]">Keyword Intelligence</h1>
-          <p className="mt-1 text-sm text-[#64748b]">
+          <h1 className="text-2xl font-bold text-[#202124]">Keyword Intelligence</h1>
+          <p className="mt-1 text-sm text-[#80868b]">
             Track, analyze, and prioritize keywords for{' '}
-            <span className="font-medium text-[#94a3b8]">
+            <span className="font-medium text-[#5f6368]">
               {currentClient?.name ?? 'your account'}
             </span>
           </p>
         </div>
 
         <div className="flex flex-shrink-0 items-center gap-2">
-          <button className="inline-flex items-center gap-2 rounded-lg border border-[#1e293b] bg-[#111827] px-3 py-2 text-sm font-medium text-[#94a3b8] transition-colors hover:border-[#334155] hover:text-[#f1f5f9]">
+          <button className="inline-flex items-center gap-2 rounded-lg border border-[#dadce0] bg-[#ffffff] px-3 py-2 text-sm font-medium text-[#5f6368] transition-colors hover:border-[#bdc1c6] hover:text-[#202124]">
             <Upload size={15} />
             Import Keywords
           </button>
-          <button className="inline-flex items-center gap-2 rounded-lg bg-[#2563eb] px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1d4ed8]">
+          <button className="inline-flex items-center gap-2 rounded-lg bg-[#1a73e8] px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1557b0]">
             <Sparkles size={15} />
             Run Discovery
           </button>
@@ -393,22 +393,22 @@ export default function KeywordsPage() {
       {/* ── Summary stats ── */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
-          { label: 'Total Tracked', value: ALL_KEYWORDS.length.toString(), color: '#2563eb' },
-          { label: 'Top 3', value: ALL_KEYWORDS.filter((k) => k.position <= 3).length.toString(), color: '#10b981' },
-          { label: 'Top 10', value: ALL_KEYWORDS.filter((k) => k.position <= 10).length.toString(), color: '#D4A84B' },
-          { label: 'Improved', value: ALL_KEYWORDS.filter((k) => k.positionChange > 0).length.toString(), color: '#8b5cf6' },
+          { label: 'Total Tracked', value: ALL_KEYWORDS.length.toString(), color: '#1a73e8' },
+          { label: 'Top 3', value: ALL_KEYWORDS.filter((k) => k.position <= 3).length.toString(), color: '#1e8e3e' },
+          { label: 'Top 10', value: ALL_KEYWORDS.filter((k) => k.position <= 10).length.toString(), color: '#f9ab00' },
+          { label: 'Improved', value: ALL_KEYWORDS.filter((k) => k.positionChange > 0).length.toString(), color: '#9334e6' },
         ].map((stat) => (
           <div
             key={stat.label}
-            className="flex items-center gap-3 rounded-xl border border-[#1e293b] bg-[#111827] px-4 py-3"
+            className="flex items-center gap-3 rounded-xl border border-[#dadce0] bg-[#ffffff] px-4 py-3"
           >
             <div
               className="h-2 w-2 flex-shrink-0 rounded-full"
               style={{ backgroundColor: stat.color }}
             />
             <div>
-              <p className="text-xl font-bold tabular-nums text-[#f1f5f9]">{stat.value}</p>
-              <p className="text-xs text-[#64748b]">{stat.label}</p>
+              <p className="text-xl font-bold tabular-nums text-[#202124]">{stat.value}</p>
+              <p className="text-xs text-[#80868b]">{stat.label}</p>
             </div>
           </div>
         ))}
@@ -417,7 +417,7 @@ export default function KeywordsPage() {
       {/* ── Main table card ── */}
       <Card>
         {/* Filter bar */}
-        <CardHeader className="border-b border-[#1e293b] pb-4">
+        <CardHeader className="border-b border-[#dadce0] pb-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <SearchInput
               placeholder="Filter keywords..."
@@ -474,18 +474,18 @@ export default function KeywordsPage() {
           />
 
           {/* Pagination bar */}
-          <div className="flex items-center justify-between border-t border-[#1e293b] px-5 py-3">
-            <p className="text-sm text-[#64748b]">
+          <div className="flex items-center justify-between border-t border-[#dadce0] px-5 py-3">
+            <p className="text-sm text-[#80868b]">
               {filtered.length === 0 ? (
                 'No results'
               ) : (
                 <>
                   Showing{' '}
-                  <span className="font-medium text-[#94a3b8]">
+                  <span className="font-medium text-[#5f6368]">
                     {startItem}-{endItem}
                   </span>{' '}
                   of{' '}
-                  <span className="font-medium text-[#94a3b8]">{filtered.length}</span>{' '}
+                  <span className="font-medium text-[#5f6368]">{filtered.length}</span>{' '}
                   keywords
                 </>
               )}
@@ -495,7 +495,7 @@ export default function KeywordsPage() {
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={currentPage <= 1}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[#1e293b] text-[#64748b] transition-colors hover:border-[#334155] hover:text-[#f1f5f9] disabled:cursor-not-allowed disabled:opacity-40"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[#dadce0] text-[#80868b] transition-colors hover:border-[#bdc1c6] hover:text-[#202124] disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <ChevronLeft size={15} />
               </button>
@@ -516,7 +516,7 @@ export default function KeywordsPage() {
                 }, [])
                 .map((p, i) =>
                   p === '...' ? (
-                    <span key={`ellipsis-${i}`} className="px-1 text-xs text-[#64748b]">
+                    <span key={`ellipsis-${i}`} className="px-1 text-xs text-[#80868b]">
                       ...
                     </span>
                   ) : (
@@ -526,8 +526,8 @@ export default function KeywordsPage() {
                       className={[
                         'inline-flex h-8 min-w-[32px] items-center justify-center rounded-md border px-2 text-sm transition-colors',
                         currentPage === p
-                          ? 'border-[#2563eb] bg-[#2563eb] font-semibold text-white'
-                          : 'border-[#1e293b] text-[#64748b] hover:border-[#334155] hover:text-[#f1f5f9]',
+                          ? 'border-[#1a73e8] bg-[#1a73e8] font-semibold text-white'
+                          : 'border-[#dadce0] text-[#80868b] hover:border-[#bdc1c6] hover:text-[#202124]',
                       ].join(' ')}
                     >
                       {p}
@@ -538,7 +538,7 @@ export default function KeywordsPage() {
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={currentPage >= totalPages}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[#1e293b] text-[#64748b] transition-colors hover:border-[#334155] hover:text-[#f1f5f9] disabled:cursor-not-allowed disabled:opacity-40"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[#dadce0] text-[#80868b] transition-colors hover:border-[#bdc1c6] hover:text-[#202124] disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <ChevronRight size={15} />
               </button>

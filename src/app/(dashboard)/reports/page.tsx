@@ -116,28 +116,28 @@ const MOCK_REPORTS: MockReport[] = [
         {
           agentName: 'Keyword Scout',
           agentId: 'keyword-scout',
-          color: '#3b82f6',
+          color: '#1a73e8',
           action: 'Ran GSC query mining + ATP batch',
           findings: '34 new opportunities discovered, 8 promoted to tracked',
         },
         {
           agentName: 'Rank Tracker',
           agentId: 'rank-tracker',
-          color: '#10b981',
+          color: '#1e8e3e',
           action: 'Daily position snapshots for 287 keywords',
           findings: '3 keywords entered top 10, 2 keywords dropped 5+ positions',
         },
         {
           agentName: 'Technical Auditor',
           agentId: 'technical-auditor',
-          color: '#f59e0b',
+          color: '#f9ab00',
           action: 'Full site crawl completed',
           findings: '1 critical issue (mobile LCP), 4 warnings, 11 informational',
         },
         {
           agentName: 'Competitor Watcher',
           agentId: 'competitor-watcher',
-          color: '#ef4444',
+          color: '#d93025',
           action: 'Monitored 5 competitors across 287 keywords',
           findings: 'Competitor FinancedByUs.com lost 6 top-3 positions — opportunity identified',
         },
@@ -185,21 +185,21 @@ const MOCK_REPORTS: MockReport[] = [
         {
           agentName: 'Content Optimizer',
           agentId: 'content-optimizer',
-          color: '#8b5cf6',
+          color: '#9334e6',
           action: 'Analyzed 8 refreshed pages + generated 12 new briefs',
           findings: 'Average content score improved from 61 to 74 across refreshed pages',
         },
         {
           agentName: 'Rank Tracker',
           agentId: 'rank-tracker',
-          color: '#10b981',
+          color: '#1e8e3e',
           action: 'Daily snapshots for 287 keywords',
           findings: '1 keyword entered top 10, featured snippets triggered on 2 pages',
         },
         {
           agentName: 'Technical Auditor',
           agentId: 'technical-auditor',
-          color: '#f59e0b',
+          color: '#f9ab00',
           action: 'Weekly crawl completed',
           findings: '0 critical issues, 6 duplicate H1 warnings surfaced',
         },
@@ -250,35 +250,35 @@ const MOCK_REPORTS: MockReport[] = [
         {
           agentName: 'Keyword Scout',
           agentId: 'keyword-scout',
-          color: '#3b82f6',
+          color: '#1a73e8',
           action: 'Ran 31 daily GSC queries + 8 ATP batches',
           findings: '187 new opportunities found, 42 promoted to tracked status',
         },
         {
           agentName: 'Rank Tracker',
           agentId: 'rank-tracker',
-          color: '#10b981',
+          color: '#1e8e3e',
           action: '31 daily snapshots for 287 keywords',
           findings: '11 keywords entered top 10 during January, avg position improved 2.6 places',
         },
         {
           agentName: 'Content Optimizer',
           agentId: 'content-optimizer',
-          color: '#8b5cf6',
+          color: '#9334e6',
           action: 'Analyzed all published pages weekly, generated 6 briefs',
           findings: 'Average content score across site improved from 58 to 67',
         },
         {
           agentName: 'Technical Auditor',
           agentId: 'technical-auditor',
-          color: '#f59e0b',
+          color: '#f9ab00',
           action: 'Completed 4 full crawls',
           findings: '23 issues resolved, mobile score declined slightly post-plugin updates',
         },
         {
           agentName: 'Competitor Watcher',
           agentId: 'competitor-watcher',
-          color: '#ef4444',
+          color: '#d93025',
           action: 'Daily competitor monitoring for 5 domains',
           findings: 'Two competitor domains published new long-form guides in the [business credit] cluster',
         },
@@ -325,21 +325,21 @@ const MOCK_REPORTS: MockReport[] = [
         {
           agentName: 'Competitor Watcher',
           agentId: 'competitor-watcher',
-          color: '#ef4444',
+          color: '#d93025',
           action: 'Daily monitoring across 5 competitor domains',
           findings: '2 competitor alerts fired — top-3 intrusion on high-value keywords',
         },
         {
           agentName: 'Content Optimizer',
           agentId: 'content-optimizer',
-          color: '#8b5cf6',
+          color: '#9334e6',
           action: 'Demand signal analysis + brief generation',
           findings: '4 new briefs queued from GSC query clustering',
         },
         {
           agentName: 'Rank Tracker',
           agentId: 'rank-tracker',
-          color: '#10b981',
+          color: '#1e8e3e',
           action: 'Daily position snapshots',
           findings: '1 keyword entered top 10, 1 keyword dropped 4 positions',
         },
@@ -390,42 +390,42 @@ const MOCK_REPORTS: MockReport[] = [
         {
           agentName: 'Keyword Scout',
           agentId: 'keyword-scout',
-          color: '#3b82f6',
+          color: '#1a73e8',
           action: '91 daily GSC runs + 24 ATP batches over 13 weeks',
           findings: '412 opportunities found, 98 promoted to tracked status',
         },
         {
           agentName: 'Rank Tracker',
           agentId: 'rank-tracker',
-          color: '#10b981',
+          color: '#1e8e3e',
           action: '91 daily snapshots for full keyword set',
           findings: 'Average position improved from 14.2 to 11.8; 28 keywords entered top 10',
         },
         {
           agentName: 'Content Optimizer',
           agentId: 'content-optimizer',
-          color: '#8b5cf6',
+          color: '#9334e6',
           action: 'Weekly page analysis + 18 briefs generated',
           findings: 'Site-wide content score improved from 52 to 71',
         },
         {
           agentName: 'Technical Auditor',
           agentId: 'technical-auditor',
-          color: '#f59e0b',
+          color: '#f9ab00',
           action: '13 weekly crawls completed',
           findings: '61 issues resolved including critical crawl budget inefficiencies',
         },
         {
           agentName: 'Competitor Watcher',
           agentId: 'competitor-watcher',
-          color: '#ef4444',
+          color: '#d93025',
           action: 'Continuous competitor monitoring for 5 domains',
           findings: '14 competitor alerts fired; 3 content gaps identified and acted upon',
         },
         {
           agentName: 'Report Generator',
           agentId: 'report-generator',
-          color: '#D4A84B',
+          color: '#f9ab00',
           action: '13 weekly reports + 3 monthly reports generated',
           findings: 'All reports delivered on schedule; this quarterly summary auto-compiled from aggregate data',
         },
@@ -454,17 +454,17 @@ function MetricChange({
   const isNeutral = change === 0
 
   const color = isNeutral
-    ? 'text-[#64748b]'
+    ? 'text-[#80868b]'
     : isPositive
-      ? 'text-[#10b981]'
-      : 'text-[#ef4444]'
+      ? 'text-[#1e8e3e]'
+      : 'text-[#d93025]'
 
   const arrow = isNeutral ? '—' : isPositive ? '↑' : '↓'
 
   return (
     <div className="flex flex-col gap-0.5">
-      <p className="text-xs text-[#64748b]">{label}</p>
-      <p className="text-sm font-semibold tabular-nums text-[#f1f5f9]">{value}</p>
+      <p className="text-xs text-[#80868b]">{label}</p>
+      <p className="text-sm font-semibold tabular-nums text-[#202124]">{value}</p>
       <p className={cn('text-xs font-medium', color)}>
         {arrow} {Math.abs(change).toFixed(1)}%
       </p>
@@ -491,7 +491,7 @@ function TypeBadge({ type }: { type: ReportType }) {
 
 function AgentActivityRow({ agent }: { agent: AgentActivity }) {
   return (
-    <div className="flex items-start gap-3 rounded-lg border border-[#1e293b] bg-[#0d1520] p-3">
+    <div className="flex items-start gap-3 rounded-lg border border-[#dadce0] bg-[#f8f9fa] p-3">
       <div
         className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full"
         style={{
@@ -502,25 +502,25 @@ function AgentActivityRow({ agent }: { agent: AgentActivity }) {
         <Bot size={13} style={{ color: agent.color }} />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-xs font-semibold text-[#f1f5f9]">{agent.agentName}</p>
-        <p className="text-xs text-[#64748b]">{agent.action}</p>
-        <p className="mt-1 text-xs text-[#94a3b8]">{agent.findings}</p>
+        <p className="text-xs font-semibold text-[#202124]">{agent.agentName}</p>
+        <p className="text-xs text-[#80868b]">{agent.action}</p>
+        <p className="mt-1 text-xs text-[#5f6368]">{agent.findings}</p>
       </div>
-      <CheckCircle2 size={14} className="mt-0.5 flex-shrink-0 text-[#10b981]" />
+      <CheckCircle2 size={14} className="mt-0.5 flex-shrink-0 text-[#1e8e3e]" />
     </div>
   )
 }
 
 function ReportDetail({ report }: { report: MockReport }) {
   return (
-    <div className="space-y-5 border-t border-[#1e293b] pt-5">
+    <div className="space-y-5 border-t border-[#dadce0] pt-5">
       {/* Executive Summary */}
       <div>
         <div className="mb-2 flex items-center gap-2">
-          <FileText size={14} className="text-[#2563eb]" />
-          <h4 className="text-sm font-semibold text-[#f1f5f9]">Executive Summary</h4>
+          <FileText size={14} className="text-[#1a73e8]" />
+          <h4 className="text-sm font-semibold text-[#202124]">Executive Summary</h4>
         </div>
-        <p className="text-sm leading-relaxed text-[#94a3b8]">
+        <p className="text-sm leading-relaxed text-[#5f6368]">
           {report.detail.executiveSummary}
         </p>
       </div>
@@ -529,13 +529,13 @@ function ReportDetail({ report }: { report: MockReport }) {
         {/* Key Wins */}
         <div>
           <div className="mb-2 flex items-center gap-2">
-            <TrendingUp size={14} className="text-[#10b981]" />
-            <h4 className="text-sm font-semibold text-[#f1f5f9]">Key Wins</h4>
+            <TrendingUp size={14} className="text-[#1e8e3e]" />
+            <h4 className="text-sm font-semibold text-[#202124]">Key Wins</h4>
           </div>
           <ul className="space-y-1.5">
             {report.detail.wins.map((win, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs text-[#94a3b8]">
-                <span className="mt-0.5 flex-shrink-0 text-[#10b981]">+</span>
+              <li key={i} className="flex items-start gap-2 text-xs text-[#5f6368]">
+                <span className="mt-0.5 flex-shrink-0 text-[#1e8e3e]">+</span>
                 <span>{win}</span>
               </li>
             ))}
@@ -545,13 +545,13 @@ function ReportDetail({ report }: { report: MockReport }) {
         {/* Areas of Concern */}
         <div>
           <div className="mb-2 flex items-center gap-2">
-            <AlertTriangle size={14} className="text-[#f59e0b]" />
-            <h4 className="text-sm font-semibold text-[#f1f5f9]">Areas of Concern</h4>
+            <AlertTriangle size={14} className="text-[#f9ab00]" />
+            <h4 className="text-sm font-semibold text-[#202124]">Areas of Concern</h4>
           </div>
           <ul className="space-y-1.5">
             {report.detail.concerns.map((concern, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs text-[#94a3b8]">
-                <span className="mt-0.5 flex-shrink-0 text-[#f59e0b]">!</span>
+              <li key={i} className="flex items-start gap-2 text-xs text-[#5f6368]">
+                <span className="mt-0.5 flex-shrink-0 text-[#f9ab00]">!</span>
                 <span>{concern}</span>
               </li>
             ))}
@@ -562,13 +562,13 @@ function ReportDetail({ report }: { report: MockReport }) {
       {/* Recommendations */}
       <div>
         <div className="mb-2 flex items-center gap-2">
-          <Lightbulb size={14} className="text-[#D4A84B]" />
-          <h4 className="text-sm font-semibold text-[#f1f5f9]">AI Recommendations</h4>
+          <Lightbulb size={14} className="text-[#f9ab00]" />
+          <h4 className="text-sm font-semibold text-[#202124]">AI Recommendations</h4>
         </div>
         <ol className="space-y-1.5">
           {report.detail.recommendations.map((rec, i) => (
-            <li key={i} className="flex items-start gap-2 text-xs text-[#94a3b8]">
-              <span className="flex-shrink-0 font-semibold text-[#D4A84B]">{i + 1}.</span>
+            <li key={i} className="flex items-start gap-2 text-xs text-[#5f6368]">
+              <span className="flex-shrink-0 font-semibold text-[#f9ab00]">{i + 1}.</span>
               <span>{rec}</span>
             </li>
           ))}
@@ -578,8 +578,8 @@ function ReportDetail({ report }: { report: MockReport }) {
       {/* Agent Activity */}
       <div>
         <div className="mb-3 flex items-center gap-2">
-          <Activity size={14} className="text-[#8b5cf6]" />
-          <h4 className="text-sm font-semibold text-[#f1f5f9]">Agent Activity Summary</h4>
+          <Activity size={14} className="text-[#9334e6]" />
+          <h4 className="text-sm font-semibold text-[#202124]">Agent Activity Summary</h4>
         </div>
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
           {report.detail.agentActivity.map((agent) => (
@@ -607,15 +607,15 @@ function ReportCard({ report }: { report: MockReport }) {
           {/* Top row: title + badges */}
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
-              <h3 className="text-sm font-semibold text-[#f1f5f9]">{report.title}</h3>
-              <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[#64748b]">
+              <h3 className="text-sm font-semibold text-[#202124]">{report.title}</h3>
+              <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[#80868b]">
                 <span className="flex items-center gap-1">
                   <Calendar size={11} />
                   Generated {generatedDate}
                 </span>
-                <span className="text-[#1e293b]">·</span>
+                <span className="text-[#dadce0]">·</span>
                 <span className="flex items-center gap-1">
-                  <Sparkles size={11} className="text-[#D4A84B]" />
+                  <Sparkles size={11} className="text-[#f9ab00]" />
                   {report.aiModel}
                 </span>
               </div>
@@ -627,12 +627,12 @@ function ReportCard({ report }: { report: MockReport }) {
           </div>
 
           {/* Summary preview */}
-          <p className="mt-3 text-sm leading-relaxed text-[#94a3b8]">
+          <p className="mt-3 text-sm leading-relaxed text-[#5f6368]">
             {report.summaryPreview}
           </p>
 
           {/* Key metrics row */}
-          <div className="mt-4 flex flex-wrap gap-5 border-t border-[#1e293b] pt-4">
+          <div className="mt-4 flex flex-wrap gap-5 border-t border-[#dadce0] pt-4">
             <MetricChange
               label="Clicks"
               value={report.metrics.clicks.toLocaleString()}
@@ -711,7 +711,7 @@ function DateRangeSelector({
   onChange: (v: DateRange) => void
 }) {
   return (
-    <div className="flex rounded-lg border border-[#1e293b] bg-[#0a0f1a] p-0.5">
+    <div className="flex rounded-lg border border-[#dadce0] bg-[#f8f9fa] p-0.5">
       {DATE_RANGES.map((range) => (
         <button
           key={range.value}
@@ -719,8 +719,8 @@ function DateRangeSelector({
           className={cn(
             'rounded-md px-3 py-1.5 text-xs font-medium transition-all duration-150',
             value === range.value
-              ? 'bg-[#1e293b] text-[#f1f5f9]'
-              : 'text-[#64748b] hover:text-[#94a3b8]'
+              ? 'bg-[#dadce0] text-[#202124]'
+              : 'text-[#80868b] hover:text-[#5f6368]'
           )}
         >
           {range.label}
@@ -741,8 +741,8 @@ export default function ReportsPage() {
       {/* Page header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-[#f1f5f9]">Reports</h1>
-          <p className="mt-0.5 text-sm text-[#64748b]">
+          <h1 className="text-xl font-bold text-[#202124]">Reports</h1>
+          <p className="mt-0.5 text-sm text-[#80868b]">
             AI-generated performance reports across all tracked clients
           </p>
         </div>
