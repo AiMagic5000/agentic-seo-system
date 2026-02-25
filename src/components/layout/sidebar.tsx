@@ -16,7 +16,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react'
-import { LogoIcon } from '@/components/ui/logo-icon'
+import Image from 'next/image'
 import { ClientSwitcher } from './client-switcher'
 import { cn } from '@/lib/utils'
 
@@ -141,9 +141,13 @@ export function Sidebar() {
         )}
         style={{ minHeight: 56 }}
       >
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-700 shadow-sm">
-          <LogoIcon className="h-5 w-5 text-white" />
-        </div>
+        <Image
+          src="/logo.png"
+          alt="SMB Agentic SEO"
+          width={32}
+          height={32}
+          className="h-8 w-8 shrink-0 rounded-lg"
+        />
         {!collapsed && (
           <span
             className="select-none text-sm font-semibold tracking-tight text-slate-900"

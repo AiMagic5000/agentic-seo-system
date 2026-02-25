@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Menu, X, Activity } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
+import Image from 'next/image'
 import { Sidebar } from './sidebar'
 import { Header } from './header'
 import { cn } from '@/lib/utils'
@@ -85,9 +86,13 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             <Menu className="h-5 w-5" />
           </button>
           <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-700">
-              <Activity className="h-3.5 w-3.5 text-white" strokeWidth={2.5} />
-            </div>
+            <Image
+              src="/logo.png"
+              alt="SMB Agentic SEO"
+              width={28}
+              height={28}
+              className="h-7 w-7 rounded-md"
+            />
             <span
               className="text-sm font-semibold text-slate-900"
               style={{ fontFamily: 'var(--font-sans)' }}
