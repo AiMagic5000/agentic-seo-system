@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useMemo, useEffect, useCallback } from 'react'
-import { FileText, AlertCircle, AlertTriangle, Info, CheckCircle2, ArrowRight } from 'lucide-react'
+import { FileText, AlertCircle, AlertTriangle, Info, CheckCircle2, ArrowRight, Download } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { Badge, type BadgeVariant } from '@/components/ui/badge'
 import { SkeletonCard, SkeletonTable } from '@/components/ui/skeleton'
 import { EmptyState } from '@/components/ui/empty-state'
@@ -223,9 +224,58 @@ function CategorySection({
 export default function ContentPage() {
   const { currentClient, isLoading: clientLoading, hasNoBusiness } = useClient()
 
-  const [data, setData]       = useState<AuditData | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError]     = useState<string | null>(null)
+  const [data, setData]             = useState<AuditData | null>(null)
+  const [loading, setLoading]       = useState(false)
+  const [error, setError]           = useState<string | null>(null)
+  const [sopLoading, setSopLoading] = useState(false)
+
+  const handleDownloadSOP = async () => {
+    if (!currentClient?.id || sopLoading) return
+    setSopLoading(true)
+    try {
+      const res = await fetch('/api/sop/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clientId: currentClient.id }),
+      })
+      const json = await res.json()
+      if (!json.success || !json.data) {
+        setError(json.error || 'Failed to generate SOP.')
+        return
+      }
+      const sop = json.data
+      // Build markdown SOP document
+      let md = `# SEO Fix SOP - ${sop.domain}\n`
+      md += `Generated: ${sop.generatedAt}\n`
+      md += `Total Issues: ${sop.totalIssues}\n\n`
+      for (const section of sop.sections ?? []) {
+        md += `## ${section.category.toUpperCase()} (${section.items?.length ?? 0} issues)\n\n`
+        for (const item of section.items ?? []) {
+          md += `### [${item.severity.toUpperCase()}] ${item.title}\n`
+          md += `${item.description}\n\n`
+          md += `**Steps to fix:**\n`
+          for (const step of item.steps ?? []) {
+            md += `${step.stepNumber}. ${step.instruction}\n`
+            if (step.codeSnippet) md += `\`\`\`\n${step.codeSnippet}\n\`\`\`\n`
+          }
+          if (item.verification) md += `\n**Verify:** ${item.verification}\n`
+          md += '\n---\n\n'
+        }
+      }
+      // Download as .md file
+      const blob = new Blob([md], { type: 'text/markdown' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `sop-${sop.domain}-${new Date().toISOString().slice(0, 10)}.md`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch {
+      setError('Failed to generate SOP.')
+    } finally {
+      setSopLoading(false)
+    }
+  }
 
   const fetchData = useCallback(async (clientId: string) => {
     setLoading(true)
@@ -330,25 +380,40 @@ export default function ContentPage() {
   return (
     <div className="space-y-4 p-5">
       {/* Header */}
-      <div>
-        <h1
-          className="text-base font-semibold text-slate-900"
-          style={{ fontFamily: 'var(--font-sans)' }}
-        >
-          Content Optimization
-        </h1>
-        <p
-          className="mt-0.5 text-xs text-slate-500"
-          style={{ fontFamily: 'var(--font-sans)' }}
-        >
-          Content analysis for{' '}
-          <span className="font-medium text-blue-700">{clientName}</span>
-          {data?.lastScanAt && (
-            <span className="text-slate-400">
-              {' '}&mdash; scanned {timeAgo(data.lastScanAt)}
-            </span>
-          )}
-        </p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h1
+            className="text-base font-semibold text-slate-900"
+            style={{ fontFamily: 'var(--font-sans)' }}
+          >
+            Content Optimization
+          </h1>
+          <p
+            className="mt-0.5 text-xs text-slate-500"
+            style={{ fontFamily: 'var(--font-sans)' }}
+          >
+            Content analysis for{' '}
+            <span className="font-medium text-blue-700">{clientName}</span>
+            {data?.lastScanAt && (
+              <span className="text-slate-400">
+                {' '}&mdash; scanned {timeAgo(data.lastScanAt)}
+              </span>
+            )}
+          </p>
+        </div>
+
+        {data && contentIssues.length > 0 && (
+          <Button
+            variant="default"
+            size="sm"
+            className="gap-1.5 shrink-0"
+            onClick={handleDownloadSOP}
+            disabled={sopLoading}
+          >
+            <Download size={13} className={sopLoading ? 'animate-bounce' : ''} />
+            {sopLoading ? 'Generating...' : 'Download Fix SOP'}
+          </Button>
+        )}
       </div>
 
       {/* Loading */}

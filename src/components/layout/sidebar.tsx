@@ -12,6 +12,7 @@ import {
   Bot,
   BarChart3,
   Settings,
+  ClipboardList,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react'
@@ -33,6 +34,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Competitors', href: '/competitors', icon: Eye },
   { label: 'Agents',      href: '/agents',      icon: Bot },
   { label: 'Reports',     href: '/reports',     icon: BarChart3 },
+  { label: 'Onboarding',  href: '/onboarding',  icon: ClipboardList },
   { label: 'Settings',    href: '/settings',    icon: Settings },
 ]
 
