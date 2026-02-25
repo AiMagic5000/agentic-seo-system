@@ -82,7 +82,7 @@ export async function DELETE(
 
     const { data: client, error } = await supabaseAdmin
       .from('seo_clients')
-      .update({ is_active: false, updated_at: new Date().toISOString() })
+      .update({ active: false, updated_at: new Date().toISOString() })
       .eq('id', clientId)
       .select()
       .single()

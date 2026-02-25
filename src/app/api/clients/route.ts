@@ -7,7 +7,7 @@ export async function GET() {
     const { data: clients, error } = await supabaseAdmin
       .from('seo_clients')
       .select('*')
-      .eq('is_active', true)
+      .eq('active', true)
       .order('created_at', { ascending: false })
 
     if (error) {
@@ -54,18 +54,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const domain = new URL(url).hostname.replace('www.', '')
+
     const { data: client, error } = await supabaseAdmin
       .from('seo_clients')
       .insert({
-        url,
+        site_url: url,
+        domain,
         business_name,
         niche,
         platform,
         gsc_property_url: gsc_property_url || null,
         data_sources: data_sources ?? [],
-        is_active: true,
-        health_score: null,
-        notes: null,
+        active: true,
       })
       .select()
       .single()
