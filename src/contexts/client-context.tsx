@@ -22,6 +22,8 @@ export interface SEOClient {
   color?: string
   site_url?: string
   gsc_property_url?: string
+  platform?: string
+  active?: boolean
 }
 
 interface ClientContextValue {
@@ -63,6 +65,8 @@ function mapClientFromApi(
     color: (row.color as string) || assignColor(index),
     site_url: (row.site_url as string) || undefined,
     gsc_property_url: (row.gsc_property_url as string) || undefined,
+    platform: (row.platform as string) || undefined,
+    active: row.active !== false,
   }
 }
 

@@ -195,13 +195,6 @@ function MaskedApiField({ label, value, connected }: { label: string; value: str
 function ClientsTab() {
   const { clients, currentClient, setCurrentClient } = useClient()
 
-  const mockExtended: Record<string, { platform: string; gscProperty: string; isActive: boolean }> = {
-    'client-1': { platform: 'shopify',    gscProperty: 'sc-domain:acmecorp.com',    isActive: true  },
-    'client-2': { platform: 'webflow',    gscProperty: 'sc-domain:brightmedia.io',  isActive: true  },
-    'client-3': { platform: 'wordpress',  gscProperty: 'sc-domain:novahealth.co',   isActive: true  },
-    'client-4': { platform: 'custom',     gscProperty: 'sc-domain:frontiertech.dev',isActive: false },
-  }
-
   if (clients.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
@@ -229,8 +222,10 @@ function ClientsTab() {
       </div>
 
       {clients.map((client) => {
-        const ext = mockExtended[client.id] ?? { platform: 'other', gscProperty: '--', isActive: true }
         const isSelected = currentClient?.id === client.id
+        const platformLabel = PLATFORM_LABELS[client.platform ?? ''] ?? client.platform ?? 'Other'
+        const gscProperty = client.gsc_property_url || '--'
+        const isActive = client.active !== false
 
         return (
           <Card
@@ -255,17 +250,17 @@ function ClientsTab() {
                   </div>
                   <p className="text-xs text-slate-500" style={{ fontFamily: 'var(--font-mono)' }}>{client.domain}</p>
                   <div className="mt-0.5 flex flex-wrap items-center gap-3 text-xs text-slate-400" style={{ fontFamily: 'var(--font-sans)' }}>
-                    <span>Platform: <span className="text-slate-600">{PLATFORM_LABELS[ext.platform] ?? ext.platform}</span></span>
-                    <span>GSC: <span className="text-slate-600" style={{ fontFamily: 'var(--font-mono)' }}>{ext.gscProperty}</span></span>
+                    <span>Platform: <span className="text-slate-600">{platformLabel}</span></span>
+                    <span>GSC: <span className="text-slate-600" style={{ fontFamily: 'var(--font-mono)' }}>{gscProperty}</span></span>
                   </div>
                 </div>
 
                 <div className="flex shrink-0 items-center gap-2">
                   <button
                     type="button"
-                    className={cn('cursor-pointer transition-colors duration-200', ext.isActive ? 'text-blue-600' : 'text-slate-300')}
+                    className={cn('cursor-pointer transition-colors duration-200', isActive ? 'text-blue-600' : 'text-slate-300')}
                   >
-                    {ext.isActive ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}
+                    {isActive ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}
                   </button>
                   <Button variant="secondary" size="sm" className="gap-1 h-7 text-xs">
                     <Pencil size={11} />Edit

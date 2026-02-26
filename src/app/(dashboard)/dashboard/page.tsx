@@ -281,6 +281,8 @@ export default function DashboardPage() {
     if (currentClient?.id) {
       setGscData(null)
       setUmamiData(null)
+      setAuditScore(null)
+      setAuditStats(null)
       fetchData(currentClient.id)
     }
   }, [currentClient?.id, fetchData])
