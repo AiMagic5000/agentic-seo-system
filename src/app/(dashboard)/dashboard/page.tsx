@@ -248,10 +248,12 @@ export default function DashboardPage() {
     fetch(`/api/reports/summary?clientId=${clientId}`)
       .then((res) => res.json())
       .then((json) => {
-        if (json.success && json.data?.latestScan?.results) {
-          const results = json.data.latestScan.results
-          setAuditScore(results.score ?? null)
-          setAuditStats(results.stats ?? null)
+        if (json.success && json.data) {
+          setAuditScore(json.data.score ?? null)
+          const bySev = json.data.issues?.bySeverity
+          if (bySev) {
+            setAuditStats(bySev)
+          }
         }
       })
       .catch(() => {
