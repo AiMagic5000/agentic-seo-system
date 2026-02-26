@@ -16,6 +16,11 @@ import {
   ArrowUpRight,
   ExternalLink,
   MapPin,
+  Megaphone,
+  DollarSign,
+  Target,
+  Pause,
+  Play,
 } from 'lucide-react'
 import {
   Card,
@@ -114,6 +119,39 @@ interface UmamiData {
 }
 
 // ---------------------------------------------------------------------------
+// Google Ads types
+// ---------------------------------------------------------------------------
+
+interface AdsCampaign {
+  id: string
+  name: string
+  status: string
+  channelType: string
+  budgetMicros: string
+  impressions: number
+  clicks: number
+  costMicros: number
+  conversions: number
+  ctr: number
+  avgCpc: number
+}
+
+interface AdsSummary {
+  totalImpressions: number
+  totalClicks: number
+  totalCost: number
+  totalConversions: number
+  avgCtr: number
+  activeCampaigns: number
+  pausedCampaigns: number
+}
+
+interface AdsData {
+  campaigns: AdsCampaign[]
+  summary: AdsSummary
+}
+
+// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
@@ -154,9 +192,17 @@ export default function DashboardPage() {
   const [gscError, setGscError] = useState<string | null>(null)
   const [gscEmpty, setGscEmpty] = useState(false)
 
+  // Audit state
+  const [auditScore, setAuditScore] = useState<number | null>(null)
+  const [auditStats, setAuditStats] = useState<Record<string, number> | null>(null)
+
   // Umami state
   const [umamiData, setUmamiData] = useState<UmamiData | null>(null)
   const [umamiLoading, setUmamiLoading] = useState(false)
+
+  // Google Ads state
+  const [adsData, setAdsData] = useState<AdsData | null>(null)
+  const [adsLoading, setAdsLoading] = useState(false)
 
   const [wizardOpen, setWizardOpen] = useState(false)
 
@@ -198,7 +244,37 @@ export default function DashboardPage() {
       })
       .finally(() => setUmamiLoading(false))
 
-    await Promise.all([gscPromise, umamiPromise])
+    // Fetch latest audit score for this client
+    fetch(`/api/reports/summary?clientId=${clientId}`)
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success && json.data?.latestScan?.results) {
+          const results = json.data.latestScan.results
+          setAuditScore(results.score ?? null)
+          setAuditStats(results.stats ?? null)
+        }
+      })
+      .catch(() => {
+        // silent fail
+      })
+
+    // Fetch Google Ads data (account-wide, not per-client)
+    setAdsLoading(true)
+    const adsPromise = fetch('/api/campaigns')
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success && json.data) {
+          setAdsData(json.data)
+        } else {
+          setAdsData(null)
+        }
+      })
+      .catch(() => {
+        setAdsData(null)
+      })
+      .finally(() => setAdsLoading(false))
+
+    await Promise.all([gscPromise, umamiPromise, adsPromise])
   }, [])
 
   useEffect(() => {
@@ -339,7 +415,7 @@ export default function DashboardPage() {
     },
   ]
 
-  const isLoading = gscLoading || umamiLoading
+  const isLoading = gscLoading || umamiLoading || adsLoading
 
   return (
     <div className="space-y-4 p-5">
@@ -733,50 +809,67 @@ export default function DashboardPage() {
                   <CardDescription className="mt-0.5">Overall site health</CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-col items-center gap-4 pt-2">
-                  <ProgressRing
-                    value={78}
-                    size={112}
-                    strokeWidth={7}
-                    color="#3B82F6"
-                    trackColor="#E2E8F0"
-                    label={
-                      <div className="flex flex-col items-center">
-                        <span className="text-xl font-bold text-slate-900" style={{ fontFamily: 'var(--font-mono)' }}>78</span>
-                        <span className="text-[10px] text-slate-400">/ 100</span>
-                      </div>
-                    }
-                  />
+                  {(() => {
+                    const score = auditScore ?? 78
+                    const stats = auditStats ?? {}
+                    // Derive category scores from audit stats
+                    const criticalPenalty = (stats.critical ?? 0) * 15
+                    const highPenalty = (stats.high ?? 0) * 10
+                    const mediumPenalty = (stats.medium ?? 0) * 5
+                    const technicalScore = Math.max(0, 100 - criticalPenalty - Math.floor(highPenalty / 2))
+                    const contentScore = Math.max(0, 100 - mediumPenalty - Math.floor(highPenalty / 2))
+                    const backlinksScore = Math.min(100, 60 + (summary?.clicks ?? 0 > 100 ? 20 : 0) + (summary?.impressions ?? 0 > 1000 ? 20 : 0))
+                    const speedScore = score >= 90 ? 95 : score >= 70 ? 85 : score >= 50 ? 70 : 50
 
-                  <div className="w-full space-y-2">
-                    {[
-                      { label: 'Technical', score: 85, color: '#10B981' },
-                      { label: 'Content',   score: 72, color: '#3B82F6' },
-                      { label: 'Backlinks', score: 68, color: '#F59E0B' },
-                      { label: 'Speed',     score: 91, color: '#8B5CF6' },
-                    ].map((item) => (
-                      <div key={item.label} className="flex items-center gap-2">
-                        <span className="w-14 text-right text-[11px] text-slate-500" style={{ fontFamily: 'var(--font-sans)' }}>
-                          {item.label}
-                        </span>
-                        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100">
-                          <div
-                            className="h-full rounded-full transition-all duration-700"
-                            style={{ width: `${item.score}%`, backgroundColor: item.color }}
-                          />
+                    return (
+                      <>
+                        <ProgressRing
+                          value={score}
+                          size={112}
+                          strokeWidth={7}
+                          color={score >= 80 ? '#10B981' : score >= 60 ? '#3B82F6' : '#F59E0B'}
+                          trackColor="#E2E8F0"
+                          label={
+                            <div className="flex flex-col items-center">
+                              <span className="text-xl font-bold text-slate-900" style={{ fontFamily: 'var(--font-mono)' }}>{score}</span>
+                              <span className="text-[10px] text-slate-400">/ 100</span>
+                            </div>
+                          }
+                        />
+
+                        <div className="w-full space-y-2">
+                          {[
+                            { label: 'Technical', score: technicalScore, color: '#10B981' },
+                            { label: 'Content', score: contentScore, color: '#3B82F6' },
+                            { label: 'Backlinks', score: backlinksScore, color: '#F59E0B' },
+                            { label: 'Speed', score: speedScore, color: '#8B5CF6' },
+                          ].map((item) => (
+                            <div key={item.label} className="flex items-center gap-2">
+                              <span className="w-14 text-right text-[11px] text-slate-500" style={{ fontFamily: 'var(--font-sans)' }}>
+                                {item.label}
+                              </span>
+                              <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100">
+                                <div
+                                  className="h-full rounded-full transition-all duration-700"
+                                  style={{ width: `${item.score}%`, backgroundColor: item.color }}
+                                />
+                              </div>
+                              <span className="w-7 text-[11px] tabular-nums text-slate-500" style={{ fontFamily: 'var(--font-mono)' }}>
+                                {item.score}
+                              </span>
+                            </div>
+                          ))}
                         </div>
-                        <span className="w-7 text-[11px] tabular-nums text-slate-500" style={{ fontFamily: 'var(--font-mono)' }}>
-                          {item.score}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
 
-                  <p
-                    className="text-xs font-semibold"
-                    style={{ color: getHealthScoreColor(78) }}
-                  >
-                    {getHealthScoreLabel(78)}
-                  </p>
+                        <p
+                          className="text-xs font-semibold"
+                          style={{ color: getHealthScoreColor(score) }}
+                        >
+                          {getHealthScoreLabel(score)}
+                        </p>
+                      </>
+                    )
+                  })()}
                 </CardContent>
               </Card>
             </div>
@@ -875,6 +968,165 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           )}
+        </>
+      )}
+
+      {/* ----------------------------------------------------------------- */}
+      {/* Google Ads Campaigns                                              */}
+      {/* ----------------------------------------------------------------- */}
+      {!isLoading && adsData && adsData.campaigns.length > 0 && (
+        <>
+          <div className="flex items-center gap-2 mt-2">
+            <div className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400" style={{ fontFamily: 'var(--font-sans)' }}>
+              Google Ads
+            </p>
+            <span className="text-[10px] text-slate-300" style={{ fontFamily: 'var(--font-sans)' }}>
+              Last 30 days
+            </span>
+          </div>
+
+          {/* Ads stat cards */}
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-4">
+            <StatCard
+              title="Ad Clicks"
+              value={formatNumber(adsData.summary.totalClicks)}
+              subtitle={`${adsData.summary.activeCampaigns} active campaigns`}
+              icon={<MousePointerClick size={14} />}
+              iconColor="#F59E0B"
+              iconBg="#FFFBEB"
+            />
+            <StatCard
+              title="Impressions"
+              value={formatNumber(adsData.summary.totalImpressions)}
+              subtitle="Total ad views"
+              icon={<Eye size={14} />}
+              iconColor="#8B5CF6"
+              iconBg="#F5F3FF"
+            />
+            <StatCard
+              title="Ad Spend"
+              value={`$${adsData.summary.totalCost.toFixed(2)}`}
+              subtitle="Last 30 days"
+              icon={<DollarSign size={14} />}
+              iconColor="#EF4444"
+              iconBg="#FEF2F2"
+            />
+            <StatCard
+              title="Conversions"
+              value={formatNumber(adsData.summary.totalConversions)}
+              subtitle={`CTR: ${adsData.summary.avgCtr.toFixed(2)}%`}
+              icon={<Target size={14} />}
+              iconColor="#10B981"
+              iconBg="#ECFDF5"
+            />
+          </div>
+
+          {/* Campaign list */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Megaphone size={14} className="text-amber-500" />
+                  <CardTitle>Campaigns</CardTitle>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="success" className="gap-1">
+                    <Play size={9} />
+                    {adsData.summary.activeCampaigns} Active
+                  </Badge>
+                  <Badge variant="outline" className="gap-1">
+                    <Pause size={9} />
+                    {adsData.summary.pausedCampaigns} Paused
+                  </Badge>
+                </div>
+              </div>
+              <CardDescription>
+                All campaigns in Google Ads account
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {adsData.campaigns
+                  .filter((c) => c.impressions > 0 || c.status === 'ENABLED')
+                  .slice(0, 10)
+                  .map((campaign) => (
+                    <div
+                      key={campaign.id}
+                      className="flex items-center justify-between gap-3 rounded-lg border border-slate-100 bg-white p-3"
+                    >
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
+                        <div
+                          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${
+                            campaign.status === 'ENABLED'
+                              ? 'bg-emerald-50 text-emerald-600'
+                              : campaign.status === 'PAUSED'
+                                ? 'bg-slate-100 text-slate-400'
+                                : 'bg-red-50 text-red-400'
+                          }`}
+                        >
+                          {campaign.status === 'ENABLED' ? (
+                            <Play size={12} />
+                          ) : (
+                            <Pause size={12} />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <p
+                            className="text-sm font-medium text-slate-800 truncate"
+                            style={{ fontFamily: 'var(--font-sans)' }}
+                          >
+                            {campaign.name}
+                          </p>
+                          <p
+                            className="text-[11px] text-slate-400"
+                            style={{ fontFamily: 'var(--font-sans)' }}
+                          >
+                            {campaign.channelType.replace(/_/g, ' ')}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-4 shrink-0">
+                        <div className="text-right">
+                          <p
+                            className="text-xs font-semibold text-slate-800 tabular-nums"
+                            style={{ fontFamily: 'var(--font-mono)' }}
+                          >
+                            {formatNumber(campaign.clicks)}
+                          </p>
+                          <p className="text-[10px] text-slate-400" style={{ fontFamily: 'var(--font-sans)' }}>
+                            clicks
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p
+                            className="text-xs font-semibold text-slate-800 tabular-nums"
+                            style={{ fontFamily: 'var(--font-mono)' }}
+                          >
+                            {formatNumber(campaign.impressions)}
+                          </p>
+                          <p className="text-[10px] text-slate-400" style={{ fontFamily: 'var(--font-sans)' }}>
+                            impr
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p
+                            className="text-xs font-semibold text-slate-800 tabular-nums"
+                            style={{ fontFamily: 'var(--font-mono)' }}
+                          >
+                            ${(campaign.costMicros / 1_000_000).toFixed(2)}
+                          </p>
+                          <p className="text-[10px] text-slate-400" style={{ fontFamily: 'var(--font-sans)' }}>
+                            spend
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </CardContent>
+          </Card>
         </>
       )}
 

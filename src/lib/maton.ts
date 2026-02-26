@@ -212,10 +212,156 @@ export async function getAnalyticsReport(
 }
 
 // ---------------------------------------------------------------------------
+// Google Ads
+// ---------------------------------------------------------------------------
+
+const GOOGLE_ADS_CUSTOMER_ID =
+  process.env.GOOGLE_ADS_CUSTOMER_ID ?? '9858534244'
+
+interface GoogleAdsCampaign {
+  id: string
+  name: string
+  status: string
+  channelType: string
+  budgetMicros: string
+  impressions: number
+  clicks: number
+  costMicros: number
+  conversions: number
+  ctr: number
+  avgCpc: number
+}
+
+interface GoogleAdsStreamResult {
+  campaign?: {
+    id?: string
+    name?: string
+    status?: string
+    advertisingChannelType?: string
+    resourceName?: string
+  }
+  campaignBudget?: {
+    amountMicros?: string
+  }
+  metrics?: {
+    impressions?: string
+    clicks?: string
+    costMicros?: string
+    conversions?: string
+    ctr?: string
+    averageCpc?: string
+  }
+}
+
+interface GoogleAdsStreamBatch {
+  results?: GoogleAdsStreamResult[]
+}
+
+/**
+ * Execute a Google Ads query via the Maton gateway searchStream endpoint.
+ */
+async function googleAdsQuery(
+  gaql: string
+): Promise<GoogleAdsStreamResult[]> {
+  const batches = await matonFetch<GoogleAdsStreamBatch[]>(
+    `/google-ads/v23/customers/${GOOGLE_ADS_CUSTOMER_ID}/googleAds:searchStream`,
+    {
+      method: 'POST',
+      body: { query: gaql },
+    }
+  )
+
+  const results: GoogleAdsStreamResult[] = []
+  for (const batch of batches) {
+    if (batch.results) {
+      results.push(...batch.results)
+    }
+  }
+  return results
+}
+
+/**
+ * Fetch all Google Ads campaigns with performance metrics for the last 30 days.
+ */
+export async function getGoogleAdsCampaigns(): Promise<GoogleAdsCampaign[]> {
+  const gaql = `
+    SELECT
+      campaign.id,
+      campaign.name,
+      campaign.status,
+      campaign.advertising_channel_type,
+      campaign_budget.amount_micros,
+      metrics.impressions,
+      metrics.clicks,
+      metrics.cost_micros,
+      metrics.conversions,
+      metrics.ctr,
+      metrics.average_cpc
+    FROM campaign
+    WHERE segments.date DURING LAST_30_DAYS
+    ORDER BY metrics.impressions DESC
+    LIMIT 50
+  `
+
+  const results = await googleAdsQuery(gaql)
+
+  return results.map((r) => ({
+    id: r.campaign?.id ?? '',
+    name: r.campaign?.name ?? '',
+    status: r.campaign?.status ?? 'UNKNOWN',
+    channelType: r.campaign?.advertisingChannelType ?? 'UNKNOWN',
+    budgetMicros: r.campaignBudget?.amountMicros ?? '0',
+    impressions: parseInt(r.metrics?.impressions ?? '0', 10),
+    clicks: parseInt(r.metrics?.clicks ?? '0', 10),
+    costMicros: parseInt(r.metrics?.costMicros ?? '0', 10),
+    conversions: parseFloat(r.metrics?.conversions ?? '0'),
+    ctr: parseFloat(r.metrics?.ctr ?? '0'),
+    avgCpc: parseInt(r.metrics?.averageCpc ?? '0', 10),
+  }))
+}
+
+/**
+ * Get a summary of Google Ads account performance.
+ */
+export async function getGoogleAdsAccountSummary(): Promise<{
+  totalImpressions: number
+  totalClicks: number
+  totalCostMicros: number
+  totalConversions: number
+  avgCtr: number
+  activeCampaigns: number
+  pausedCampaigns: number
+}> {
+  const campaigns = await getGoogleAdsCampaigns()
+
+  const totalImpressions = campaigns.reduce((s, c) => s + c.impressions, 0)
+  const totalClicks = campaigns.reduce((s, c) => s + c.clicks, 0)
+  const totalCostMicros = campaigns.reduce((s, c) => s + c.costMicros, 0)
+  const totalConversions = campaigns.reduce((s, c) => s + c.conversions, 0)
+  const avgCtr = totalImpressions > 0 ? totalClicks / totalImpressions : 0
+  const activeCampaigns = campaigns.filter(
+    (c) => c.status === 'ENABLED'
+  ).length
+  const pausedCampaigns = campaigns.filter(
+    (c) => c.status === 'PAUSED'
+  ).length
+
+  return {
+    totalImpressions,
+    totalClicks,
+    totalCostMicros,
+    totalConversions,
+    avgCtr,
+    activeCampaigns,
+    pausedCampaigns,
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Exports for testing / advanced usage
 // ---------------------------------------------------------------------------
 
-export { matonFetch }
+export { matonFetch, googleAdsQuery }
 export type {
   GSCRow,
   GSCSearchAnalyticsResponse,
@@ -223,4 +369,5 @@ export type {
   GARunReportResponse,
   GARow,
   GADateRange,
+  GoogleAdsCampaign,
 }
